@@ -64,6 +64,19 @@ function App() {
     );
   }
 
+  function App() {
+  return (
+    <div className="min-h-screen bg-[color:var(--color-bg)] text-[color:var(--color-text)]">
+      <div className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(140,29,24,0.14),_transparent_55%),radial-gradient(circle_at_bottom,_rgba(156,163,175,0.18),_transparent_55%)]" />
+      <Navbar />
+      <main className="max-w-6xl mx-auto px-4">
+        {/* Hero, About, Projects, etc. */}
+      </main>
+    </div>
+  );
+}
+
+
   return (
     <Router>
       <Routes>

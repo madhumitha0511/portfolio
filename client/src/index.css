@@ -1,13 +1,38 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* COLOR PALETTE VARIABLES
+   Light and dark share the same semantic names.
+   Change only these to restyle the whole site. */
+
+:root[data-theme="light"] {
+  --color-bg: #FAF7F2;        /* Base: Warm ivory */
+  --color-bg-elevated: #ffffff;
+  --color-primary: #8C1D18;   /* Oxide red */
+  --color-primary-soft: #FBE4E0;
+  --color-text: #1F2933;      /* Deep graphite */
+  --color-muted: #9CA3AF;     /* Ash grey */
+  --color-border: rgba(31, 41, 51, 0.12);
+  --color-card: rgba(255, 255, 255, 0.9);
+  --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.13);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+:root[data-theme="dark"] {
+  --color-bg: #050608;
+  --color-bg-elevated: #111827;
+  --color-primary: #F97362;   /* lighter oxide-style accent for dark */
+  --color-primary-soft: rgba(252, 165, 165, 0.08);
+  --color-text: #E5E7EB;
+  --color-muted: #9CA3AF;
+  --color-border: rgba(148, 163, 184, 0.25);
+  --color-card: rgba(15, 23, 42, 0.95);
+  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.6);
+}
+
+/* Base styles using the variables */
+body {
+  @apply antialiased;
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
