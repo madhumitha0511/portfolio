@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { portfolioAPI } from "../services/api";  // <-- ADD THIS
 // ========== 6. FOOTER SECTION ==========
 export const Footer = () => {
   const [owner, setOwner] = useState(null);
