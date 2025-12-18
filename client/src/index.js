@@ -3,6 +3,7 @@ if (!document.documentElement.getAttribute("data-theme")) {
   document.documentElement.setAttribute("data-theme", "light");
 }
 
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
