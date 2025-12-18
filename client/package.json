@@ -1,31 +1,25 @@
 {
-  "name": "client",
-  "version": "0.1.0",
+  "name": "portfolio-frontend",
+  "version": "1.0.0",
+  "description": "3D Animated Dynamic Portfolio Website",
   "private": true,
   "dependencies": {
-    "@testing-library/dom": "^10.4.1",
-    "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^16.3.0",
-    "@testing-library/user-event": "^13.5.0",
-    "axios": "^1.13.2",
-    "framer-motion": "^12.23.25",
-    "react": "^19.2.1",
-    "react-dom": "^19.2.1",
-    "react-router-dom": "^7.10.1",
-    "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "@react-three/drei": "^9.88.0",
+    "@react-three/fiber": "^8.14.0",
+    "axios": "^1.6.0",
+    "framer-motion": "^10.16.16",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.12.0",
+    "react-router-dom": "^6.20.0",
+    "react-scroll": "^1.9.0",
+    "tailwindcss": "^3.3.6",
+    "three": "^0.182.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "dev": "react-scripts start"
   },
   "browserslist": {
     "production": [
@@ -38,5 +32,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "react-scripts": "5.0.1",
+    "web-vitals": "^5.1.0"
   }
 }
