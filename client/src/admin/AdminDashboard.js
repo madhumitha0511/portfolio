@@ -1,44 +1,51 @@
+// src/admin/AdminDashboard.js
 // ============================================
 // ADMIN DASHBOARD - AdminDashboard.js
 // ============================================
-// Save as: src/admin/AdminDashboard.js
 
-import React, { useState } from 'react';
-import { Routes, Route, Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { FiLogOut, FiMenu, FiX } from 'react-icons/fi';
+import React, { useState } from "react";
+import { Routes, Route, NavLink, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { FiLogOut, FiMenu, FiX } from "react-icons/fi";
 
-// Admin Sub-components (Create similar components for each)
-import EditHero from './sections/EditHero';
-import EditAbout from './sections/EditAbout';
-import EditExperience from './sections/EditExperience';
-import EditProjects from './sections/EditProjects';
-import EditSkills from './sections/EditSkills';
-// import other edit components similarly
+// Admin Sub-components
+import EditHero from "./sections/EditHero";
+import EditAbout from "./sections/EditAbout";
+import EditExperience from "./sections/EditExperience";
+import EditProjects from "./sections/EditProjects";
+import EditSkills from "./sections/EditSkills";
+import EditEducation from "./sections/EditEducation";
+import EditCertifications from "./sections/EditCertifications";
+import EditAchievements from "./sections/EditAchievements";
+import EditHackathons from "./sections/EditHackathons";
+import EditResearch from "./sections/EditResearch";
+import EditExtracurricular from "./sections/EditExtracurricular";
+import EditTestimonials from "./sections/EditTestimonials";
+import EditContactMessages from "./sections/EditContactMessages";
 
 const AdminDashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    navigate('/admin/login');
+    localStorage.removeItem("authToken");
+    navigate("/admin/login");
   };
 
   const menuItems = [
-    { label: 'Hero', path: '/admin/hero' },
-    { label: 'About', path: '/admin/about' },
-    { label: 'Experience', path: '/admin/experience' },
-    { label: 'Projects', path: '/admin/projects' },
-    { label: 'Skills', path: '/admin/skills' },
-    { label: 'Education', path: '/admin/education' },
-    { label: 'Certifications', path: '/admin/certifications' },
-    { label: 'Achievements', path: '/admin/achievements' },
-    { label: 'Hackathons', path: '/admin/hackathons' },
-    { label: 'Research', path: '/admin/research' },
-    { label: 'Extracurricular', path: '/admin/extracurricular' },
-    { label: 'Testimonials', path: '/admin/testimonials' },
-    { label: 'Contact Messages', path: '/admin/contact' },
+    { label: "Hero", path: "hero" },
+    { label: "About", path: "about" },
+    { label: "Experience", path: "experience" },
+    { label: "Projects", path: "projects" },
+    { label: "Skills", path: "skills" },
+    { label: "Education", path: "education" },
+    { label: "Certifications", path: "certifications" },
+    { label: "Achievements", path: "achievements" },
+    { label: "Hackathons", path: "hackathons" },
+    { label: "Research", path: "research" },
+    { label: "Extracurricular", path: "extracurricular" },
+    { label: "Testimonials", path: "testimonials" },
+    { label: "Contact Messages", path: "contact" },
   ];
 
   return (
@@ -77,19 +84,25 @@ const AdminDashboard = () => {
         <motion.aside
           initial={{ x: -300 }}
           animate={{ x: sidebarOpen ? 0 : -300 }}
-          transition={{ type: 'spring', damping: 20 }}
+          transition={{ type: "spring", damping: 20 }}
           className="fixed lg:relative left-0 w-64 h-screen bg-slate-800/50 backdrop-blur-lg border-r border-slate-700 overflow-y-auto pt-6 z-30"
         >
           <nav className="space-y-2 px-4">
             {menuItems.map((item) => (
-              <Link
+              <NavLink
                 key={item.path}
                 to={item.path}
                 onClick={() => setSidebarOpen(false)}
-                className="block px-4 py-2 rounded-lg hover:bg-blue-600/30 transition text-slate-300 hover:text-white"
+                className={({ isActive }) =>
+                  `block px-4 py-2 rounded-lg transition text-sm ${
+                    isActive
+                      ? "bg-blue-600/70 text-white"
+                      : "text-slate-300 hover:bg-blue-600/30 hover:text-white"
+                  }`
+                }
               >
                 {item.label}
-              </Link>
+              </NavLink>
             ))}
           </nav>
         </motion.aside>
@@ -101,12 +114,20 @@ const AdminDashboard = () => {
           className="flex-1 p-6 lg:p-10 max-w-6xl lg:ml-64"
         >
           <Routes>
-            <Route path="/hero" element={<EditHero />} />
-            <Route path="/about" element={<EditAbout />} />
-            <Route path="/experience" element={<EditExperience />} />
-            <Route path="/projects" element={<EditProjects />} />
-            <Route path="/skills" element={<EditSkills />} />
-            {/* Add other routes similarly */}
+            <Route index element={<EditHero />} />
+            <Route path="hero" element={<EditHero />} />
+            <Route path="about" element={<EditAbout />} />
+            <Route path="experience" element={<EditExperience />} />
+            <Route path="projects" element={<EditProjects />} />
+            <Route path="skills" element={<EditSkills />} />
+            <Route path="education" element={<EditEducation />} />
+            <Route path="certifications" element={<EditCertifications />} />
+            <Route path="achievements" element={<EditAchievements />} />
+            <Route path="hackathons" element={<EditHackathons />} />
+            <Route path="research" element={<EditResearch />} />
+            <Route path="extracurricular" element={<EditExtracurricular />} />
+            <Route path="testimonials" element={<EditTestimonials />} />
+            <Route path="contact" element={<EditContactMessages />} />
           </Routes>
         </motion.div>
       </div>
