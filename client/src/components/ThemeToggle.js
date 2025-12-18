@@ -21,20 +21,23 @@ const ThemeToggle = () => {
   };
 
   return (
-    <button
+    <motion.button
       onClick={toggle}
-      className="relative flex items-center gap-2 px-3 py-1.5 rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-bg-elevated)] shadow-soft text-xs font-medium text-[color:var(--color-text)]"
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      className="relative flex items-center gap-2 px-4 py-2 rounded-full border-2 border-[color:var(--color-border)] bg-[color:var(--color-bg-elevated)] shadow-soft text-sm font-medium text-[color:var(--color-text)]"
     >
       <motion.div
-        layout
-        className="w-8 h-8 rounded-full bg-[color:var(--color-primary-soft)] flex items-center justify-center"
+        animate={{ rotate: theme === "dark" ? 180 : 0 }}
+        transition={{ duration: 0.3 }}
+        className="text-lg"
       >
-        <span className="text-[11px]">
-          {theme === "light" ? "☀︎" : "☾"}
-        </span>
+        {theme === "light" ? "☀️" : "🌙"}
       </motion.div>
-      <span>{theme === "light" ? "Light" : "Dark"} mode</span>
-    </button>
+      <span className="hidden sm:inline">
+        {theme === "light" ? "Light" : "Dark"}
+      </span>
+    </motion.button>
   );
 };
 
