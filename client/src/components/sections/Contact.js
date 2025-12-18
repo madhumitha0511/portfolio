@@ -1,11 +1,9 @@
+// ========== 5. CONTACT SECTION ==========
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-
   contactAPI,
 } from '../../services/api';
-import Achievements from './Achievements';
-// ========== 5. CONTACT SECTION ==========
 export const Contact = () => {
   const [formData, setFormData] = useState({
     sender_name: '',
@@ -118,4 +116,4 @@ export const Contact = () => {
     </section>
   );
 };
-export default Achievements;
+export default Contact;
