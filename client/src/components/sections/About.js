@@ -25,10 +25,10 @@ const About = () => {
       id="about"
       className="relative py-20 px-4 bg-[color:var(--color-bg)] border-t border-[color:var(--color-border)] overflow-hidden"
     >
-      {/* Subtle Background Mesh Gradient */}
-      <div className="absolute inset-0 opacity-30 pointer-events-none">
-        <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-br from-pink-500/20 to-purple-500/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-tl from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl" />
+      {/* Subtle Background Mesh Gradient - Same Colors */}
+      <div className="absolute inset-0 opacity-20 pointer-events-none">
+        <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-br from-[#FF6B6B]/30 to-[#FF8E8E]/30 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-tl from-[#FF6B6B]/20 to-[#FF8E8E]/20 rounded-full blur-3xl" />
       </div>
 
       <div className="relative max-w-7xl mx-auto">
@@ -40,7 +40,7 @@ const About = () => {
             whileInView={{ scale: 1, opacity: 1, rotateY: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, type: "spring", bounce: 0.3 }}
-            className="relative w-full max-w-md mx-auto lg:mx-0 perspective-1000"
+            className="relative w-full max-w-md mx-auto lg:mx-0"
           >
             {/* 3D Card Container */}
             <motion.div
@@ -50,13 +50,13 @@ const About = () => {
                 rotateX: -2,
                 transition: { duration: 0.3 }
               }}
-              className="relative rounded-3xl overflow-hidden shadow-2xl transform-gpu"
+              className="relative rounded-3xl overflow-hidden shadow-2xl"
               style={{
                 transformStyle: "preserve-3d",
               }}
             >
-              {/* Glow Effect Behind Card */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 rounded-3xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity" />
+              {/* Glow Effect Behind Card - Your Colors */}
+              <div className="absolute -inset-1 bg-gradient-to-r from-[#FF6B6B] to-[#FF8E8E] rounded-3xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity" />
               
               {/* Main Image */}
               <div className="relative bg-white rounded-3xl p-2">
@@ -67,12 +67,12 @@ const About = () => {
                 />
               </div>
 
-              {/* Floating Badge */}
+              {/* Floating Badge - Your Colors */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="absolute -bottom-4 -right-4 bg-gradient-to-br from-pink-500 to-red-500 text-white px-6 py-3 rounded-2xl shadow-lg font-bold text-sm"
+                className="absolute -bottom-4 -right-4 bg-gradient-to-br from-[#FF6B6B] to-[#FF8E8E] text-white px-6 py-3 rounded-2xl shadow-lg font-bold text-sm"
               >
                 ✨ Available for Projects
               </motion.div>
@@ -87,12 +87,12 @@ const About = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="space-y-8"
           >
-            {/* Gradient Heading */}
+            {/* Heading - Your Colors */}
             <motion.h2
               initial={{ opacity: 0, y: -20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent"
+              className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#FF6B6B] to-[#FF8E8E] bg-clip-text text-transparent"
             >
               About Madhumitha
             </motion.h2>
@@ -123,13 +123,13 @@ const About = () => {
                   key={idx}
                   className="px-6 py-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-slate-700 shadow-md"
                 >
-                  <p className="text-2xl font-bold text-pink-400">{stat.value}</p>
+                  <p className="text-2xl font-bold text-[#FF6B6B]">{stat.value}</p>
                   <p className="text-xs text-slate-400">{stat.label}</p>
                 </div>
               ))}
             </motion.div>
 
-            {/* Premium CTA Buttons */}
+            {/* Premium CTA Buttons - Your Exact Colors */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -141,10 +141,10 @@ const About = () => {
                 whileHover={{ scale: 1.05, y: -3 }}
                 whileTap={{ scale: 0.95 }}
                 href="#projects"
-                className="group relative px-8 py-4 bg-gradient-to-r from-pink-500 to-red-500 text-white font-semibold rounded-xl shadow-lg overflow-hidden"
+                className="group relative px-8 py-4 bg-gradient-to-r from-[#FF6B6B] to-[#FF8E8E] text-white font-semibold rounded-xl shadow-lg overflow-hidden"
               >
                 {/* Glow Effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-pink-400 to-red-400 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B6B] to-[#FF8E8E] opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300" />
                 <span className="relative z-10">View My Work</span>
               </motion.a>
 
@@ -153,10 +153,10 @@ const About = () => {
                 whileHover={{ scale: 1.05, y: -3 }}
                 whileTap={{ scale: 0.95 }}
                 href="#contact"
-                className="group relative px-8 py-4 bg-transparent border-2 border-pink-500 text-pink-500 font-semibold rounded-xl overflow-hidden transition-all"
+                className="group relative px-8 py-4 bg-transparent border-2 border-[#FF6B6B] text-[#FF6B6B] font-semibold rounded-xl overflow-hidden transition-all"
               >
                 {/* Hover Fill Effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-red-500 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B6B] to-[#FF8E8E] transform translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
                 <span className="relative z-10 group-hover:text-white transition-colors">
                   Get In Touch
                 </span>
