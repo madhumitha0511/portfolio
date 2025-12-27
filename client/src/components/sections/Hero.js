@@ -63,8 +63,7 @@ const Hero = () => {
             transition={{ delay: 0.3 }}
             className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight text-[color:var(--color-text)]"
           >
-            Hello, this <br />
-            is <span className="text-[color:var(--color-primary)]">{owner.first_name} {owner.last_name}</span>
+            Hello, this is<br> <span className="text-[color:var(--color-primary)]">{owner.first_name} {owner.last_name}</span></br>
           </motion.h1>
 
           {/* Bio/Description */}
