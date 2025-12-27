@@ -135,7 +135,28 @@ const About = () => {
     >
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Dynamic Floating Doodles – reference style */}
+          {/* LEFT SIDE - Image with Dynamic Doodles */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="relative flex justify-center"
+          >
+            {/* Profile Image Container */}
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="relative w-full max-w-md"
+            >
+              <img
+                src="/profile.jpeg"
+                alt="Madhumitha S V"
+                className="w-full h-auto object-cover rounded-3xl shadow-soft"
+              />
+              
+         {/* Dynamic Floating Doodles – reference style */}
 {highlights.map((highlight, index) => {
   const slots = [
     // top‑left
@@ -181,6 +202,10 @@ const About = () => {
     </motion.div>
   );
 })}
+
+           
+            </motion.div>
+          </motion.div>
 
           {/* RIGHT SIDE - Heading, Description & CTA */}
           <motion.div
