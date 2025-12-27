@@ -183,7 +183,7 @@ const Hero = () => {
   {/* Profile Image - Positioned Inside Blob */}
   <motion.div
     whileHover={{ scale: 1.02 }}
-    className="relative z-10 w-full max-w-[450px] md:max-w-[500px] h-full flex items-center"
+    className="relative z-10 w-full right-0 top-0 max-w-[450px] md:max-w-[500px] h-full flex items-center"
   >
     <img
       src="/profile-1.png"
