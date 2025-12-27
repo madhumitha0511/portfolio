@@ -161,37 +161,37 @@ const Hero = () => {
         </motion.div>
 
 
-{/* RIGHT SIDE - Image with Organic Blob Background (Desktop Only) */}
+{/* RIGHT SIDE - Image with Organic Blob Background */}
 <motion.div
   initial={{ opacity: 0, scale: 0.8 }}
   animate={{ opacity: 1, scale: 1 }}
   transition={{ duration: 0.8, delay: 0.2 }}
-  className="hidden lg:flex relative justify-end items-end"
+  className="relative flex justify-center lg:justify-end items-center"
 >
-  {/* Large Organic Blob Background */}
+  {/* Large Organic Blob Background - Matches Left Content Height */}
   <motion.div
     initial={{ scale: 0.8, opacity: 0 }}
     animate={{ scale: 1, opacity: 1 }}
     transition={{ duration: 1.5, ease: "easeOut" }}
-    className="absolute right-0 bottom-0 w-[450px] h-[450px] xl:w-[550px] xl:h-[550px] bg-gradient-to-br from-[#FF6B6B] to-[#FF8E8E]"
+    className="absolute right-0 top-0 w-[450px] h-full md:w-[550px] bg-gradient-to-br from-[#FF6B6B] to-[#FF8E8E]"
     style={{
       borderRadius: "63% 37% 54% 46% / 55% 48% 52% 45%",
+      maxHeight: "500px",
     }}
   />
 
-  {/* Profile Image - Aligned to Bottom */}
+  {/* Profile Image - Positioned Inside Blob */}
   <motion.div
     whileHover={{ scale: 1.02 }}
-    className="relative z-10 w-full max-w-[450px] xl:max-w-[550px]"
+    className="relative z-10 w-full max-w-[450px] md:max-w-[500px] h-full flex items-center"
   >
     <img
       src="/profile-1.png"
       alt={`${owner.first_name} ${owner.last_name}`}
-      className="w-full h-auto object-contain relative z-20"
+      className="w-full h-auto object-contain"
     />
   </motion.div>
 </motion.div>
-
 
 
       </div>
