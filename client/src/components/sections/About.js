@@ -1,51 +1,39 @@
 // client/src/components/sections/About.js
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import { portfolioAPI } from '../../services/api';
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { aboutAPI } from "../../services/api";
 
-export const About = () => {
-  const [aboutData, setAboutData] = useState(null);
+const About = () => {
+  const [about, setAbout] = useState(null);
 
   useEffect(() => {
     const fetchAbout = async () => {
       try {
-        const res = await portfolioAPI.getAbout();
-        setAboutData(res.data);
+        const res = await aboutAPI.get();
+        // Assuming API returns single object or array with first item
+        setAbout(res.data[0] || res.data);
       } catch (err) {
-        console.error('Error fetching about:', err);
+        console.error("Error fetching about:", err);
       }
     };
     fetchAbout();
   }, []);
 
-  // Position mapping for floating highlights (like in the inspo image)
-  const highlightPositions = [
-    { top: '10%', left: '-8%', rotate: -5 },    // Top-left
-    { top: '15%', right: '-10%', rotate: 8 },   // Top-right
-    { bottom: '35%', left: '-12%', rotate: -8 }, // Middle-left
-    { bottom: '15%', right: '-8%', rotate: 5 },  // Bottom-right
-  ];
+  if (!about) return null;
+
+  // Parse highlights array (stored as JSON in DB)
+  const highlights = Array.isArray(about.highlights) 
+    ? about.highlights 
+    : JSON.parse(about.highlights || "[]");
 
   return (
-    <section id="about" className="py-24 px-4 bg-[color:var(--color-bg)] relative overflow-hidden">
-      {/* Subtle background decoration */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none">
-        <div className="absolute top-10 left-10 w-72 h-72 bg-[color:var(--color-primary)]/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-10 right-10 w-96 h-96 bg-[color:var(--color-primary)]/10 rounded-full blur-3xl" />
-      </div>
-
-      <div className="max-w-7xl mx-auto relative z-10">
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-4xl md:text-5xl font-bold mb-16 text-center text-[color:var(--color-text)]"
-        >
-          A little bit about me
-        </motion.h2>
-
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* LEFT SIDE - Image with floating highlights */}
+    <section
+      id="about"
+      className="py-20 px-4 bg-[color:var(--color-bg)] border-t border-[color:var(--color-border)]"
+    >
+      <div className="max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* LEFT SIDE - Image with Doodles */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -53,124 +41,167 @@ export const About = () => {
             transition={{ duration: 0.6 }}
             className="relative"
           >
-            {/* Main image container */}
-            <div className="relative mx-auto max-w-md aspect-[3/4] rounded-3xl overflow-hidden shadow-soft border-4 border-[color:var(--color-border)] bg-[color:var(--color-card)]">
-              <img
-                  src={aboutData?.image_url || '/profile.jpeg'}
-                  alt="Madhumitha S V"
-                  className="w-full h-full object-cover object-center"
-                  onError={(e) => {
-                    e.target.src = 'https://via.placeholder.com/400x533/F5E6D3/1F2933?text=Madhumitha+S+V';
-                  }}
-                />
-            </div>
-
-            {/* Floating highlight bubbles around image */}
-            {aboutData?.highlights?.slice(0, 4).map((highlight, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3 + idx * 0.1 }}
-                whileHover={{ scale: 1.1, rotate: 0 }}
-                style={{
-                  position: 'absolute',
-                  ...highlightPositions[idx],
-                  transform: `rotate(${highlightPositions[idx].rotate}deg)`,
-                }}
-                className="hidden lg:block bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-primary)] rounded-2xl px-4 py-3 shadow-lg backdrop-blur-sm"
-              >
-                <p className="text-[11px] md:text-xs font-handwriting text-[color:var(--color-text)] whitespace-nowrap max-w-[160px]">
-                  {highlight}
-                </p>
-                {/* Hand-drawn arrow or doodle */}
-                <svg
-                  className="absolute -bottom-2 -right-2 w-6 h-6 text-[color:var(--color-primary)]"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
+            {/* Main Card */}
+            <div className="relative bg-[color:var(--color-card)] rounded-3xl p-8 shadow-soft border border-[color:var(--color-border)] overflow-hidden">
+              {/* Header Text */}
+              <div className="flex justify-between items-start mb-6">
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className="text-sm italic text-[color:var(--color-muted)]"
+                  style={{ fontFamily: "'Caveat', cursive" }}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
-              </motion.div>
-            ))}
+                  A little bit about me
+                </motion.p>
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  className="text-sm italic text-[color:var(--color-muted)]"
+                  style={{ fontFamily: "'Caveat', cursive" }}
+                >
+                  Studio Shostive
+                </motion.p>
+              </div>
 
-            {/* Decorative elements */}
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              className="absolute -top-4 -right-4 w-12 h-12 opacity-20"
-            >
-              <svg viewBox="0 0 100 100" className="text-[color:var(--color-primary)]">
-                <circle cx="50" cy="50" r="40" fill="currentColor" />
-              </svg>
-            </motion.div>
+              {/* Name */}
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="text-4xl font-serif italic text-center text-[color:var(--color-text)] mb-8 border-b-2 border-[color:var(--color-text)] pb-2"
+              >
+                {about.title || "Your Name"}
+              </motion.h2>
+
+              {/* Profile Image */}
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="relative mx-auto w-64 h-80 mb-6"
+              >
+                <img
+                  src="/profile.jpeg"
+                  alt="Profile"
+                  className="w-full h-full object-cover rounded-2xl"
+                />
+                
+                {/* Floating Doodle - Top Left */}
+                <motion.div
+                  animate={{ rotate: [0, 5, -5, 0], y: [0, -5, 0] }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                  className="absolute -top-6 -left-8 text-sm font-handwriting text-[color:var(--color-text)]"
+                  style={{ fontFamily: "'Caveat', cursive" }}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">✨</span>
+                    <span className="rotate-[-15deg] block">
+                      {highlights[0] || "I play hockey in my spare time"}
+                    </span>
+                  </div>
+                </motion.div>
+
+                {/* Floating Doodle - Top Right */}
+                <motion.div
+                  animate={{ rotate: [0, -5, 5, 0], y: [0, 5, 0] }}
+                  transition={{ duration: 2.5, repeat: Infinity }}
+                  className="absolute -top-4 -right-10 text-sm text-center text-[color:var(--color-text)]"
+                  style={{ fontFamily: "'Caveat', cursive" }}
+                >
+                  <div className="rotate-[10deg]">
+                    <span className="text-3xl block">☕</span>
+                    <span className="block mt-1">
+                      {highlights[1] || "A love story that never ends"}
+                    </span>
+                  </div>
+                </motion.div>
+
+                {/* Floating Doodle - Bottom Left */}
+                <motion.div
+                  animate={{ rotate: [0, 8, -8, 0], x: [0, -3, 0] }}
+                  transition={{ duration: 3.5, repeat: Infinity }}
+                  className="absolute -bottom-8 -left-10 text-sm text-[color:var(--color-text)]"
+                  style={{ fontFamily: "'Caveat', cursive" }}
+                >
+                  <div className="rotate-[-12deg]">
+                    <span className="block">
+                      {highlights[2] || "Coffee over tea"}
+                    </span>
+                    <span className="text-2xl block mt-1">☕💛</span>
+                  </div>
+                </motion.div>
+
+                {/* Floating Doodle - Bottom Center */}
+                <motion.div
+                  animate={{ rotate: [0, -5, 5, 0] }}
+                  transition={{ duration: 2.8, repeat: Infinity }}
+                  className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-sm text-[color:var(--color-text)]"
+                  style={{ fontFamily: "'Caveat', cursive" }}
+                >
+                  <div className="rotate-[5deg] flex items-center gap-1">
+                    <span className="text-xl">🎉</span>
+                    <span>{highlights[3] || "I take 4 holidays a year!"}</span>
+                  </div>
+                </motion.div>
+
+                {/* Floating Doodle - Bottom Right */}
+                <motion.div
+                  animate={{ rotate: [0, 6, -6, 0], x: [0, 5, 0] }}
+                  transition={{ duration: 3.2, repeat: Infinity }}
+                  className="absolute -bottom-6 -right-12 text-sm text-center text-[color:var(--color-text)]"
+                  style={{ fontFamily: "'Caveat', cursive" }}
+                >
+                  <div className="rotate-[8deg]">
+                    <span className="block">
+                      {highlights[4] || "My favourite colour is yellow"}
+                    </span>
+                    <span className="text-2xl block mt-1">✨</span>
+                  </div>
+                </motion.div>
+              </motion.div>
+            </div>
           </motion.div>
 
-          {/* RIGHT SIDE - Detailed description */}
+          {/* RIGHT SIDE - Description & CTA */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-6"
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="space-y-8"
           >
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="prose prose-lg max-w-none"
-            >
-              <p className="text-base md:text-lg text-[color:var(--color-text)] leading-relaxed mb-6">
-                {aboutData?.description}
-              </p>
-            </motion.div>
-
-            {/* Mobile-only highlights (grid below on small screens) */}
-            <div className="lg:hidden grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
-              {aboutData?.highlights?.map((highlight, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="p-4 bg-[color:var(--color-primary-soft)] border border-[color:var(--color-primary)]/30 rounded-xl"
-                >
-                  <p className="text-xs md:text-sm text-[color:var(--color-primary)] font-medium">
-                    {highlight}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Optional: Stats or CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
-              className="flex gap-4 pt-6"
+              className="text-lg md:text-xl leading-relaxed text-[color:var(--color-text)]"
+            >
+              {about.description}
+            </motion.p>
+
+            {/* CTA Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="bg-black rounded-2xl p-8 flex flex-wrap gap-4 justify-center"
             >
               <motion.a
-                whileHover={{ scale: 1.05, y: -2 }}
+                whileHover={{ scale: 1.05, y: -3 }}
                 whileTap={{ scale: 0.95 }}
                 href="#projects"
-                className="px-6 py-3 text-sm font-semibold rounded-xl bg-[color:var(--color-primary)] text-white shadow-lg hover:shadow-xl transition-shadow"
+                className="px-8 py-4 bg-gradient-to-r from-[#FF6B6B] to-[#FF8E8E] text-white font-semibold rounded-xl shadow-lg hover:shadow-2xl transition-all"
               >
                 View My Work
               </motion.a>
+
               <motion.a
-                whileHover={{ scale: 1.05, y: -2 }}
+                whileHover={{ scale: 1.05, y: -3 }}
                 whileTap={{ scale: 0.95 }}
                 href="#contact"
-                className="px-6 py-3 text-sm font-semibold rounded-xl border-2 border-[color:var(--color-primary)] text-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)] hover:text-white transition-all"
+                className="px-8 py-4 bg-transparent border-2 border-[#FF6B6B] text-[#FF6B6B] font-semibold rounded-xl hover:bg-[#FF6B6B] hover:text-white transition-all"
               >
                 Get In Touch
               </motion.a>
