@@ -20,140 +20,66 @@ const About = () => {
 
   if (!about) return null;
 
-  const highlights = Array.isArray(about.highlights) 
-    ? about.highlights 
-    : JSON.parse(about.highlights || "[]");
-
-  // Dynamic positioning configurations based on index
-  const getHighlightConfig = (index, total) => {
-    const configs = [
-      // Top Left
-      {
-        position: "absolute -top-12 -left-16 text-base",
-        rotation: "rotate-[-10deg]",
-        flexDirection: "flex items-start gap-2",
-        arrow: <svg width="35" height="35" viewBox="0 0 35 35" className="text-[color:var(--color-text)] flex-shrink-0">
-          <path d="M5 20 L18 5 L15 20 L25 15" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-        </svg>,
-        arrowPosition: "before",
-        animate: { rotate: [0, 3, -3, 0], y: [0, -3, 0] },
-        duration: 3
-      },
-      // Top Right
-      {
-        position: "absolute -top-10 -right-20 text-base text-center",
-        rotation: "rotate-[8deg]",
-        flexDirection: "flex flex-col items-center",
-        arrow: <svg width="45" height="40" viewBox="0 0 45 40" className="text-[color:var(--color-text)] mt-1">
-          <path d="M40 5 Q25 20 30 35 L33 30 M30 35 L25 33" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-        </svg>,
-        arrowPosition: "after",
-        animate: { rotate: [0, -3, 3, 0], y: [0, 3, 0] },
-        duration: 2.5
-      },
-      // Middle Right
-      {
-        position: "absolute top-1/3 -right-24 text-base text-center",
-        rotation: "rotate-[6deg]",
-        flexDirection: "flex flex-col items-center",
-        arrow: <svg width="40" height="35" viewBox="0 0 40 35" className="text-[color:var(--color-text)] mb-1">
-          <path d="M35 10 L15 15 L25 20" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-        </svg>,
-        arrowPosition: "before",
-        animate: { rotate: [0, 4, -4, 0], x: [0, 4, 0] },
-        duration: 2.8
-      },
-      // Bottom Left
-      {
-        position: "absolute -bottom-14 -left-20 text-base",
-        rotation: "rotate-[-8deg]",
-        flexDirection: "flex flex-col items-start",
-        arrow: <svg width="40" height="30" viewBox="0 0 40 30" className="text-[color:var(--color-text)] mt-1 ml-2">
-          <path d="M5 5 Q12 18 20 12 T32 20 L28 23 M32 20 L34 15" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-        </svg>,
-        arrowPosition: "after",
-        animate: { rotate: [0, 5, -5, 0], x: [0, -2, 0] },
-        duration: 3.5
-      },
-      // Bottom Right
-      {
-        position: "absolute -bottom-12 -right-24 text-base text-center",
-        rotation: "rotate-[10deg]",
-        flexDirection: "flex flex-col items-center",
-        arrow: <svg width="45" height="30" viewBox="0 0 45 30" className="text-[color:var(--color-text)] mb-1">
-          <path d="M5 10 Q18 15 30 8 T40 20 L37 15 M40 20 L35 23" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-        </svg>,
-        arrowPosition: "before",
-        animate: { rotate: [0, 4, -4, 0], x: [0, 3, 0] },
-        duration: 3.2
-      },
-      // Middle Left
-      {
-        position: "absolute top-1/2 -left-24 text-base",
-        rotation: "rotate-[-12deg]",
-        flexDirection: "flex items-center gap-2",
-        arrow: <svg width="40" height="30" viewBox="0 0 40 30" className="text-[color:var(--color-text)]">
-          <path d="M5 15 L25 10 L20 20" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-        </svg>,
-        arrowPosition: "before",
-        animate: { rotate: [0, -5, 5, 0], x: [0, -3, 0] },
-        duration: 3.3
-      },
-      // Bottom Center
-      {
-        position: "absolute -bottom-16 left-1/2 -translate-x-1/2 text-base text-center",
-        rotation: "rotate-[4deg]",
-        flexDirection: "flex flex-col items-center",
-        arrow: <svg width="30" height="35" viewBox="0 0 30 35" className="text-[color:var(--color-text)] mt-1">
-          <path d="M15 5 L15 30 M15 30 L10 25 M15 30 L20 25" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-        </svg>,
-        arrowPosition: "after",
-        animate: { rotate: [0, -3, 3, 0], y: [0, 2, 0] },
-        duration: 2.9
-      },
-      // Top Center
-      {
-        position: "absolute -top-16 left-1/2 -translate-x-1/2 text-base text-center",
-        rotation: "rotate-[-5deg]",
-        flexDirection: "flex flex-col items-center",
-        arrow: <svg width="30" height="35" viewBox="0 0 30 35" className="text-[color:var(--color-text)] mb-1">
-          <path d="M15 30 L15 5 M15 5 L10 10 M15 5 L20 10" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-        </svg>,
-        arrowPosition: "before",
-        animate: { rotate: [0, 3, -3, 0], y: [0, -2, 0] },
-        duration: 3.1
-      }
-    ];
-
-    return configs[index % configs.length];
-  };
-
   return (
     <section
       id="about"
-      className="py-20 px-4 bg-[color:var(--color-bg)] border-t border-[color:var(--color-border)]"
+      className="relative py-20 px-4 bg-[color:var(--color-bg)] border-t border-[color:var(--color-border)] overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto">
+      {/* Subtle Background Mesh Gradient */}
+      <div className="absolute inset-0 opacity-30 pointer-events-none">
+        <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-br from-pink-500/20 to-purple-500/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-tl from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl" />
+      </div>
+
+      <div className="relative max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* LEFT SIDE - Image with Dynamic Doodles */}
-         
-            {/* Profile Image Container */}
+          
+          {/* LEFT SIDE - Premium 3D Image Card */}
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0, rotateY: -15 }}
+            whileInView={{ scale: 1, opacity: 1, rotateY: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, type: "spring", bounce: 0.3 }}
+            className="relative w-full max-w-md mx-auto lg:mx-0 perspective-1000"
+          >
+            {/* 3D Card Container */}
             <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="relative w-full max-w-md"
+              whileHover={{ 
+                scale: 1.02, 
+                rotateY: 5,
+                rotateX: -2,
+                transition: { duration: 0.3 }
+              }}
+              className="relative rounded-3xl overflow-hidden shadow-2xl transform-gpu"
+              style={{
+                transformStyle: "preserve-3d",
+              }}
             >
-              <img
-                src="/profile.png"
-                alt="Madhumitha S V"
-                className="w-full h-auto object-cover rounded-3xl shadow-soft"
-              />
+              {/* Glow Effect Behind Card */}
+              <div className="absolute -inset-1 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 rounded-3xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity" />
               
-           
+              {/* Main Image */}
+              <div className="relative bg-white rounded-3xl p-2">
+                <img
+                  src="/profile.png"
+                  alt="About Madhumitha"
+                  className="w-full h-auto object-cover rounded-2xl"
+                />
+              </div>
+
+              {/* Floating Badge */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="absolute -bottom-4 -right-4 bg-gradient-to-br from-pink-500 to-red-500 text-white px-6 py-3 rounded-2xl shadow-lg font-bold text-sm"
+              >
+                ✨ Available for Projects
+              </motion.div>
+            </motion.div>
           </motion.div>
 
-          {/* RIGHT SIDE - Heading, Description & CTA */}
+          {/* RIGHT SIDE - Content */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -161,12 +87,12 @@ const About = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="space-y-8"
           >
-            {/* About Heading */}
+            {/* Gradient Heading */}
             <motion.h2
               initial={{ opacity: 0, y: -20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-3xl md:text-4xl font-bold text-[color:var(--color-text)]"
+              className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent"
             >
               About Madhumitha
             </motion.h2>
@@ -176,34 +102,64 @@ const About = () => {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
-              className="text-lg md:text-xl leading-relaxed text-[color:var(--color-text)]"
+              className="text-lg md:text-xl leading-relaxed text-[color:var(--color-text)] opacity-90"
             >
               {about.description}
             </motion.p>
 
-            {/* CTA Buttons */}
+            {/* Stats/Highlights Row */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="flex flex-wrap gap-4"
+            >
+              {[
+                { label: "Years Experience", value: "3+" },
+                { label: "Projects Completed", value: "15+" },
+                { label: "Happy Clients", value: "10+" }
+              ].map((stat, idx) => (
+                <div
+                  key={idx}
+                  className="px-6 py-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-slate-700 shadow-md"
+                >
+                  <p className="text-2xl font-bold text-pink-400">{stat.value}</p>
+                  <p className="text-xs text-slate-400">{stat.label}</p>
+                </div>
+              ))}
+            </motion.div>
+
+            {/* Premium CTA Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
-              className="flex flex-wrap gap-4"
+              className="flex flex-wrap gap-4 pt-4"
             >
+              {/* Primary CTA */}
               <motion.a
                 whileHover={{ scale: 1.05, y: -3 }}
                 whileTap={{ scale: 0.95 }}
                 href="#projects"
-                className="px-8 py-4 bg-gradient-to-r from-[#FF6B6B] to-[#FF8E8E] text-white font-semibold rounded-xl shadow-lg hover:shadow-2xl transition-all"
+                className="group relative px-8 py-4 bg-gradient-to-r from-pink-500 to-red-500 text-white font-semibold rounded-xl shadow-lg overflow-hidden"
               >
-                View My Work
+                {/* Glow Effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-pink-400 to-red-400 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300" />
+                <span className="relative z-10">View My Work</span>
               </motion.a>
 
+              {/* Secondary CTA */}
               <motion.a
                 whileHover={{ scale: 1.05, y: -3 }}
                 whileTap={{ scale: 0.95 }}
                 href="#contact"
-                className="px-8 py-4 bg-transparent border-2 border-[#FF6B6B] text-[#FF6B6B] font-semibold rounded-xl hover:bg-[#FF6B6B] hover:text-white transition-all"
+                className="group relative px-8 py-4 bg-transparent border-2 border-pink-500 text-pink-500 font-semibold rounded-xl overflow-hidden transition-all"
               >
-                Get In Touch
+                {/* Hover Fill Effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-red-500 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                <span className="relative z-10 group-hover:text-white transition-colors">
+                  Get In Touch
+                </span>
               </motion.a>
             </motion.div>
           </motion.div>
