@@ -18,25 +18,29 @@ export const About = () => {
     fetchAbout();
   }, []);
 
-  // Hardcoded keywords exactly like the reference image style
-  const keywords = [
-    'AI Engineer',
-    'Team Lead',
-    'Full Stack Developer',
-    'Student Coordinator',
-    'Freelancer',
-  ];
+  // Extract 1-2 word keywords from DB highlights
+  const getKeywords = () => {
+    if (aboutData?.highlights && aboutData.highlights.length > 0) {
+      return aboutData.highlights.slice(0, 5).map(h => {
+        const words = h.trim().split(' ').slice(0, 2);
+        return words.join(' ');
+      });
+    }
+    return [];
+  };
 
-  // Floating positions matching reference layout
+  const keywords = getKeywords();
+
+  // Floating positions - exactly like reference (curved around image)
   const floatingItems = [
-    { top: '8%', right: '105%', rotate: -6, doodle: 'sparkles' },      // Top-left
-    { top: '10%', left: '105%', rotate: 8, doodle: 'swirl' },          // Top-right  
-    { top: '45%', right: '108%', rotate: -5, doodle: 'hearts' },       // Middle-left
-    { bottom: '25%', left: '106%', rotate: 6, doodle: 'leaves' },      // Bottom-right
-    { bottom: '10%', right: '110%', rotate: -8, doodle: 'star' },      // Bottom-left
+    { top: '8%', right: '104%', rotate: -6, doodle: 'sparkles' },     // Top-left
+    { top: '12%', left: '104%', rotate: 8, doodle: 'swirl' },         // Top-right  
+    { top: '48%', right: '106%', rotate: -5, doodle: 'hearts' },      // Middle-left
+    { bottom: '28%', left: '105%', rotate: 6, doodle: 'leaves' },     // Bottom-right
+    { bottom: '8%', right: '108%', rotate: -8, doodle: 'star' },      // Bottom-left
   ];
 
-  // Hand-drawn doodle decorations
+  // Hand-drawn doodles
   const Doodles = {
     sparkles: (
       <svg className="w-6 h-6 absolute -top-2 -left-2 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -51,7 +55,6 @@ export const About = () => {
     hearts: (
       <svg className="w-5 h-5 absolute -top-2 -right-1 opacity-70" fill="currentColor" viewBox="0 0 24 24">
         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-        <path d="M8 8c.5-.5 1-1 2-1 0 0 1 0 1.5.5" fill="none" stroke="white" strokeWidth="1.5"/>
       </svg>
     ),
     leaves: (
@@ -93,7 +96,7 @@ export const About = () => {
         </div>
 
         <div className="grid lg:grid-cols-5 gap-8 lg:gap-20 items-center">
-          {/* LEFT - Image with floating notes */}
+          {/* LEFT - Image with floating notes from DB */}
           <div className="lg:col-span-2 relative flex justify-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -108,12 +111,14 @@ export const About = () => {
                   src={aboutData?.image_url || '/profile.jpeg'}
                   alt="Madhumitha S V"
                   className="w-full h-full object-cover object-center"
-                 
+                  onError={(e) => {
+                    e.target.src = 'https://via.placeholder.com/400x533/F5E6D3/1F2933?text=Madhumitha+S+V';
+                  }}
                 />
               </div>
 
-              {/* Floating handwritten notes - exactly like reference */}
-              {keywords.map((keyword, idx) => (
+              {/* Floating handwritten notes - FROM DATABASE ONLY */}
+              {keywords.length > 0 && keywords.map((keyword, idx) => (
                 <motion.div
                   key={idx}
                   initial={{ opacity: 0, scale: 0.7 }}
@@ -161,7 +166,7 @@ export const About = () => {
             </motion.div>
           </div>
 
-          {/* RIGHT - Description */}
+          {/* RIGHT - Description FROM DATABASE ONLY */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -169,8 +174,9 @@ export const About = () => {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="lg:col-span-3 space-y-8"
           >
+            {/* Description from DB */}
             <p className="text-base md:text-lg text-[color:var(--color-text)] leading-relaxed">
-              {aboutData?.description }
+              {aboutData?.description}
             </p>
 
             {/* Action buttons */}
@@ -194,25 +200,27 @@ export const About = () => {
             </div>
 
             {/* Mobile: show keywords as grid */}
-            <div className="xl:hidden grid grid-cols-2 gap-3 pt-6">
-              {keywords.map((keyword, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="p-3 bg-[color:var(--color-primary-soft)] border border-[color:var(--color-primary)]/30 rounded-xl text-center"
-                >
-                  <p 
-                    className="text-sm text-[color:var(--color-primary)] font-semibold"
-                    style={{ fontFamily: "'Caveat', cursive" }}
+            {keywords.length > 0 && (
+              <div className="xl:hidden grid grid-cols-2 gap-3 pt-6">
+                {keywords.map((keyword, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.1 }}
+                    className="p-3 bg-[color:var(--color-primary-soft)] border border-[color:var(--color-primary)]/30 rounded-xl text-center"
                   >
-                    {keyword}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
+                    <p 
+                      className="text-sm text-[color:var(--color-primary)] font-semibold"
+                      style={{ fontFamily: "'Caveat', cursive" }}
+                    >
+                      {keyword}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            )}
           </motion.div>
         </div>
       </div>
