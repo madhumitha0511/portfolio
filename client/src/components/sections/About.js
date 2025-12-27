@@ -118,9 +118,7 @@ export const About = () => {
                   src={aboutData?.image_url || '/profile.jpeg'}
                   alt="Madhumitha S V"
                   className="w-full h-full object-cover object-center"
-                  onError={(e) => {
-                    e.target.src = 'https://via.placeholder.com/400x500?text=Madhumitha+S+V';
-                  }}
+                
                 />
               </div>
 
