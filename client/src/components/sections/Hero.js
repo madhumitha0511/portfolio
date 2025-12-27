@@ -63,7 +63,7 @@ const Hero = () => {
             transition={{ delay: 0.3 }}
             className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight text-[color:var(--color-text)]"
           >
-            Hello, my name<br />
+            Hello, this <br />
             is <span className="text-[color:var(--color-primary)]">{owner.first_name} {owner.last_name}</span>
           </motion.h1>
 
@@ -178,25 +178,6 @@ const Hero = () => {
         </motion.div>
       </div>
 
-      {/* Scroll Down Indicator */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1, duration: 0.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-      >
-        <motion.a
-          href="#about"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-          className="flex flex-col items-center gap-2 text-[color:var(--color-muted)] hover:text-[color:var(--color-primary)] transition-colors"
-        >
-          <span className="text-xs uppercase tracking-wider">Scroll</span>
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-          </svg>
-        </motion.a>
-      </motion.div>
     </section>
   );
 };
