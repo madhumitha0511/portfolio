@@ -161,28 +161,28 @@ const Hero = () => {
         </motion.div>
 
 
-{/* RIGHT SIDE - Image with Organic Blob Background */}
+{/* RIGHT SIDE - Image with Organic Blob Background (Desktop Only) */}
 <motion.div
   initial={{ opacity: 0, scale: 0.8 }}
   animate={{ opacity: 1, scale: 1 }}
   transition={{ duration: 0.8, delay: 0.2 }}
-  className="relative flex justify-center lg:justify-end items-center h-[600px]"
+  className="hidden lg:flex relative justify-end items-end"
 >
-  {/* Large Organic Blob Background - Same Size as Image Container */}
+  {/* Large Organic Blob Background */}
   <motion.div
     initial={{ scale: 0.8, opacity: 0 }}
     animate={{ scale: 1, opacity: 1 }}
     transition={{ duration: 1.5, ease: "easeOut" }}
-    className="absolute right-0 top-1/2 -translate-y-1/2 w-[450px] h-[450px] md:w-[550px] md:h-[550px] bg-gradient-to-br from-[#FF6B6B] to-[#FF8E8E]"
+    className="absolute right-0 bottom-0 w-[450px] h-[450px] xl:w-[550px] xl:h-[550px] bg-gradient-to-br from-[#FF6B6B] to-[#FF8E8E]"
     style={{
       borderRadius: "63% 37% 54% 46% / 55% 48% 52% 45%",
     }}
   />
 
-  {/* Profile Image - Positioned Inside Blob */}
+  {/* Profile Image - Aligned to Bottom */}
   <motion.div
     whileHover={{ scale: 1.02 }}
-    className="relative z-10 w-full max-w-[450px] md:max-w-[550px]"
+    className="relative z-10 w-full max-w-[450px] xl:max-w-[550px]"
   >
     <img
       src="/profile-1.png"
@@ -191,6 +191,7 @@ const Hero = () => {
     />
   </motion.div>
 </motion.div>
+
 
 
       </div>
