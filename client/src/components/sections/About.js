@@ -24,6 +24,110 @@ const About = () => {
     ? about.highlights 
     : JSON.parse(about.highlights || "[]");
 
+  // Dynamic positioning configurations based on index
+  const getHighlightConfig = (index, total) => {
+    const configs = [
+      // Top Left
+      {
+        position: "absolute -top-12 -left-16 text-base",
+        rotation: "rotate-[-10deg]",
+        flexDirection: "flex items-start gap-2",
+        arrow: <svg width="35" height="35" viewBox="0 0 35 35" className="text-[color:var(--color-text)] flex-shrink-0">
+          <path d="M5 20 L18 5 L15 20 L25 15" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+        </svg>,
+        arrowPosition: "before",
+        animate: { rotate: [0, 3, -3, 0], y: [0, -3, 0] },
+        duration: 3
+      },
+      // Top Right
+      {
+        position: "absolute -top-10 -right-20 text-base text-center",
+        rotation: "rotate-[8deg]",
+        flexDirection: "flex flex-col items-center",
+        arrow: <svg width="45" height="40" viewBox="0 0 45 40" className="text-[color:var(--color-text)] mt-1">
+          <path d="M40 5 Q25 20 30 35 L33 30 M30 35 L25 33" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+        </svg>,
+        arrowPosition: "after",
+        animate: { rotate: [0, -3, 3, 0], y: [0, 3, 0] },
+        duration: 2.5
+      },
+      // Middle Right
+      {
+        position: "absolute top-1/3 -right-24 text-base text-center",
+        rotation: "rotate-[6deg]",
+        flexDirection: "flex flex-col items-center",
+        arrow: <svg width="40" height="35" viewBox="0 0 40 35" className="text-[color:var(--color-text)] mb-1">
+          <path d="M35 10 L15 15 L25 20" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+        </svg>,
+        arrowPosition: "before",
+        animate: { rotate: [0, 4, -4, 0], x: [0, 4, 0] },
+        duration: 2.8
+      },
+      // Bottom Left
+      {
+        position: "absolute -bottom-14 -left-20 text-base",
+        rotation: "rotate-[-8deg]",
+        flexDirection: "flex flex-col items-start",
+        arrow: <svg width="40" height="30" viewBox="0 0 40 30" className="text-[color:var(--color-text)] mt-1 ml-2">
+          <path d="M5 5 Q12 18 20 12 T32 20 L28 23 M32 20 L34 15" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+        </svg>,
+        arrowPosition: "after",
+        animate: { rotate: [0, 5, -5, 0], x: [0, -2, 0] },
+        duration: 3.5
+      },
+      // Bottom Right
+      {
+        position: "absolute -bottom-12 -right-24 text-base text-center",
+        rotation: "rotate-[10deg]",
+        flexDirection: "flex flex-col items-center",
+        arrow: <svg width="45" height="30" viewBox="0 0 45 30" className="text-[color:var(--color-text)] mb-1">
+          <path d="M5 10 Q18 15 30 8 T40 20 L37 15 M40 20 L35 23" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+        </svg>,
+        arrowPosition: "before",
+        animate: { rotate: [0, 4, -4, 0], x: [0, 3, 0] },
+        duration: 3.2
+      },
+      // Middle Left
+      {
+        position: "absolute top-1/2 -left-24 text-base",
+        rotation: "rotate-[-12deg]",
+        flexDirection: "flex items-center gap-2",
+        arrow: <svg width="40" height="30" viewBox="0 0 40 30" className="text-[color:var(--color-text)]">
+          <path d="M5 15 L25 10 L20 20" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+        </svg>,
+        arrowPosition: "before",
+        animate: { rotate: [0, -5, 5, 0], x: [0, -3, 0] },
+        duration: 3.3
+      },
+      // Bottom Center
+      {
+        position: "absolute -bottom-16 left-1/2 -translate-x-1/2 text-base text-center",
+        rotation: "rotate-[4deg]",
+        flexDirection: "flex flex-col items-center",
+        arrow: <svg width="30" height="35" viewBox="0 0 30 35" className="text-[color:var(--color-text)] mt-1">
+          <path d="M15 5 L15 30 M15 30 L10 25 M15 30 L20 25" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+        </svg>,
+        arrowPosition: "after",
+        animate: { rotate: [0, -3, 3, 0], y: [0, 2, 0] },
+        duration: 2.9
+      },
+      // Top Center
+      {
+        position: "absolute -top-16 left-1/2 -translate-x-1/2 text-base text-center",
+        rotation: "rotate-[-5deg]",
+        flexDirection: "flex flex-col items-center",
+        arrow: <svg width="30" height="35" viewBox="0 0 30 35" className="text-[color:var(--color-text)] mb-1">
+          <path d="M15 30 L15 5 M15 5 L10 10 M15 5 L20 10" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+        </svg>,
+        arrowPosition: "before",
+        animate: { rotate: [0, 3, -3, 0], y: [0, -2, 0] },
+        duration: 3.1
+      }
+    ];
+
+    return configs[index % configs.length];
+  };
+
   return (
     <section
       id="about"
@@ -31,7 +135,7 @@ const About = () => {
     >
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* LEFT SIDE - Image with Doodles */}
+          {/* LEFT SIDE - Image with Dynamic Doodles */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -52,73 +156,30 @@ const About = () => {
                 className="w-full h-auto object-cover rounded-3xl shadow-soft"
               />
               
-              {/* Floating Doodle 1 - Top Left */}
-              <motion.div
-                animate={{ rotate: [0, 3, -3, 0], y: [0, -3, 0] }}
-                transition={{ duration: 3, repeat: Infinity }}
-                className="absolute -top-12 -left-16 text-base"
-                style={{ fontFamily: "'Caveat', cursive" }}
-              >
-                <div className="flex items-start gap-2 rotate-[-10deg]">
-                  <svg width="35" height="35" viewBox="0 0 35 35" className="text-[color:var(--color-text)] flex-shrink-0">
-                    <path d="M5 20 L18 5 L15 20 L25 15" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-                  </svg>
-                  <span className="bg-[color:var(--color-bg)]/95 px-3 py-1 rounded-lg shadow-md text-[color:var(--color-text)] font-semibold whitespace-pre-line leading-tight">
-                    {highlights[0] || "Freelance Software\nDeveloper at MarteX"}
-                  </span>
-                </div>
-              </motion.div>
-
-              {/* Floating Doodle 2 - Top Right */}
-              <motion.div
-                animate={{ rotate: [0, -3, 3, 0], y: [0, 3, 0] }}
-                transition={{ duration: 2.5, repeat: Infinity }}
-                className="absolute -top-10 -right-20 text-base text-center"
-                style={{ fontFamily: "'Caveat', cursive" }}
-              >
-                <div className="rotate-[8deg] flex flex-col items-center">
-                  <span className="bg-[color:var(--color-bg)]/95 px-3 py-2 rounded-lg shadow-md text-[color:var(--color-text)] font-semibold whitespace-pre-line leading-tight">
-                    {highlights[1] || "Internships across\nAIML, SEO, Frontend"}
-                  </span>
-                  <svg width="45" height="40" viewBox="0 0 45 40" className="text-[color:var(--color-text)] mt-1">
-                    <path d="M40 5 Q25 20 30 35 L33 30 M30 35 L25 33" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-                  </svg>
-                </div>
-              </motion.div>
-
-              {/* Floating Doodle 3 - Bottom Left */}
-              <motion.div
-                animate={{ rotate: [0, 5, -5, 0], x: [0, -2, 0] }}
-                transition={{ duration: 3.5, repeat: Infinity }}
-                className="absolute -bottom-14 -left-20 text-base"
-                style={{ fontFamily: "'Caveat', cursive" }}
-              >
-                <div className="rotate-[-8deg] flex flex-col items-start">
-                  <span className="bg-[color:var(--color-bg)]/95 px-3 py-2 rounded-lg shadow-md text-[color:var(--color-text)] font-semibold whitespace-pre-line leading-tight">
-                    {highlights[2] || "Cultural & Technical\nEvent Leadership"}
-                  </span>
-                  <svg width="40" height="30" viewBox="0 0 40 30" className="text-[color:var(--color-text)] mt-1 ml-2">
-                    <path d="M5 5 Q12 18 20 12 T32 20 L28 23 M32 20 L34 15" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-                  </svg>
-                </div>
-              </motion.div>
-
-              {/* Floating Doodle 4 - Bottom Right */}
-              <motion.div
-                animate={{ rotate: [0, 4, -4, 0], x: [0, 3, 0] }}
-                transition={{ duration: 3.2, repeat: Infinity }}
-                className="absolute -bottom-12 -right-24 text-base text-center"
-                style={{ fontFamily: "'Caveat', cursive" }}
-              >
-                <div className="rotate-[10deg] flex flex-col items-center">
-                  <svg width="45" height="30" viewBox="0 0 45 30" className="text-[color:var(--color-text)] mb-1">
-                    <path d="M5 10 Q18 15 30 8 T40 20 L37 15 M40 20 L35 23" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-                  </svg>
-                  <span className="bg-[color:var(--color-bg)]/95 px-3 py-2 rounded-lg shadow-md text-[color:var(--color-text)] font-semibold whitespace-pre-line leading-tight">
-                    {highlights[3] || "React, Flutter, Flask,\nWordPress, SEO"}
-                  </span>
-                </div>
-              </motion.div>
+              {/* Dynamic Floating Doodles */}
+              {highlights.map((highlight, index) => {
+                const config = getHighlightConfig(index, highlights.length);
+                
+                return (
+                  <motion.div
+                    key={index}
+                    animate={config.animate}
+                    transition={{ duration: config.duration, repeat: Infinity }}
+                    className={config.position}
+                    style={{ fontFamily: "'Caveat', cursive" }}
+                  >
+                    <div className={`${config.rotation} ${config.flexDirection}`}>
+                      {config.arrowPosition === "before" && config.arrow}
+                      
+                      <span className="bg-[color:var(--color-bg)]/95 px-3 py-2 rounded-lg shadow-md text-[color:var(--color-text)] font-semibold whitespace-pre-line leading-tight text-sm">
+                        {highlight}
+                      </span>
+                      
+                      {config.arrowPosition === "after" && config.arrow}
+                    </div>
+                  </motion.div>
+                );
+              })}
             </motion.div>
           </motion.div>
 
