@@ -135,53 +135,52 @@ const About = () => {
     >
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* LEFT SIDE - Image with Dynamic Doodles */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="relative flex justify-center"
-          >
-            {/* Profile Image Container */}
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="relative w-full max-w-md"
-            >
-              <img
-                src="/profile.jpeg"
-                alt="Madhumitha S V"
-                className="w-full h-auto object-cover rounded-3xl shadow-soft"
-              />
-              
-              {/* Dynamic Floating Doodles */}
-              {highlights.map((highlight, index) => {
-                const config = getHighlightConfig(index, highlights.length);
-                
-                return (
-                  <motion.div
-                    key={index}
-                    animate={config.animate}
-                    transition={{ duration: config.duration, repeat: Infinity }}
-                    className={config.position}
-                    style={{ fontFamily: "'Caveat', cursive" }}
-                  >
-                    <div className={`${config.rotation} ${config.flexDirection}`}>
-                      {config.arrowPosition === "before" && config.arrow}
-                      
-                      <span className="bg-[color:var(--color-bg)]/95 px-3 py-2 rounded-lg shadow-md text-[color:var(--color-text)] font-semibold whitespace-pre-line leading-tight text-sm">
-                        {highlight}
-                      </span>
-                      
-                      {config.arrowPosition === "after" && config.arrow}
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          </motion.div>
+          {/* Dynamic Floating Doodles – reference style */}
+{highlights.map((highlight, index) => {
+  const slots = [
+    // top‑left
+    "absolute top-10 left-4 max-w-[130px]",
+    // mid‑left
+    "absolute top-1/2 -translate-y-1/2 left-0 max-w-[130px]",
+    // bottom‑left
+    "absolute bottom-10 left-8 max-w-[140px]",
+    // top‑right
+    "absolute top-10 right-4 max-w-[140px]",
+    // mid‑right
+    "absolute top-1/2 -translate-y-1/2 right-0 max-w-[140px]",
+    // bottom‑right
+    "absolute bottom-10 right-4 max-w-[150px]",
+  ];
+  const pos = slots[index % slots.length];
+
+  // small stroke decoration like in reference
+  const strokeVariants = [
+    "w-6 h-6 border-t-2 border-l-2 border-[color:var(--color-text)]",
+    "w-7 h-7 border-t-2 border-[color:var(--color-text)] rounded-full",
+    "w-8 h-4 border-b-2 border-[color:var(--color-text)]",
+    "w-5 h-5 border-r-2 border-b-2 border-[color:var(--color-text)]",
+  ];
+  const stroke = strokeVariants[index % strokeVariants.length];
+
+  return (
+    <motion.div
+      key={index}
+      animate={{ y: [0, -2, 0] }}
+      transition={{ duration: 2.5 + index * 0.2, repeat: Infinity }}
+      className={pos}
+      style={{ fontFamily: "'Caveat', cursive" }}
+    >
+      <div className="flex flex-col gap-1">
+        {/* text – DB highlight */}
+        <span className="text-[color:var(--color-text)] text-[15px] leading-snug drop-shadow-sm">
+          {highlight}
+        </span>
+        {/* small stroke / doodle */}
+        <div className={stroke} />
+      </div>
+    </motion.div>
+  );
+})}
 
           {/* RIGHT SIDE - Heading, Description & CTA */}
           <motion.div
