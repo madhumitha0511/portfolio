@@ -159,7 +159,6 @@ const Hero = () => {
             )}
           </motion.div>
         </motion.div>
-
 {/* RIGHT SIDE - Image with Organic Blob Background (Hidden on Mobile/Tablet) */}
 <motion.div
   initial={{ opacity: 0, scale: 0.8 }}
@@ -167,21 +166,21 @@ const Hero = () => {
   transition={{ duration: 0.8, delay: 0.2 }}
   className="relative hidden lg:flex justify-end items-center"
 >
-  {/* Large Organic Blob Background - Ends Where Image Ends */}
+  {/* Large Organic Blob Background - Better Shape */}
   <motion.div
     initial={{ scale: 0.8, opacity: 0 }}
     animate={{ scale: 1, opacity: 1 }}
     transition={{ duration: 1.5, ease: "easeOut" }}
-    className="absolute right-0 top-0 bottom-0 w-[500px] xl:w-[550px] bg-gradient-to-br from-[#FF6B6B] to-[#FF8E8E]"
+    className="absolute right-0 top-0 bottom-0 w-[520px] xl:w-[580px] bg-gradient-to-br from-[#FF6B6B] to-[#FF8E8E]"
     style={{
-      borderRadius: "63% 37% 54% 46% / 55% 48% 52% 45%",
+      borderRadius: "60% 40% 30% 70% / 60% 30% 70% 40%",
     }}
   />
 
   {/* Profile Image - Positioned Inside Blob */}
   <motion.div
     whileHover={{ scale: 1.02 }}
-    className="relative z-10 w-full max-w-[500px] xl:max-w-[550px]"
+    className="relative z-10 w-full max-w-[480px] xl:max-w-[520px]"
   >
     <img
       src="/profile-1.png"
