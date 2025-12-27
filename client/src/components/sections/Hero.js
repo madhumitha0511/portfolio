@@ -161,38 +161,38 @@ const Hero = () => {
         </motion.div>
 
 
- {/* RIGHT SIDE - Image with Organic Blob Background (Like Reference) */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative flex justify-center lg:justify-end"
-        >
-          {/* Large Organic Blob Background - Your Coral Theme */}
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] md:w-[650px] md:h-[650px] bg-gradient-to-br from-[#FF6B6B] to-[#FF8E8E] rounded-[40%_60%_70%_30%/60%_30%_70%_40%] opacity-90"
-            style={{
-              filter: "blur(0px)",
-            }}
-          />
+{/* RIGHT SIDE - Image with Organic Blob Background (Exact Reference Match) */}
+<motion.div
+  initial={{ opacity: 0, scale: 0.8 }}
+  animate={{ opacity: 1, scale: 1 }}
+  transition={{ duration: 0.8, delay: 0.2 }}
+  className="relative flex justify-center lg:justify-end items-center"
+>
+  {/* Large Organic Blob Background - Extends Right Like Reference */}
+  <motion.div
+    initial={{ scale: 0.8, opacity: 0 }}
+    animate={{ scale: 1, opacity: 1 }}
+    transition={{ duration: 1.5, ease: "easeOut" }}
+    className="absolute -right-20 top-1/2 -translate-y-1/2 w-[550px] h-[550px] md:w-[700px] md:h-[700px] bg-gradient-to-br from-[#FF6B6B] to-[#FF8E8E]"
+    style={{
+      borderRadius: "63% 37% 54% 46% / 55% 48% 52% 45%",
+      filter: "blur(1px)",
+    }}
+  />
 
-          {/* Profile Image - Overlays the Blob */}
-          <motion.div
-            whileHover={{ scale: 1.02, rotate: 1 }}
-            className="relative z-10 w-full max-w-md"
-          >
-            <img
-              src="/profile-1.png"
-              alt={`${owner.first_name} ${owner.last_name}`}
-              className="w-full h-auto object-cover relative z-20"
-              style={{ mixBlendMode: "normal" }}
-            />
-          </motion.div>
-        </motion.div>
-      
+  {/* Profile Image - Positioned Over Blob */}
+  <motion.div
+    whileHover={{ scale: 1.02 }}
+    className="relative z-10 w-full max-w-[450px] md:max-w-[500px]"
+  >
+    <img
+      src="/profile-1.png"
+      alt={`${owner.first_name} ${owner.last_name}`}
+      className="w-full h-auto object-contain relative z-20"
+    />
+  </motion.div>
+</motion.div>
+
       </div>
 
      
