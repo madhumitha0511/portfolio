@@ -41,17 +41,7 @@ const About = () => {
           >
             {/* Main Card */}
             <div className="relative bg-[color:var(--color-card)] rounded-3xl p-8 shadow-soft border border-[color:var(--color-border)] overflow-visible">
-              {/* Header Text - Only left side */}
-              <motion.p
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-                className="text-sm italic text-[color:var(--color-muted)] mb-6"
-                style={{ fontFamily: "'Caveat', cursive" }}
-              >
-                A little bit about me
-              </motion.p>
-
+            
               {/* Name */}
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
