@@ -173,7 +173,7 @@ const Hero = () => {
     initial={{ scale: 0.8, opacity: 0 }}
     animate={{ scale: 1, opacity: 1 }}
     transition={{ duration: 1.5, ease: "easeOut" }}
-    className="absolute -right-20 top-1/2 -translate-y-1/2 w-[550px] h-[550px] md:w-[700px] md:h-[700px] bg-gradient-to-br from-[#FF6B6B] to-[#FF8E8E]"
+    className="absolute -right-20 top-1/2 -translate-y-1/2 max-w-[450px] md:max-w-[500px] bg-gradient-to-br from-[#FF6B6B] to-[#FF8E8E]"
     style={{
       borderRadius: "63% 37% 54% 46% / 55% 48% 52% 45%",
       filter: "blur(1px)",
