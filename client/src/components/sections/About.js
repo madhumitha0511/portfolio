@@ -18,43 +18,86 @@ export const About = () => {
     fetchAbout();
   }, []);
 
-  // Position mapping for floating highlights (like in the inspo image)
-  const highlightPositions = [
-    { top: '10%', left: '-8%', rotate: -5 },    // Top-left
-    { top: '15%', right: '-10%', rotate: 8 },   // Top-right
-    { bottom: '35%', left: '-12%', rotate: -8 }, // Middle-left
-    { bottom: '15%', right: '-8%', rotate: 5 },  // Bottom-right
+  // Extract 1-2 word keywords from highlights
+  const getKeyword = (text) => {
+    // Take first 2 words max
+    const words = text.split(' ').slice(0, 2);
+    return words.join(' ');
+  };
+
+  // Floating positions exactly like reference (around image, not overlapping center)
+  const floatingItems = [
+    { top: '8%', left: '5%', rotate: -8, doodle: 'sparkles' },      // Top-left
+    { top: '12%', right: '8%', rotate: 5, doodle: 'arrow' },        // Top-right
+    { top: '45%', left: '2%', rotate: -5, doodle: 'heart' },        // Middle-left
+    { bottom: '28%', right: '5%', rotate: 8, doodle: 'star' },      // Bottom-right
+    { bottom: '8%', left: '8%', rotate: -10, doodle: 'underline' }, // Bottom-left
   ];
+
+  // Doodle SVG components (handdrawn style)
+  const Doodles = {
+    sparkles: (
+      <svg className="w-5 h-5 absolute -top-3 -right-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M12 2L12 6M12 18L12 22M6 12L2 12M22 12L18 12M6.34 6.34L3.51 3.51M20.49 20.49L17.66 17.66M6.34 17.66L3.51 20.49M20.49 3.51L17.66 6.34" strokeWidth="2" strokeLinecap="round"/>
+      </svg>
+    ),
+    arrow: (
+      <svg className="w-6 h-6 absolute -bottom-2 -right-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M5 12h14m0 0l-7-7m7 7l-7 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    ),
+    heart: (
+      <svg className="w-4 h-4 absolute -top-2 -left-2" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+      </svg>
+    ),
+    star: (
+      <svg className="w-5 h-5 absolute -top-2 -right-2" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2l2.4 7.4h7.6l-6 4.6 2.3 7-6.3-4.7-6.3 4.7 2.3-7-6-4.6h7.6z"/>
+      </svg>
+    ),
+    underline: (
+      <svg className="w-8 h-2 absolute -bottom-1 left-0" viewBox="0 0 40 8" fill="none" stroke="currentColor">
+        <path d="M2 4 Q 10 6, 20 4 T 38 4" strokeWidth="1.5" strokeLinecap="round"/>
+      </svg>
+    ),
+  };
 
   return (
     <section id="about" className="py-24 px-4 bg-[color:var(--color-bg)] relative overflow-hidden">
-      {/* Subtle background decoration */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none">
-        <div className="absolute top-10 left-10 w-72 h-72 bg-[color:var(--color-primary)]/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-10 right-10 w-96 h-96 bg-[color:var(--color-primary)]/10 rounded-full blur-3xl" />
-      </div>
-
       <div className="max-w-7xl mx-auto relative z-10">
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-4xl md:text-5xl font-bold mb-16 text-center text-[color:var(--color-text)]"
-        >
-          A little bit about me
-        </motion.h2>
+        {/* Header with subtitle exactly like reference */}
+        <div className="text-center mb-16 space-y-2">
+          <motion.p
+            initial={{ opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-sm md:text-base text-[color:var(--color-muted)] italic font-serif"
+          >
+            A little bit about me
+          </motion.p>
+          <motion.h2
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl font-bold text-[color:var(--color-text)] font-serif"
+          >
+            Madhumitha S V
+          </motion.h2>
+          <div className="w-48 h-0.5 bg-[color:var(--color-text)] mx-auto" />
+        </div>
 
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* LEFT SIDE - Image with floating highlights */}
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          {/* LEFT SIDE - Image with floating handwritten notes */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="relative"
+            className="relative mx-auto max-w-md"
           >
-            {/* Main image container */}
-            <div className="relative mx-auto max-w-md aspect-[3/4] rounded-3xl overflow-hidden shadow-soft border-4 border-[color:var(--color-border)] bg-[color:var(--color-card)]">
+            {/* Main image (beige background exactly like reference) */}
+            <div className="relative aspect-[3/4] rounded-3xl overflow-hidden bg-[color:var(--color-bg-elevated)] shadow-2xl">
               <img
                 src={aboutData?.image_url || 'https://via.placeholder.com/400x500'}
                 alt="About Me"
@@ -62,99 +105,65 @@ export const About = () => {
               />
             </div>
 
-            {/* Floating highlight bubbles around image */}
-            {aboutData?.highlights?.slice(0, 4).map((highlight, idx) => (
+            {/* Floating handwritten notes with doodles (EXACTLY like reference) */}
+            {aboutData?.highlights?.slice(0, 5).map((highlight, idx) => (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, scale: 0.5 }}
+                initial={{ opacity: 0, scale: 0.8, rotate: floatingItems[idx]?.rotate || 0 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: 0.3 + idx * 0.1 }}
-                whileHover={{ scale: 1.1, rotate: 0 }}
+                transition={{ delay: 0.2 + idx * 0.15, duration: 0.5 }}
+                animate={{
+                  y: [0, -8, 0],
+                  rotate: [
+                    floatingItems[idx]?.rotate || 0,
+                    (floatingItems[idx]?.rotate || 0) + 3,
+                    floatingItems[idx]?.rotate || 0,
+                  ],
+                }}
+                transition={{
+                  y: { duration: 3, repeat: Infinity, ease: "easeInOut" },
+                  rotate: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                }}
                 style={{
                   position: 'absolute',
-                  ...highlightPositions[idx],
-                  transform: `rotate(${highlightPositions[idx].rotate}deg)`,
+                  ...floatingItems[idx],
+                  zIndex: 10,
                 }}
-                className="hidden lg:block bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-primary)] rounded-2xl px-4 py-3 shadow-lg backdrop-blur-sm"
+                className="hidden lg:block"
               >
-                <p className="text-[11px] md:text-xs font-handwriting text-[color:var(--color-text)] whitespace-nowrap max-w-[160px]">
-                  {highlight}
-                </p>
-                {/* Hand-drawn arrow or doodle */}
-                <svg
-                  className="absolute -bottom-2 -right-2 w-6 h-6 text-[color:var(--color-primary)]"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
+                <div className="relative bg-[color:var(--color-bg)] border-2 border-[color:var(--color-text)] rounded-2xl px-4 py-2 shadow-lg">
+                  {/* Handwritten text (max 2 words) */}
+                  <p
+                    className="text-sm md:text-base text-[color:var(--color-text)] whitespace-nowrap"
+                    style={{ fontFamily: "'Caveat', cursive", fontWeight: 600 }}
+                  >
+                    {getKeyword(highlight)}
+                  </p>
+
+                  {/* Doodle decoration */}
+                  <div className="text-[color:var(--color-primary)]">
+                    {Doodles[floatingItems[idx]?.doodle]}
+                  </div>
+                </div>
               </motion.div>
             ))}
-
-            {/* Decorative elements */}
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              className="absolute -top-4 -right-4 w-12 h-12 opacity-20"
-            >
-              <svg viewBox="0 0 100 100" className="text-[color:var(--color-primary)]">
-                <circle cx="50" cy="50" r="40" fill="currentColor" />
-              </svg>
-            </motion.div>
           </motion.div>
 
-          {/* RIGHT SIDE - Detailed description */}
+          {/* RIGHT SIDE - Description (clean typography) */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-6"
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="space-y-8"
           >
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="prose prose-lg max-w-none"
-            >
-              <p className="text-base md:text-lg text-[color:var(--color-text)] leading-relaxed mb-6">
-                {aboutData?.description}
-              </p>
-            </motion.div>
+            <p className="text-base md:text-lg text-[color:var(--color-text)] leading-relaxed">
+              {aboutData?.description}
+            </p>
 
-            {/* Mobile-only highlights (grid below on small screens) */}
-            <div className="lg:hidden grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
-              {aboutData?.highlights?.map((highlight, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="p-4 bg-[color:var(--color-primary-soft)] border border-[color:var(--color-primary)]/30 rounded-xl"
-                >
-                  <p className="text-xs md:text-sm text-[color:var(--color-primary)] font-medium">
-                    {highlight}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Optional: Stats or CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
-              className="flex gap-4 pt-6"
-            >
+            {/* Action buttons */}
+            <div className="flex flex-wrap gap-4">
               <motion.a
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
@@ -171,7 +180,25 @@ export const About = () => {
               >
                 Get In Touch
               </motion.a>
-            </motion.div>
+            </div>
+
+            {/* Mobile: Show all highlights as chips below */}
+            <div className="lg:hidden grid grid-cols-2 gap-3 pt-4">
+              {aboutData?.highlights?.map((highlight, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="p-3 bg-[color:var(--color-primary-soft)] border border-[color:var(--color-primary)]/30 rounded-xl text-center"
+                >
+                  <p className="text-xs text-[color:var(--color-primary)] font-medium">
+                    {getKeyword(highlight)}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
         </div>
       </div>
