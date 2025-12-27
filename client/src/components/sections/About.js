@@ -67,15 +67,7 @@ const About = () => {
                 />
               </div>
 
-              {/* Floating Badge - Your Colors */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="absolute -bottom-4 -right-4 bg-gradient-to-br from-[#FF6B6B] to-[#FF8E8E] text-white px-6 py-3 rounded-2xl shadow-lg font-bold text-sm"
-              >
-                ✨ Available for Projects
-              </motion.div>
+              
             </motion.div>
           </motion.div>
 
@@ -94,7 +86,7 @@ const About = () => {
               transition={{ delay: 0.3 }}
               className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#FF6B6B] to-[#FF8E8E] bg-clip-text text-transparent"
             >
-              About Madhumitha
+            A Little Bit About Me...
             </motion.h2>
 
             {/* Description */}
@@ -107,27 +99,7 @@ const About = () => {
               {about.description}
             </motion.p>
 
-            {/* Stats/Highlights Row */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="flex flex-wrap gap-4"
-            >
-              {[
-                { label: "Years Experience", value: "3+" },
-                { label: "Projects Completed", value: "15+" },
-                { label: "Happy Clients", value: "10+" }
-              ].map((stat, idx) => (
-                <div
-                  key={idx}
-                  className="px-6 py-3 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-slate-700 shadow-md"
-                >
-                  <p className="text-2xl font-bold text-[#FF6B6B]">{stat.value}</p>
-                  <p className="text-xs text-slate-400">{stat.label}</p>
-                </div>
-              ))}
-            </motion.div>
+            
 
             {/* Premium CTA Buttons - Your Exact Colors */}
             <motion.div
@@ -145,7 +117,7 @@ const About = () => {
               >
                 {/* Glow Effect */}
                 <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B6B] to-[#FF8E8E] opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300" />
-                <span className="relative z-10">View My Work</span>
+                <span className="relative z-10">View My Works</span>
               </motion.a>
 
               {/* Secondary CTA */}
