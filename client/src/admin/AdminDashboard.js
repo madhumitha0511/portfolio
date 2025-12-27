@@ -88,23 +88,29 @@ const AdminDashboard = () => {
           className="fixed lg:relative left-0 w-64 h-screen bg-slate-800/50 backdrop-blur-lg border-r border-slate-700 overflow-y-auto pt-6 z-30"
         >
           <nav className="space-y-2 px-4">
-            {menuItems.map((item) => (
-              <NavLink
-                key={item.path}
-                to={item.path}
-                onClick={() => setSidebarOpen(false)}
-                className={({ isActive }) =>
-                  `block px-4 py-2 rounded-lg transition text-sm ${
-                    isActive
-                      ? "bg-blue-600/70 text-white"
-                      : "text-slate-300 hover:bg-blue-600/30 hover:text-white"
-                  }`
-                }
-              >
-                {item.label}
-              </NavLink>
-            ))}
-          </nav>
+  {menuItems.map((item) => (
+    <NavLink
+      key={item.path}
+      to={item.path}
+      // close sidebar only on small screens
+      onClick={() => {
+        if (window.innerWidth < 1024) {
+          setSidebarOpen(false);
+        }
+      }}
+      className={({ isActive }) =>
+        `block px-4 py-2 rounded-lg transition text-sm ${
+          isActive
+            ? "bg-blue-600/70 text-white"
+            : "text-slate-300 hover:bg-blue-600/30 hover:text-white"
+        }`
+      }
+    >
+      {item.label}
+    </NavLink>
+  ))}
+</nav>
+
         </motion.aside>
 
         {/* Content Area */}

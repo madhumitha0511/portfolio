@@ -1,77 +1,520 @@
+// EXPLANATION ENDS - Here's the full updated component:
 
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import {
-  experienceAPI,
+import React, { useEffect, useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { experienceAPI } from "../../services/api";
 
-} from '../../services/api';
-
-// ========== 2. EXPERIENCE SECTION ==========
-export const Experience = () => {
+const Experience = () => {
   const [experiences, setExperiences] = useState([]);
+  const [activeId, setActiveId] = useState(null);
+  const [selectedYear, setSelectedYear] = useState("ALL");
+  const [isHoveringMac, setIsHoveringMac] = useState(false);
 
   useEffect(() => {
     const fetchExperiences = async () => {
       try {
         const res = await experienceAPI.getAll();
-        setExperiences(res.data);
+        const sorted = res.data.sort(
+          (a, b) => new Date(b.start_date) - new Date(a.start_date)
+        );
+        setExperiences(sorted);
+        if (sorted.length > 0) {
+          setActiveId(sorted[0].id);
+          setSelectedYear("ALL");
+        }
       } catch (err) {
-        console.error('Error fetching experiences:', err);
+        console.error("Error fetching experiences:", err);
       }
     };
     fetchExperiences();
   }, []);
 
+  // Group experiences by year
+  const groupedByYear = useMemo(() => {
+    const groups = {};
+    experiences.forEach((exp) => {
+      const year = new Date(exp.start_date).getFullYear();
+      if (!groups[year]) {
+        groups[year] = [];
+      }
+      groups[year].push(exp);
+    });
+    return Object.keys(groups)
+      .sort((a, b) => b - a)
+      .reduce((obj, key) => {
+        obj[key] = groups[key];
+        return obj;
+      }, {});
+  }, [experiences]);
+
+  // Get all years sorted
+  const allYears = useMemo(() => {
+    return Object.keys(groupedByYear).map(Number).sort((a, b) => b - a);
+  }, [groupedByYear]);
+
+  // Filter experiences
+  const filteredExperiences = useMemo(() => {
+    if (selectedYear === "ALL" || !selectedYear) {
+      return experiences;
+    }
+    return experiences.filter(
+      (exp) => new Date(exp.start_date).getFullYear() === Number(selectedYear)
+    );
+  }, [experiences, selectedYear]);
+
+  const activeExp = useMemo(
+    () => experiences.find((e) => e.id === activeId) || null,
+    [experiences, activeId]
+  );
+
+  // Custom cursor from public folder
+  const cursorUrl = `url('/cursor2.png') 16 16, auto`;
+
+  // Apply cursor globally when hovering Mac window
+  useEffect(() => {
+    if (isHoveringMac) {
+      document.body.style.cursor = cursorUrl;
+      const handleMouseMove = (e) => {
+        if (e.target.closest("#mac-experience-window")) {
+          document.body.style.cursor = cursorUrl;
+        }
+      };
+      document.addEventListener("mousemove", handleMouseMove);
+      return () => {
+        document.removeEventListener("mousemove", handleMouseMove);
+      };
+    } else {
+      document.body.style.cursor = "auto";
+    }
+  }, [isHoveringMac, cursorUrl]);
+
+  // Color palette for text gradients
+  const colors = [
+    "from-orange-400 to-red-500",
+    "from-cyan-400 to-blue-500",
+    "from-emerald-400 to-green-500",
+    "from-violet-400 to-purple-500",
+    "from-yellow-400 to-orange-500",
+    "from-pink-400 to-rose-500",
+    "from-indigo-400 to-blue-600",
+    "from-teal-400 to-cyan-500",
+  ];
+
+  const getColorClass = (index) => colors[index % colors.length];
+
   return (
-    <section id="experience" className="py-20 px-4 bg-black">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl font-bold mb-12 text-center bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
+    <section
+      id="experience"
+      className="py-20 px-4 bg-[color:var(--color-bg)] border-t border-[color:var(--color-border)] relative overflow-hidden"
+    >
+      {/* Animated background */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        animate={{
+          background: [
+            "radial-gradient(circle at 0% 0%, rgba(140,29,24,0.12), transparent 60%)",
+            "radial-gradient(circle at 100% 100%, rgba(140,29,24,0.12), transparent 60%)",
+            "radial-gradient(circle at 0% 0%, rgba(140,29,24,0.12), transparent 60%)",
+          ],
+        }}
+        transition={{ duration: 16, repeat: Infinity }}
+      />
+
+      <div className="max-w-full mx-auto relative z-10 px-6">
+        <motion.h2
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-4xl md:text-5xl font-bold text-center text-[color:var(--color-text)] mb-12"
+        >
           Experience
-        </h2>
+        </motion.h2>
 
-        <div className="space-y-8">
-          {experiences.map((exp, idx) => (
-            <motion.div
-              key={exp.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1 }}
-              className="p-6 bg-slate-800/50 border border-slate-700 rounded-lg hover:border-blue-500/50 transition"
-            >
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <h3 className="text-xl font-bold text-white">{exp.role}</h3>
-                  <p className="text-blue-400">{exp.company_name}</p>
-                </div>
-                <span className="text-sm text-slate-400">
-                  {exp.start_date
-                    ? new Date(exp.start_date).toLocaleDateString()
-                    : ''}
-                  {' - '}
-                  {exp.is_current
-                    ? 'Present'
-                    : exp.end_date
-                    ? new Date(exp.end_date).toLocaleDateString()
-                    : ''}
-                </span>
-              </div>
+        {experiences.length === 0 ? (
+          <p className="text-center text-[color:var(--color-muted)]">
+            No experiences yet.
+          </p>
+        ) : (
+          <>
+            {/* THREE COLUMN LAYOUT: Left (Mac Window - Wide) | Center (Spacing) | Right (Details Panel - Narrow) */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              
+              {/* LEFT SIDE: Mac Window (spans 2 columns - WIDER) - WITH 3D ELEVATION + DYNAMIC HALO GLOW */}
+              <div className="lg:col-span-2 relative">
+                {/* DYNAMIC HALO GLOW - Behind the window, grows on hover */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 0 }}
+                  whileHover={{ opacity: 0.15 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute inset-0 rounded-3xl pointer-events-none"
+                  style={{
+                    background: `radial-gradient(ellipse 600px 400px at 50% 50%, rgba(255, 255, 255, 0.5) 0%, transparent 70%)`,
+                    filter: "blur(30px)",
+                    zIndex: 0,
+                  }}
+                />
 
-              <p className="text-slate-300 mb-4">{exp.description}</p>
+                <motion.div
+                  id="mac-experience-window"
+                  initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
+                  whileHover={{ y: -12, transition: { duration: 0.3 } }}
+                  onMouseEnter={() => setIsHoveringMac(true)}
+                  onMouseLeave={() => setIsHoveringMac(false)}
+                  className="rounded-3xl overflow-hidden border border-[color:var(--color-border)] relative"
+                  style={{
+                    boxShadow:
+                      `0 0 0 1px rgba(50, 184, 198, 0.1),
+                       0 4px 6px rgba(0, 0, 0, 0.15),
+                       0 8px 12px rgba(0, 0, 0, 0.2),
+                       0 16px 24px rgba(0, 0, 0, 0.25),
+                       0 32px 48px rgba(0, 0, 0, 0.3),
+                       0 48px 72px rgba(50, 184, 198, 0.08),
+                       inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                       inset -1px -1px 2px rgba(255, 255, 255, 0.04),
+                       inset 1px 1px 2px rgba(255, 255, 255, 0.05)`,
+                    backdropFilter: "blur(10px)",
+                    transform: "translateZ(0)",
+                    perspective: "1200px",
+                    zIndex: 1,
+                  }}
+                >
+                  {/* BEVELED LIGHTING OVERLAY - Top-Left (Subtle Light Source) */}
+                  <div
+                    className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-3xl"
+                    style={{
+                      background: `radial-gradient(ellipse 800px 400px at 20% 15%, rgba(255, 255, 255, 0.03) 0%, transparent 60%)`,
+                      zIndex: 1,
+                    }}
+                  />
 
-              {/* Tech Stack Tags */}
-              <div className="flex flex-wrap gap-2">
-                {exp.tech_stack?.map((tech, i) => (
-                  <span
-                    key={i}
-                    className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm"
+                  {/* BEVELED LIGHTING OVERLAY - Bottom-Right (Reflection Shimmer) */}
+                  <div
+                    className="absolute bottom-0 right-0 w-full h-full pointer-events-none rounded-3xl"
+                    style={{
+                      background: `radial-gradient(ellipse 600px 500px at 95% 100%, rgba(255, 255, 255, 0.03) 0%, transparent 50%)`,
+                      zIndex: 1,
+                    }}
+                  />
+
+                  {/* Mac Titlebar */}
+                  <div className="px-5 py-3 bg-gradient-to-b from-[#2d3e52] to-[#1f2937] border-b border-[color:var(--color-border)] flex items-center gap-3 relative z-10">
+                    {/* Traffic lights */}
+                    <div className="flex gap-2">
+                      <motion.div
+                        whileHover={{ scale: 1.2 }}
+                        className="w-3 h-3 rounded-full bg-red-500 cursor-pointer shadow-md"
+                        style={{ cursor: cursorUrl }}
+                      />
+                      <motion.div
+                        whileHover={{ scale: 1.2 }}
+                        className="w-3 h-3 rounded-full bg-yellow-400 cursor-pointer shadow-md"
+                        style={{ cursor: cursorUrl }}
+                      />
+                      <motion.div
+                        whileHover={{ scale: 1.2 }}
+                        className="w-3 h-3 rounded-full bg-green-500 cursor-pointer shadow-md"
+                        style={{ cursor: cursorUrl }}
+                      />
+                    </div>
+                    <h3 className="text-xs font-semibold text-white flex-1 text-center">
+                      Welcome to my professional journey!
+                    </h3>
+                  </div>
+
+                  {/* Year Filter Tabs */}
+                  <div className="px-6 py-3 bg-gradient-to-r from-[#1f2937]/60 via-[#111827]/60 to-[#0f1419]/60 border-b border-[color:var(--color-border)]/30 flex gap-2 overflow-x-auto scrollbar-hide relative z-10">
+                    {/* All button */}
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => setSelectedYear("ALL")}
+                      className={`px-3 py-1.5 rounded-lg font-semibold text-xs whitespace-nowrap transition-all ${
+                        selectedYear === "ALL"
+                          ? "bg-[color:var(--color-primary)] text-[color:var(--color-bg)]"
+                          : "bg-[color:var(--color-primary-soft)]/40 text-white hover:bg-[color:var(--color-primary-soft)]/60"
+                      }`}
+                      style={{ cursor: cursorUrl }}
+                    >
+                      All
+                    </motion.button>
+
+                    {/* Year buttons */}
+                    {allYears.map((year) => (
+                      <motion.button
+                        key={year}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => setSelectedYear(String(year))}
+                        className={`px-3 py-1.5 rounded-lg font-semibold text-xs whitespace-nowrap transition-all ${
+                          selectedYear === String(year)
+                            ? "bg-[color:var(--color-primary)] text-[color:var(--color-bg)]"
+                            : "bg-[color:var(--color-primary-soft)]/40 text-white hover:bg-[color:var(--color-primary-soft)]/60"
+                        }`}
+                        style={{ cursor: cursorUrl }}
+                      >
+                        {year}
+                      </motion.button>
+                    ))}
+                  </div>
+
+                  {/* Content Grid - 3 COLUMNS */}
+                  <div
+                    className="p-8 md:p-9 min-h-[600px] bg-gradient-to-br from-[#1f2937]/80 via-[#111827]/70 to-[#0f1419]/80 backdrop-blur-md relative z-10"
+                    style={{
+                      backgroundImage:
+                        "linear-gradient(180deg, rgba(255,255,255,0.05) 0%, transparent 100%)",
+                    }}
                   >
-                    {tech}
-                  </span>
-                ))}
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={selectedYear}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+                      >
+                        {filteredExperiences.map((exp, idx) => {
+                          const isActive = exp.id === activeId;
+                          const colorClass = getColorClass(idx);
+
+                          return (
+                            <motion.button
+                              key={exp.id}
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -20 }}
+                              transition={{
+                                delay: idx * 0.06,
+                                duration: 0.4,
+                                ease: "easeOut",
+                              }}
+                              whileHover={{ y: -6, scale: 1.01 }}
+                              onClick={() => setActiveId(exp.id)}
+                              className={`relative rounded-2xl p-5 border-2 transition-all overflow-hidden group backdrop-blur-sm h-full ${
+                                isActive
+                                  ? "bg-[color:var(--color-primary)] border-[color:var(--color-primary)] text-[color:var(--color-bg)] shadow-lg ring-2 ring-[color:var(--color-primary)]/50"
+                                  : "bg-gradient-to-br from-[#1f2937]/60 to-[#111827]/40 border-[color:var(--color-primary-soft)]/40 text-white hover:border-[color:var(--color-primary)]/60 hover:from-[#2d3e52]/70 hover:to-[#1f2937]/50"
+                              }`}
+                              style={{ cursor: cursorUrl }}
+                            >
+                              {/* Gradient shine effect */}
+                              <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity bg-gradient-to-br from-white to-transparent" />
+
+                              {/* Content */}
+                              <div className="relative flex flex-col h-full">
+                                {/* Icon with gradient */}
+                                <div
+                                  className={`mb-3 text-4xl font-bold opacity-90 bg-gradient-to-r ${colorClass} bg-clip-text text-transparent`}
+                                >
+                                  {exp.company_name?.[0] || "E"}
+                                </div>
+
+                                {/* Role */}
+                                <h4 className="text-base font-bold mb-1.5 leading-tight">
+                                  {exp.role}
+                                </h4>
+
+                                {/* Company with gradient */}
+                                <p
+                                  className={`text-xs md:text-sm opacity-95 mb-2.5 font-semibold bg-gradient-to-r ${colorClass} bg-clip-text text-transparent`}
+                                >
+                                  {exp.company_name}
+                                </p>
+
+                                {/* Description */}
+                                <p className="text-xs opacity-75 line-clamp-3 leading-relaxed mb-3 flex-1">
+                                  {exp.description}
+                                </p>
+
+                                {/* Divider */}
+                                <div className="border-t border-current border-opacity-30 my-2" />
+
+                                {/* Year & Location */}
+                                <div className="flex justify-between items-center mt-auto">
+                                  <span
+                                    className={`text-xs font-bold uppercase tracking-wider bg-gradient-to-r ${colorClass} bg-clip-text text-transparent`}
+                                  >
+                                    {new Date(exp.start_date).getFullYear()}
+                                  </span>
+                                  <span className="text-[9px] opacity-60">
+                                    {exp.location && `📍 ${exp.location}`}
+                                  </span>
+                                </div>
+                              </div>
+                            </motion.button>
+                          );
+                        })}
+                      </motion.div>
+                    </AnimatePresence>
+
+                    {filteredExperiences.length === 0 && (
+                      <div className="flex items-center justify-center h-full min-h-[300px] text-white opacity-50">
+                        <p className="text-base">No experiences in {selectedYear}</p>
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
               </div>
-            </motion.div>
-          ))}
-        </div>
+
+              {/* RIGHT SIDE: Details Panel (narrower - 1 column) - WITH 3D ELEVATION + DYNAMIC HALO */}
+              <div className="lg:col-span-1 flex items-center relative">
+                {/* DYNAMIC HALO GLOW - Behind the panel, grows on hover */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 0.12 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute inset-0 rounded-2xl pointer-events-none -z-10"
+                  style={{
+                    background: `radial-gradient(ellipse 400px 300px at 50% 50%, rgba(255, 255, 255, 0.5) 0%, transparent 70%)`,
+                    filter: "blur(25px)",
+                  }}
+                />
+
+                <AnimatePresence mode="wait">
+                  {activeExp && (
+                    <motion.div
+                      key={activeExp.id}
+                      initial={{ opacity: 0, x: 30 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 30 }}
+                      transition={{ duration: 0.5, ease: "easeOut" }}
+                      whileHover={{ y: -8, transition: { duration: 0.3 } }}
+                      className="w-full rounded-2xl border border-[color:var(--color-border)] backdrop-blur-xl p-6 md:p-7 relative"
+                      style={{
+                        background:
+                          "linear-gradient(135deg, rgba(31,41,55,0.4) 0%, rgba(17,24,39,0.3) 100%)",
+                        boxShadow:
+                          `0 0 0 1px rgba(50, 184, 198, 0.1),
+                           0 4px 8px rgba(0, 0, 0, 0.15),
+                           0 8px 16px rgba(0, 0, 0, 0.2),
+                           0 16px 32px rgba(0, 0, 0, 0.25),
+                           0 32px 48px rgba(50, 184, 198, 0.06),
+                           inset 0 1px 1px rgba(255, 255, 255, 0.1),
+                           inset -1px -1px 2px rgba(255, 255, 255, 0.03),
+                           inset 1px 1px 2px rgba(255, 255, 255, 0.04)`,
+                        transform: "translateZ(0)",
+                        perspective: "1000px",
+                        zIndex: 1,
+                      }}
+                    >
+                      {/* BEVELED LIGHTING OVERLAY - Top-Left (Subtle Light Source) */}
+                      <div
+                        className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-2xl"
+                        style={{
+                          background: `radial-gradient(ellipse 500px 300px at 20% 15%, rgba(255, 255, 255, 0.05) 0%, transparent 60%)`,
+                          zIndex: 1,
+                        }}
+                      />
+
+                      {/* BEVELED LIGHTING OVERLAY - Bottom-Right (Reflection Shimmer) */}
+                      <div
+                        className="absolute bottom-0 right-0 w-full h-full pointer-events-none rounded-2xl"
+                        style={{
+                          background: `radial-gradient(ellipse 400px 350px at 95% 100%, rgba(255, 255, 255, 0.07) 0%, transparent 50%)`,
+                          zIndex: 1,
+                        }}
+                      />
+
+                      {/* Header */}
+                      <div className="mb-5 relative z-10">
+                        <motion.div
+                          initial={{ scale: 0.9, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          transition={{ delay: 0.1 }}
+                          className="inline-flex mb-2 px-2.5 py-1 rounded-full bg-[color:var(--color-primary-soft)] border border-[color:var(--color-primary)]/40 text-[color:var(--color-primary)] text-xs font-bold uppercase tracking-wider"
+                        >
+                          {new Date(activeExp.start_date).getFullYear()}
+                        </motion.div>
+
+                        <h3 className="text-xl md:text-2xl font-bold text-[color:var(--color-text)] mb-1.5">
+                          {activeExp.role}
+                        </h3>
+
+                        <p className="text-base md:text-lg text-[color:var(--color-primary)] font-bold mb-2.5">
+                          {activeExp.company_name}
+                        </p>
+
+                        {/* Meta info */}
+                        <div className="flex flex-col gap-1.5 text-xs md:text-sm text-[color:var(--color-muted)]">
+                          <div className="flex items-center gap-1.5">
+                            <span>📅</span>
+                            <span>
+                              {activeExp.start_date
+                                ? new Date(activeExp.start_date).toLocaleDateString(
+                                    "en-US",
+                                    { month: "short", year: "numeric" }
+                                  )
+                                : ""}{" "}
+                              -{" "}
+                              {activeExp.is_current
+                                ? "Present"
+                                : activeExp.end_date
+                                ? new Date(activeExp.end_date).toLocaleDateString(
+                                    "en-US",
+                                    { month: "short", year: "numeric" }
+                                  )
+                                : ""}
+                            </span>
+                          </div>
+                          {activeExp.location && (
+                            <div className="flex items-center gap-1.5">
+                              <span>📍</span>
+                              <span>{activeExp.location}</span>
+                            </div>
+                          )}
+                          {activeExp.employment_type && (
+                            <div className="flex items-center gap-1.5">
+                              <span>💼</span>
+                              <span>{activeExp.employment_type}</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Divider */}
+                      <div className="border-t border-[color:var(--color-border)] my-4 relative z-10" />
+
+                      {/* Description */}
+                      <p className="text-xs md:text-sm text-[color:var(--color-text)] leading-relaxed mb-4 opacity-95 relative z-10">
+                        {activeExp.description}
+                      </p>
+
+                      {/* Tech Stack */}
+                      {activeExp.tech_stack && activeExp.tech_stack.length > 0 && (
+                        <div className="relative z-10">
+                          <p className="text-xs font-bold uppercase tracking-wider text-[color:var(--color-muted)] mb-2">
+                            🛠️ Tech Stack
+                          </p>
+                          <div className="flex flex-wrap gap-1.5">
+                            {activeExp.tech_stack.map((tech, idx) => (
+                              <motion.span
+                                key={idx}
+                                initial={{ scale: 0.8, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                transition={{
+                                  delay: idx * 0.06,
+                                  duration: 0.3,
+                                }}
+                                className="px-2 py-1 text-xs font-medium rounded-md bg-[color:var(--color-primary-soft)] text-[color:var(--color-primary)] border border-[color:var(--color-primary)]/30 shadow-soft"
+                              >
+                                {tech}
+                              </motion.span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </section>
   );

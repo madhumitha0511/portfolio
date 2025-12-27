@@ -5,7 +5,6 @@ import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [otherOpen, setOtherOpen] = useState(false);
 
   const navLinks = [
     { name: "About", href: "#about" },
@@ -13,16 +12,6 @@ const Navbar = () => {
     { name: "Projects", href: "#projects" },
     { name: "Skills", href: "#skills" },
     { name: "Contact", href: "#contact" },
-  ];
-
-  // sections to show under "Other"
-  const otherLinks = [
-    { name: "Certifications", href: "#certifications" },
-    { name: "Achievements", href: "#achievements" },
-    { name: "Hackathons", href: "#hackathons" },
-    { name: "Research", href: "#research" },
-    { name: "Extracurricular", href: "#extracurricular" },
-    { name: "Testimonials", href: "#testimonials" },
   ];
 
   return (
@@ -39,7 +28,7 @@ const Navbar = () => {
             whileHover={{ scale: 1.05 }}
             className="text-2xl font-bold text-[color:var(--color-primary)]"
           >
-            R
+            M
           </motion.a>
 
           {/* Desktop Nav */}
@@ -53,41 +42,7 @@ const Navbar = () => {
                 {link.name}
               </a>
             ))}
-
-            {/* Other dropdown */}
-            <div
-              className="relative"
-              onMouseEnter={() => setOtherOpen(true)}
-              onMouseLeave={() => setOtherOpen(false)}
-            >
-              <button className="text-sm font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)] transition flex items-center gap-1">
-                Other
-                <span className="text-xs">▾</span>
-              </button>
-              {otherOpen && (
-                <div className="absolute right-0 mt-2 w-44 rounded-xl bg-[color:var(--color-bg-elevated)] border border-[color:var(--color-border)] shadow-soft py-2">
-                  {otherLinks.map((link) => (
-                    <a
-                      key={link.name}
-                      href={link.href}
-                      className="block px-4 py-1.5 text-xs font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)] hover:bg-[color:var(--color-bg)]/70 transition"
-                    >
-                      {link.name}
-                    </a>
-                  ))}
-                </div>
-              )}
-            </div>
-
             <ThemeToggle />
-
-            {/* Login button */}
-            <a
-              href="/admin/login"
-              className="px-4 py-2 text-xs font-semibold rounded-lg border border-[color:var(--color-border)] text-[color:var(--color-text)] hover:bg-[color:var(--color-bg-elevated)] transition"
-            >
-              Login
-            </a>
           </div>
 
           {/* Mobile menu button */}
@@ -137,32 +92,6 @@ const Navbar = () => {
                 {link.name}
               </a>
             ))}
-
-            {/* Other group on mobile */}
-            <div className="pt-2 border-t border-[color:var(--color-border)]">
-              <p className="text-[11px] uppercase tracking-[0.16em] text-[color:var(--color-muted)] mb-2">
-                Other
-              </p>
-              {otherLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className="block text-sm font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)]"
-                >
-                  {link.name}
-                </a>
-              ))}
-            </div>
-
-            {/* Login button mobile */}
-            <a
-              href="/admin/login"
-              onClick={() => setIsOpen(false)}
-              className="block mt-2 text-sm font-semibold text-[color:var(--color-primary)]"
-            >
-              Login
-            </a>
           </div>
         </motion.div>
       )}
