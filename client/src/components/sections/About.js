@@ -10,7 +10,6 @@ const About = () => {
     const fetchAbout = async () => {
       try {
         const res = await aboutAPI.get();
-        // Assuming API returns single object or array with first item
         setAbout(res.data[0] || res.data);
       } catch (err) {
         console.error("Error fetching about:", err);
@@ -21,7 +20,6 @@ const About = () => {
 
   if (!about) return null;
 
-  // Parse highlights array (stored as JSON in DB)
   const highlights = Array.isArray(about.highlights) 
     ? about.highlights 
     : JSON.parse(about.highlights || "[]");
@@ -42,28 +40,17 @@ const About = () => {
             className="relative"
           >
             {/* Main Card */}
-            <div className="relative bg-[color:var(--color-card)] rounded-3xl p-8 shadow-soft border border-[color:var(--color-border)] overflow-hidden">
-              {/* Header Text */}
-              <div className="flex justify-between items-start mb-6">
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                  className="text-sm italic text-[color:var(--color-muted)]"
-                  style={{ fontFamily: "'Caveat', cursive" }}
-                >
-                  A little bit about me
-                </motion.p>
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                  className="text-sm italic text-[color:var(--color-muted)]"
-                  style={{ fontFamily: "'Caveat', cursive" }}
-                >
-                  Studio Shostive
-                </motion.p>
-              </div>
+            <div className="relative bg-[color:var(--color-card)] rounded-3xl p-8 shadow-soft border border-[color:var(--color-border)] overflow-visible">
+              {/* Header Text - Only left side */}
+              <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="text-sm italic text-[color:var(--color-muted)] mb-6"
+                style={{ fontFamily: "'Caveat', cursive" }}
+              >
+                A little bit about me
+              </motion.p>
 
               {/* Name */}
               <motion.h2
@@ -72,99 +59,109 @@ const About = () => {
                 transition={{ delay: 0.4 }}
                 className="text-4xl font-serif italic text-center text-[color:var(--color-text)] mb-8 border-b-2 border-[color:var(--color-text)] pb-2"
               >
-                {about.title || "Your Name"}
+                {about.title || "Madhumitha S V"}
               </motion.h2>
 
-              {/* Profile Image */}
+              {/* Profile Image - Full size, no background */}
               <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 whileInView={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.5 }}
-                className="relative mx-auto w-64 h-80 mb-6"
+                className="relative mx-auto w-full max-w-sm"
               >
                 <img
                   src="/profile.jpeg"
                   alt="Profile"
-                  className="w-full h-full object-cover rounded-2xl"
+                  className="w-full h-auto object-cover rounded-2xl"
                 />
                 
-                {/* Floating Doodle - Top Left */}
+                {/* Floating Doodle - Top Left with hand-drawn arrow */}
                 <motion.div
-                  animate={{ rotate: [0, 5, -5, 0], y: [0, -5, 0] }}
+                  animate={{ rotate: [0, 3, -3, 0], y: [0, -3, 0] }}
                   transition={{ duration: 3, repeat: Infinity }}
-                  className="absolute -top-6 -left-8 text-sm font-handwriting text-[color:var(--color-text)]"
+                  className="absolute -top-8 -left-12 text-sm text-[color:var(--color-text)]"
                   style={{ fontFamily: "'Caveat', cursive" }}
                 >
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl">✨</span>
-                    <span className="rotate-[-15deg] block">
-                      {highlights[0] || "I play hockey in my spare time"}
+                  <div className="flex items-start gap-1 rotate-[-10deg]">
+                    <svg width="30" height="30" viewBox="0 0 30 30" className="text-[color:var(--color-text)]">
+                      <path d="M5 15 L15 5 L13 15 L20 12" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round"/>
+                    </svg>
+                    <span className="whitespace-nowrap">
+                      {highlights[0] || "I play hockey in\nmy spare time"}
                     </span>
                   </div>
                 </motion.div>
 
-                {/* Floating Doodle - Top Right */}
+                {/* Floating Doodle - Top Right with curved arrow */}
                 <motion.div
-                  animate={{ rotate: [0, -5, 5, 0], y: [0, 5, 0] }}
+                  animate={{ rotate: [0, -3, 3, 0], y: [0, 3, 0] }}
                   transition={{ duration: 2.5, repeat: Infinity }}
-                  className="absolute -top-4 -right-10 text-sm text-center text-[color:var(--color-text)]"
-                  style={{ fontFamily: "'Caveat', cursive" }}
-                >
-                  <div className="rotate-[10deg]">
-                    <span className="text-3xl block">☕</span>
-                    <span className="block mt-1">
-                      {highlights[1] || "A love story that never ends"}
-                    </span>
-                  </div>
-                </motion.div>
-
-                {/* Floating Doodle - Bottom Left */}
-                <motion.div
-                  animate={{ rotate: [0, 8, -8, 0], x: [0, -3, 0] }}
-                  transition={{ duration: 3.5, repeat: Infinity }}
-                  className="absolute -bottom-8 -left-10 text-sm text-[color:var(--color-text)]"
-                  style={{ fontFamily: "'Caveat', cursive" }}
-                >
-                  <div className="rotate-[-12deg]">
-                    <span className="block">
-                      {highlights[2] || "Coffee over tea"}
-                    </span>
-                    <span className="text-2xl block mt-1">☕💛</span>
-                  </div>
-                </motion.div>
-
-                {/* Floating Doodle - Bottom Center */}
-                <motion.div
-                  animate={{ rotate: [0, -5, 5, 0] }}
-                  transition={{ duration: 2.8, repeat: Infinity }}
-                  className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-sm text-[color:var(--color-text)]"
-                  style={{ fontFamily: "'Caveat', cursive" }}
-                >
-                  <div className="rotate-[5deg] flex items-center gap-1">
-                    <span className="text-xl">🎉</span>
-                    <span>{highlights[3] || "I take 4 holidays a year!"}</span>
-                  </div>
-                </motion.div>
-
-                {/* Floating Doodle - Bottom Right */}
-                <motion.div
-                  animate={{ rotate: [0, 6, -6, 0], x: [0, 5, 0] }}
-                  transition={{ duration: 3.2, repeat: Infinity }}
-                  className="absolute -bottom-6 -right-12 text-sm text-center text-[color:var(--color-text)]"
+                  className="absolute -top-6 -right-14 text-sm text-center text-[color:var(--color-text)]"
                   style={{ fontFamily: "'Caveat', cursive" }}
                 >
                   <div className="rotate-[8deg]">
-                    <span className="block">
-                      {highlights[4] || "My favourite colour is yellow"}
+                    <svg width="40" height="35" viewBox="0 0 40 35" className="text-[color:var(--color-text)] mx-auto mb-1">
+                      <path d="M35 5 Q20 15 25 30 L28 25 M25 30 L20 28" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round"/>
+                    </svg>
+                    <span className="block whitespace-nowrap">
+                      {highlights[1] || "A love story\nthat never ends"}
                     </span>
-                    <span className="text-2xl block mt-1">✨</span>
+                  </div>
+                </motion.div>
+
+                {/* Floating Doodle - Bottom Left with squiggle arrow */}
+                <motion.div
+                  animate={{ rotate: [0, 5, -5, 0], x: [0, -2, 0] }}
+                  transition={{ duration: 3.5, repeat: Infinity }}
+                  className="absolute -bottom-10 -left-12 text-sm text-[color:var(--color-text)]"
+                  style={{ fontFamily: "'Caveat', cursive" }}
+                >
+                  <div className="rotate-[-8deg]">
+                    <span className="block whitespace-nowrap">
+                      {highlights[2] || "Coffee over tea"}
+                    </span>
+                    <svg width="35" height="25" viewBox="0 0 35 25" className="text-[color:var(--color-text)] mt-1">
+                      <path d="M5 5 Q10 15 15 10 T25 15 L22 18 M25 15 L27 10" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round"/>
+                    </svg>
+                  </div>
+                </motion.div>
+
+                {/* Floating Doodle - Bottom Center with straight arrow */}
+                <motion.div
+                  animate={{ rotate: [0, -4, 4, 0] }}
+                  transition={{ duration: 2.8, repeat: Infinity }}
+                  className="absolute -bottom-12 left-1/2 -translate-x-1/2 text-sm text-[color:var(--color-text)]"
+                  style={{ fontFamily: "'Caveat', cursive" }}
+                >
+                  <div className="rotate-[3deg] flex flex-col items-center">
+                    <svg width="30" height="30" viewBox="0 0 30 30" className="text-[color:var(--color-text)]">
+                      <path d="M15 5 L15 25 M15 25 L10 20 M15 25 L20 20" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round"/>
+                    </svg>
+                    <span className="whitespace-nowrap">{highlights[3] || "I take 4 holidays\na year!"}</span>
+                  </div>
+                </motion.div>
+
+                {/* Floating Doodle - Bottom Right with curved pointer */}
+                <motion.div
+                  animate={{ rotate: [0, 4, -4, 0], x: [0, 3, 0] }}
+                  transition={{ duration: 3.2, repeat: Infinity }}
+                  className="absolute -bottom-8 -right-16 text-sm text-center text-[color:var(--color-text)]"
+                  style={{ fontFamily: "'Caveat', cursive" }}
+                >
+                  <div className="rotate-[10deg]">
+                    <span className="block whitespace-nowrap">
+                      {highlights[4] || "My favourite\ncolour is yellow"}
+                    </span>
+                    <svg width="40" height="25" viewBox="0 0 40 25" className="text-[color:var(--color-text)] mx-auto mt-1">
+                      <path d="M5 5 Q15 10 25 5 T35 15 L32 10 M35 15 L30 18" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round"/>
+                    </svg>
                   </div>
                 </motion.div>
               </motion.div>
             </div>
           </motion.div>
 
-          {/* RIGHT SIDE - Description & CTA */}
+          {/* RIGHT SIDE - Heading, Description & CTA */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -172,6 +169,17 @@ const About = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="space-y-8"
           >
+            {/* About Heading */}
+            <motion.h2
+              initial={{ opacity: 0, y: -20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="text-3xl md:text-4xl font-bold text-[color:var(--color-text)]"
+            >
+              About Madhumitha
+            </motion.h2>
+
+            {/* Description */}
             <motion.p
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -181,12 +189,12 @@ const About = () => {
               {about.description}
             </motion.p>
 
-            {/* CTA Buttons */}
+            {/* CTA Buttons - No black background */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
-              className="bg-black rounded-2xl p-8 flex flex-wrap gap-4 justify-center"
+              className="flex flex-wrap gap-4"
             >
               <motion.a
                 whileHover={{ scale: 1.05, y: -3 }}
