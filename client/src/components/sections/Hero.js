@@ -188,6 +188,8 @@ const Hero = () => {
       src="/profile-1.png"
       alt={`${owner.first_name} ${owner.last_name}`}
       className="w-full h-auto object-contain relative z-20"
+      loading="eager"  // ← Load immediately (for hero section)
+  decoding="async" // ← Decode in background
     />
   </motion.div>
 </motion.div>

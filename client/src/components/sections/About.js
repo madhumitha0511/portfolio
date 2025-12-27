@@ -59,6 +59,8 @@ const About = () => {
                   src="/profile.png"
                   alt="About Madhumitha"
                   className="w-full h-auto object-cover rounded-2xl"
+                  loading="lazy"   // ← Load when user scrolls near
+                  decoding="async"
                 />
               </div>
             </motion.div>
