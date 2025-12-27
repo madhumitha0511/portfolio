@@ -57,15 +57,15 @@ const Hero = () => {
           </motion.span>
 
           {/* Name */}
-          <motion.h2
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight text-[color:var(--color-text)]"
+            className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-[color:var(--color-text)]"
           >
             Hello, my name is <br />
            <span className="text-[color:var(--color-primary)]">{owner.first_name} {owner.last_name}</span>
-          </motion.h2>
+          </motion.h1>
 
           {/* Bio/Description */}
           <motion.p
@@ -160,7 +160,7 @@ const Hero = () => {
           </motion.div>
         </motion.div>
 
-        
+
  {/* RIGHT SIDE - Image with Organic Blob Background (Like Reference) */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
