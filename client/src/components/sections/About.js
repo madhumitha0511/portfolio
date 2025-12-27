@@ -18,23 +18,22 @@ export const About = () => {
     fetchAbout();
   }, []);
 
-  // Extract 1-2 word keywords from highlights
+  // Extract 1-2 word keywords
   const getKeyword = (text) => {
-    // Take first 2 words max
     const words = text.split(' ').slice(0, 2);
     return words.join(' ');
   };
 
-  // Floating positions exactly like reference (around image, not overlapping center)
+  // Floating positions - FAR from image center (like reference)
   const floatingItems = [
-    { top: '8%', left: '5%', rotate: -8, doodle: 'sparkles' },      // Top-left
-    { top: '12%', right: '8%', rotate: 5, doodle: 'arrow' },        // Top-right
-    { top: '45%', left: '2%', rotate: -5, doodle: 'heart' },        // Middle-left
-    { bottom: '28%', right: '5%', rotate: 8, doodle: 'star' },      // Bottom-right
-    { bottom: '8%', left: '8%', rotate: -10, doodle: 'underline' }, // Bottom-left
+    { top: '5%', left: '-18%', rotate: -8, doodle: 'sparkles' },      // Far top-left
+    { top: '15%', right: '-20%', rotate: 5, doodle: 'arrow' },        // Far top-right
+    { top: '50%', left: '-22%', rotate: -5, doodle: 'heart' },        // Far middle-left
+    { bottom: '20%', right: '-18%', rotate: 8, doodle: 'star' },      // Far bottom-right
+    { bottom: '5%', left: '-16%', rotate: -10, doodle: 'underline' }, // Far bottom-left
   ];
 
-  // Doodle SVG components (handdrawn style)
+  // Doodle SVGs
   const Doodles = {
     sparkles: (
       <svg className="w-5 h-5 absolute -top-3 -right-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -66,8 +65,8 @@ export const About = () => {
   return (
     <section id="about" className="py-24 px-4 bg-[color:var(--color-bg)] relative overflow-hidden">
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* Header with subtitle exactly like reference */}
-        <div className="text-center mb-16 space-y-2">
+        {/* Header */}
+        <div className="text-center mb-20 space-y-2">
           <motion.p
             initial={{ opacity: 0, y: -10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -87,76 +86,80 @@ export const About = () => {
           <div className="w-48 h-0.5 bg-[color:var(--color-text)] mx-auto" />
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* LEFT SIDE - Image with floating handwritten notes */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="relative mx-auto max-w-md"
-          >
-            {/* Main image (beige background exactly like reference) */}
-            <div className="relative aspect-[3/4] rounded-3xl overflow-hidden bg-[color:var(--color-bg-elevated)] shadow-2xl">
-              <img
-                src={aboutData?.image_url || 'https://via.placeholder.com/400x500'}
-                alt="About Me"
-                className="w-full h-full object-cover"
-              />
-            </div>
+        <div className="grid lg:grid-cols-5 gap-8 lg:gap-16 items-center">
+          {/* LEFT - Image container with wide space for floats */}
+          <div className="lg:col-span-2 relative">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="relative mx-auto w-full max-w-sm"
+            >
+              {/* Main image - proper aspect ratio */}
+              <div className="relative w-full aspect-[3/4] rounded-3xl overflow-hidden bg-[color:var(--color-bg-elevated)] shadow-2xl">
+                <img
+                  src={aboutData?.image_url || '/client/public/profile.jpeg'}
+                  alt="Madhumitha S V"
+                  className="w-full h-full object-cover object-center"
+                />
+              </div>
 
-            {/* Floating handwritten notes with doodles (EXACTLY like reference) */}
-            {aboutData?.highlights?.slice(0, 5).map((highlight, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, scale: 0.8, rotate: floatingItems[idx]?.rotate || 0 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 + idx * 0.15, duration: 0.5 }}
-                animate={{
-                  y: [0, -8, 0],
-                  rotate: [
-                    floatingItems[idx]?.rotate || 0,
-                    (floatingItems[idx]?.rotate || 0) + 3,
-                    floatingItems[idx]?.rotate || 0,
-                  ],
-                }}
-                transition={{
-                  y: { duration: 3, repeat: Infinity, ease: "easeInOut" },
-                  rotate: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-                }}
-                style={{
-                  position: 'absolute',
-                  ...floatingItems[idx],
-                  zIndex: 10,
-                }}
-                className="hidden lg:block"
-              >
-                <div className="relative bg-[color:var(--color-bg)] border-2 border-[color:var(--color-text)] rounded-2xl px-4 py-2 shadow-lg">
-                  {/* Handwritten text (max 2 words) */}
-                  <p
-                    className="text-sm md:text-base text-[color:var(--color-text)] whitespace-nowrap"
-                    style={{ fontFamily: "'Caveat', cursive", fontWeight: 600 }}
+              {/* Floating handwritten notes - positioned outside image */}
+              {aboutData?.highlights?.slice(0, 5).map((highlight, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 + idx * 0.15, duration: 0.5 }}
+                  animate={{
+                    y: [0, -10, 0],
+                  }}
+                  style={{
+                    position: 'absolute',
+                    ...floatingItems[idx],
+                    zIndex: 10,
+                  }}
+                  className="hidden xl:block"
+                >
+                  <motion.div
+                    animate={{
+                      rotate: [
+                        floatingItems[idx]?.rotate || 0,
+                        (floatingItems[idx]?.rotate || 0) + 4,
+                        floatingItems[idx]?.rotate || 0,
+                      ],
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                    className="relative bg-[color:var(--color-bg)] border-2 border-[color:var(--color-text)] rounded-2xl px-4 py-2 shadow-lg"
                   >
-                    {getKeyword(highlight)}
-                  </p>
+                    <p
+                      className="text-sm md:text-base text-[color:var(--color-text)] whitespace-nowrap font-semibold"
+                      style={{ fontFamily: "'Caveat', cursive" }}
+                    >
+                      {getKeyword(highlight)}
+                    </p>
+                    <div className="text-[color:var(--color-primary)]">
+                      {Doodles[floatingItems[idx]?.doodle]}
+                    </div>
+                  </motion.div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
 
-                  {/* Doodle decoration */}
-                  <div className="text-[color:var(--color-primary)]">
-                    {Doodles[floatingItems[idx]?.doodle]}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* RIGHT SIDE - Description (clean typography) */}
+          {/* RIGHT - Description (3 columns for more space) */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="space-y-8"
+            className="lg:col-span-3 space-y-8"
           >
             <p className="text-base md:text-lg text-[color:var(--color-text)] leading-relaxed">
               {aboutData?.description}
@@ -182,8 +185,8 @@ export const About = () => {
               </motion.a>
             </div>
 
-            {/* Mobile: Show all highlights as chips below */}
-            <div className="lg:hidden grid grid-cols-2 gap-3 pt-4">
+            {/* Mobile highlights - show all */}
+            <div className="xl:hidden grid grid-cols-2 gap-3 pt-4">
               {aboutData?.highlights?.map((highlight, idx) => (
                 <motion.div
                   key={idx}
