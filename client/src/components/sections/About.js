@@ -151,7 +151,7 @@ const About = () => {
               className="relative w-full max-w-md"
             >
               <img
-                src="/profile.jpeg"
+                src="/profile.pnj"
                 alt="Madhumitha S V"
                 className="w-full h-auto object-cover rounded-3xl shadow-soft"
               />
