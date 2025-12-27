@@ -18,19 +18,35 @@ export const About = () => {
     fetchAbout();
   }, []);
 
-  // Extract 1-2 word keywords
-  const getKeyword = (text) => {
-    const words = text.split(' ').slice(0, 2);
-    return words.join(' ');
+  // Default meaningful keywords about Madhumitha (max 2 words)
+  const defaultKeywords = [
+    'AI Engineer',
+    'Full Stack',
+    'SEO Expert',
+    'Event Lead',
+    'Freelancer',
+  ];
+
+  // Extract or use defaults
+  const getKeywords = () => {
+    if (aboutData?.highlights && aboutData.highlights.length > 0) {
+      return aboutData.highlights.slice(0, 5).map(h => {
+        const words = h.split(' ').slice(0, 2);
+        return words.join(' ');
+      });
+    }
+    return defaultKeywords;
   };
 
-  // Floating positions - FAR from image center (like reference)
+  const keywords = getKeywords();
+
+  // Floating positions - FAR from image
   const floatingItems = [
-    { top: '5%', left: '-18%', rotate: -8, doodle: 'sparkles' },      // Far top-left
-    { top: '15%', right: '-20%', rotate: 5, doodle: 'arrow' },        // Far top-right
-    { top: '50%', left: '-22%', rotate: -5, doodle: 'heart' },        // Far middle-left
-    { bottom: '20%', right: '-18%', rotate: 8, doodle: 'star' },      // Far bottom-right
-    { bottom: '5%', left: '-16%', rotate: -10, doodle: 'underline' }, // Far bottom-left
+    { top: '5%', left: '-18%', rotate: -8, doodle: 'sparkles' },
+    { top: '15%', right: '-20%', rotate: 5, doodle: 'arrow' },
+    { top: '50%', left: '-22%', rotate: -5, doodle: 'heart' },
+    { bottom: '20%', right: '-18%', rotate: 8, doodle: 'star' },
+    { bottom: '5%', left: '-16%', rotate: -10, doodle: 'underline' },
   ];
 
   // Doodle SVGs
@@ -87,7 +103,7 @@ export const About = () => {
         </div>
 
         <div className="grid lg:grid-cols-5 gap-8 lg:gap-16 items-center">
-          {/* LEFT - Image container with wide space for floats */}
+          {/* LEFT - Image container */}
           <div className="lg:col-span-2 relative">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -96,17 +112,20 @@ export const About = () => {
               transition={{ duration: 0.6 }}
               className="relative mx-auto w-full max-w-sm"
             >
-              {/* Main image - proper aspect ratio */}
+              {/* Main image - FIXED PATH */}
               <div className="relative w-full aspect-[3/4] rounded-3xl overflow-hidden bg-[color:var(--color-bg-elevated)] shadow-2xl">
                 <img
-                  src={aboutData?.image_url || '/client/public/profile.jpeg'}
+                  src={aboutData?.image_url || '/profile.jpeg'}
                   alt="Madhumitha S V"
                   className="w-full h-full object-cover object-center"
+                  onError={(e) => {
+                    e.target.src = 'https://via.placeholder.com/400x500?text=Madhumitha+S+V';
+                  }}
                 />
               </div>
 
-              {/* Floating handwritten notes - positioned outside image */}
-              {aboutData?.highlights?.slice(0, 5).map((highlight, idx) => (
+              {/* Floating handwritten notes */}
+              {keywords.map((keyword, idx) => (
                 <motion.div
                   key={idx}
                   initial={{ opacity: 0, scale: 0.8 }}
@@ -142,7 +161,7 @@ export const About = () => {
                       className="text-sm md:text-base text-[color:var(--color-text)] whitespace-nowrap font-semibold"
                       style={{ fontFamily: "'Caveat', cursive" }}
                     >
-                      {getKeyword(highlight)}
+                      {keyword}
                     </p>
                     <div className="text-[color:var(--color-primary)]">
                       {Doodles[floatingItems[idx]?.doodle]}
@@ -153,7 +172,7 @@ export const About = () => {
             </motion.div>
           </div>
 
-          {/* RIGHT - Description (3 columns for more space) */}
+          {/* RIGHT - Description */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -185,9 +204,9 @@ export const About = () => {
               </motion.a>
             </div>
 
-            {/* Mobile highlights - show all */}
+            {/* Mobile highlights */}
             <div className="xl:hidden grid grid-cols-2 gap-3 pt-4">
-              {aboutData?.highlights?.map((highlight, idx) => (
+              {keywords.map((keyword, idx) => (
                 <motion.div
                   key={idx}
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -197,7 +216,7 @@ export const About = () => {
                   className="p-3 bg-[color:var(--color-primary-soft)] border border-[color:var(--color-primary)]/30 rounded-xl text-center"
                 >
                   <p className="text-xs text-[color:var(--color-primary)] font-medium">
-                    {getKeyword(highlight)}
+                    {keyword}
                   </p>
                 </motion.div>
               ))}
