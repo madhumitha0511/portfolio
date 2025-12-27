@@ -57,7 +57,7 @@ const Hero = () => {
           </motion.span>
 
           {/* Name */}
-          <motion.h1
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
@@ -65,7 +65,7 @@ const Hero = () => {
           >
             Hello, my name is <br />
            <span className="text-[color:var(--color-primary)]">{owner.first_name} {owner.last_name}</span>
-          </motion.h1>
+          </motion.h2>
 
           {/* Bio/Description */}
           <motion.p

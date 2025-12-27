@@ -100,10 +100,10 @@ const About = () => {
               className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4"
             >
               {[
-                { label: "Years", value: "3+", icon: "⏱️" },
-                { label: "Projects", value: "15+", icon: "🚀" },
-                { label: "Technologies", value: "10+", icon: "💻" },
-                { label: "Certifications", value: "5+", icon: "🎓" }
+                { label: "Years Experience", value: "3+"},
+                { label: "Projects", value: "15+"},
+                { label: "Technologies", value: "10+" },
+                { label: "Certifications", value: "5+" }
               ].map((stat, idx) => (
                 <motion.div
                   key={idx}
@@ -130,64 +130,68 @@ const About = () => {
               ))}
             </motion.div>
 
-            {/* CTA Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="flex flex-wrap gap-4 pt-4"
-            >
-              {/* Primary CTA */}
-              <motion.a
-                whileHover={{ scale: 1.05, y: -3 }}
-                whileTap={{ scale: 0.95 }}
-                href="#projects"
-                className="group relative px-8 py-4 bg-gradient-to-r from-[#FF6B6B] to-[#FF8E8E] text-white font-semibold rounded-xl shadow-lg overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B6B] to-[#FF8E8E] opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300" />
-                <span className="relative z-10">View My Works</span>
-              </motion.a>
+           {/* CTA Buttons */}
+<motion.div
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.6 }}
+  className="flex flex-wrap gap-4 pt-4"
+>
+  {/* View My Works */}
+  <motion.a
+    whileHover={{ scale: 1.05, y: -3 }}
+    whileTap={{ scale: 0.95 }}
+    href="#projects"
+    className="group relative px-8 py-4 bg-transparent border-2 border-[#FF6B6B] text-[#FF6B6B] font-semibold rounded-xl overflow-hidden transition-all"
+  >
+    <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B6B] to-[#FF8E8E] transform translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+    <span className="relative z-10 group-hover:text-white transition-colors">
+      View My Works
+    </span>
+  </motion.a>
 
-              {/* Secondary CTA */}
-              <motion.a
-                whileHover={{ scale: 1.05, y: -3 }}
-                whileTap={{ scale: 0.95 }}
-                href="#contact"
-                className="group relative px-8 py-4 bg-transparent border-2 border-[#FF6B6B] text-[#FF6B6B] font-semibold rounded-xl overflow-hidden transition-all"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B6B] to-[#FF8E8E] transform translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                <span className="relative z-10 group-hover:text-white transition-colors">
-                  Get In Touch
-                </span>
-              </motion.a>
+  {/* Get In Touch */}
+  <motion.a
+    whileHover={{ scale: 1.05, y: -3 }}
+    whileTap={{ scale: 0.95 }}
+    href="#contact"
+    className="group relative px-8 py-4 bg-transparent border-2 border-[#FF6B6B] text-[#FF6B6B] font-semibold rounded-xl overflow-hidden transition-all"
+  >
+    <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B6B] to-[#FF8E8E] transform translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+    <span className="relative z-10 group-hover:text-white transition-colors">
+      Get In Touch
+    </span>
+  </motion.a>
 
-              {/* Download Resume */}
-              <motion.a
-                whileHover={{ scale: 1.05, y: -3 }}
-                whileTap={{ scale: 0.95 }}
-                href="/resume.pdf"
-                download="Madhumitha_Resume.pdf"
-                className="group relative px-8 py-4 bg-slate-800 border border-slate-700 text-white font-semibold rounded-xl overflow-hidden transition-all hover:bg-slate-700"
-              >
-                <span className="relative z-10 flex items-center gap-2">
-                  <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    className="h-5 w-5" 
-                    fill="none" 
-                    viewBox="0 0 24 24" 
-                    stroke="currentColor"
-                  >
-                    <path 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round" 
-                      strokeWidth={2} 
-                      d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" 
-                    />
-                  </svg>
-                  Download Resume
-                </span>
-              </motion.a>
-            </motion.div>
+  {/* Download Resume */}
+  <motion.a
+    whileHover={{ scale: 1.05, y: -3 }}
+    whileTap={{ scale: 0.95 }}
+    href="/resume.pdf"
+    download="Madhumitha_Resume.pdf"
+    className="group relative px-8 py-4 bg-transparent border-2 border-[#FF6B6B] text-[#FF6B6B] font-semibold rounded-xl overflow-hidden transition-all"
+  >
+    <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B6B] to-[#FF8E8E] transform translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+    <span className="relative z-10 flex items-center gap-2 group-hover:text-white transition-colors">
+      <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        className="h-5 w-5" 
+        fill="none" 
+        viewBox="0 0 24 24" 
+        stroke="currentColor"
+      >
+        <path 
+          strokeLinecap="round" 
+          strokeLinejoin="round" 
+          strokeWidth={2} 
+          d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" 
+        />
+      </svg>
+      Download Resume
+    </span>
+  </motion.a>
+</motion.div>
+
           </motion.div>
         </div>
       </div>
