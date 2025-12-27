@@ -34,9 +34,15 @@ export const portfolioAPI = {
   getHero: () => apiClient.get('/portfolio/hero'),
   updateHero: (data) => apiClient.put('/portfolio/hero', data),
 
-  // About Section
+  // About Section (merged - removed duplicate)
   getAbout: () => apiClient.get('/portfolio/about'),
   updateAbout: (data) => apiClient.put('/portfolio/about', data),
+};
+
+// ========== ABOUT API (standalone for About.js) ==========
+export const aboutAPI = {
+  get: () => apiClient.get('/portfolio/about'), // Fixed: uses apiClient, not "api"
+  update: (data) => apiClient.put('/portfolio/about', data),
 };
 
 // ========== EXPERIENCE API ==========
