@@ -1,6 +1,6 @@
 // client/src/components/Navbar.js
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
@@ -15,6 +15,7 @@ const Navbar = () => {
     { name: "Contact", href: "#contact" },
   ];
 
+  // sections to show under "Other"
   const otherLinks = [
     { name: "Certifications", href: "#certifications" },
     { name: "Achievements", href: "#achievements" },
@@ -63,28 +64,19 @@ const Navbar = () => {
                 Other
                 <span className="text-xs">▾</span>
               </button>
-              
-              <AnimatePresence>
-                {otherOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute right-0 mt-2 w-48 rounded-xl bg-[color:var(--color-bg-elevated)] border border-[color:var(--color-border)] shadow-lg py-2"
-                  >
-                    {otherLinks.map((link) => (
-                      <a
-                        key={link.name}
-                        href={link.href}
-                        className="block px-4 py-2 text-sm font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)] hover:bg-[color:var(--color-bg)]/70 transition"
-                      >
-                        {link.name}
-                      </a>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {otherOpen && (
+                <div className="absolute right-0 mt-2 w-44 rounded-xl bg-[color:var(--color-bg-elevated)] border border-[color:var(--color-border)] shadow-soft py-2">
+                  {otherLinks.map((link) => (
+                    <a
+                      key={link.name}
+                      href={link.href}
+                      className="block px-4 py-1.5 text-xs font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)] hover:bg-[color:var(--color-bg)]/70 transition"
+                    >
+                      {link.name}
+                    </a>
+                  ))}
+                </div>
+              )}
             </div>
 
             <ThemeToggle />
@@ -92,7 +84,7 @@ const Navbar = () => {
             {/* Login button */}
             <a
               href="/admin/login"
-              className="px-4 py-2 text-sm font-semibold rounded-lg border border-[color:var(--color-border)] text-[color:var(--color-text)] hover:bg-[color:var(--color-bg-elevated)] transition"
+              className="px-4 py-2 text-xs font-semibold rounded-lg border border-[color:var(--color-border)] text-[color:var(--color-text)] hover:bg-[color:var(--color-bg-elevated)] transition"
             >
               Login
             </a>
@@ -103,8 +95,7 @@ const Navbar = () => {
             <ThemeToggle />
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-[color:var(--color-text)] p-2"
-              aria-label="Toggle menu"
+              className="text-[color:var(--color-text)]"
             >
               <svg
                 className="w-6 h-6"
@@ -129,65 +120,52 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="md:hidden overflow-hidden bg-[color:var(--color-bg-elevated)] border-t border-[color:var(--color-border)]"
-          >
-            <div className="px-4 py-4 space-y-1">
-              {navLinks.map((link, idx) => (
-                <motion.a
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          className="md:hidden bg-[color:var(--color-bg-elevated)] border-t border-[color:var(--color-border)]"
+        >
+          <div className="px-4 py-4 space-y-3">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={() => setIsOpen(false)}
+                className="block text-sm font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)]"
+              >
+                {link.name}
+              </a>
+            ))}
+
+            {/* Other group on mobile */}
+            <div className="pt-2 border-t border-[color:var(--color-border)]">
+              <p className="text-[11px] uppercase tracking-[0.16em] text-[color:var(--color-muted)] mb-2">
+                Other
+              </p>
+              {otherLinks.map((link) => (
+                <a
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: idx * 0.05 }}
-                  className="block py-2 text-base font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)] transition"
+                  className="block text-sm font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)]"
                 >
                   {link.name}
-                </motion.a>
+                </a>
               ))}
-
-              {/* Other group on mobile */}
-              <div className="pt-3 mt-3 border-t border-[color:var(--color-border)]">
-                <p className="text-xs uppercase tracking-wider text-[color:var(--color-muted)] mb-2 font-semibold">
-                  Other
-                </p>
-                {otherLinks.map((link, idx) => (
-                  <motion.a
-                    key={link.name}
-                    href={link.href}
-                    onClick={() => setIsOpen(false)}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: (navLinks.length + idx) * 0.05 }}
-                    className="block py-2 text-sm font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)] transition"
-                  >
-                    {link.name}
-                  </motion.a>
-                ))}
-              </div>
-
-              {/* Login button mobile */}
-              <motion.a
-                href="/admin/login"
-                onClick={() => setIsOpen(false)}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: (navLinks.length + otherLinks.length) * 0.05 }}
-                className="block mt-4 py-2 text-center text-sm font-semibold text-[color:var(--color-primary)] border border-[color:var(--color-border)] rounded-lg hover:bg-[color:var(--color-bg)] transition"
-              >
-                Login
-              </motion.a>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+
+            {/* Login button mobile */}
+            <a
+              href="/admin/login"
+              onClick={() => setIsOpen(false)}
+              className="block mt-2 text-sm font-semibold text-[color:var(--color-primary)]"
+            >
+              Login
+            </a>
+          </div>
+        </motion.div>
+      )}
     </motion.nav>
   );
 };
