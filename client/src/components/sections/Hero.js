@@ -168,16 +168,19 @@ const Hero = () => {
   transition={{ duration: 0.8, delay: 0.2 }}
   className="relative flex justify-center lg:justify-end items-center h-[600px]"
 >
-  {/* Large Organic Blob Background - Same Size as Image Container */}
-  <motion.div
-    initial={{ scale: 0.8, opacity: 0 }}
-    animate={{ scale: 1, opacity: 1 }}
-    transition={{ duration: 1.5, ease: "easeOut" }}
-    className="absolute right-0 top-1/2 -translate-y-1/2 w-[450px] h-[450px] md:w-[550px] md:h-[550px] bg-gradient-to-br from-[#FF6B6B] to-[#FF8E8E]"
-    style={{
-      borderRadius: "63% 37% 54% 46% / 55% 48% 52% 45%",
-    }}
-  />
+ {/* Large Organic Blob Background - Same Size as Image Container */}
+<motion.div
+  initial={{ scale: 0.8, opacity: 0 }}
+  animate={{ scale: 1, opacity: 1 }}
+  transition={{ duration: 1.5, ease: "easeOut" }}
+  className="absolute right-0 top-1/2 -translate-y-1/2 w-[450px] h-[450px] md:w-[550px] md:h-[550px]"
+  style={{
+    backgroundImage:
+      "linear-gradient(to bottom right, var(--hero-blob-from), var(--hero-blob-to))",
+    borderRadius: "63% 37% 54% 46% / 55% 48% 52% 45%",
+  }}
+/>
+
 
   {/* Profile Image - Positioned Inside Blob */}
   <motion.div

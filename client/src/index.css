@@ -31,6 +31,10 @@
   /* Text */
   --color-text: #1E293B;            /* Ink Navy */
   --color-muted: #64748B;           /* Slate Grey */
+ /* tweak blob colors for dark mode if you want */
+  --hero-blob-from: #0ea5e9;
+  --hero-blob-to: #22c55e;
+  
   
   /* UI Elements */
   --color-border: rgba(30, 41, 59, 0.15);
@@ -58,6 +62,10 @@
   --color-text: #E5E5E5;            /* Bone White */
   --color-muted: #9CA3AF;           /* Fog Grey */
   
+ /* hero blob gradient */
+  --hero-blob-from: #f97316;        /* warm accent 1 */
+  --hero-blob-to: #fb7185;          /* warm accent 2 */
+
   /* UI Elements */
   --color-border: rgba(193, 18, 31, 0.2);
   --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.5);
