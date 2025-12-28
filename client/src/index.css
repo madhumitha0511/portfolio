@@ -51,10 +51,10 @@
   --color-card: rgba(18, 10, 18, 0.95);
 
   /* Brand */
-  --color-primary: #F97362;             /* Vecna crimson */
+  --color-primary: #C1121F;             /* Vecna crimson */
   --color-primary-soft: rgba(139, 0, 0, 0.15);
-  --color-secondary: #C1121F;            /* Vein red */
-  --color-accent: #3A1C3D;               /* Corrupted purple */
+  --color-secondary: #F97362;            /* Vein red */
+  --color-accent: #d6242f9f;               /* Corrupted purple */
 
   /* Text */
   --color-text: #E5E5E5;                /* Bone white */
