@@ -25,25 +25,27 @@ const About = () => {
       id="about"
       className="relative py-20 px-4 bg-[color:var(--color-bg)] border-t border-[color:var(--color-border)] overflow-hidden"
     >
-      {/* Subtle background using theme accent */}
+      {/* Subtle background mesh using theme variables */}
       <div className="absolute inset-0 opacity-25 pointer-events-none">
-        <div className="absolute top-20 left-10 w-96 h-96 rounded-full blur-3xl"
-             style={{
-               backgroundImage:
-                 "radial-gradient(circle at 0% 0%, var(--color-accent-soft), transparent)"
-             }}
+        <div
+          className="absolute top-20 left-10 w-96 h-96 rounded-full blur-3xl"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 0% 0%, var(--hero-blob-from), transparent)",
+          }}
         />
-        <div className="absolute bottom-20 right-10 w-96 h-96 rounded-full blur-3xl"
-             style={{
-               backgroundImage:
-                 "radial-gradient(circle at 100% 100%, var(--color-primary), transparent)"
-             }}
+        <div
+          className="absolute bottom-20 right-10 w-96 h-96 rounded-full blur-3xl"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 100% 100%, var(--hero-blob-to), transparent)",
+          }}
         />
       </div>
 
       <div className="relative max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* LEFT SIDE - Image Card */}
+          {/* LEFT SIDE - Premium Image Card (no glow) */}
           <motion.div
             initial={{ scale: 0.9, opacity: 0, rotateY: -10 }}
             whileInView={{ scale: 1, opacity: 1, rotateY: 0 }}
@@ -56,13 +58,14 @@ const About = () => {
                 scale: 1.02,
                 rotateY: 4,
                 rotateX: -2,
-                transition: { duration: 0.3 }
+                transition: { duration: 0.3 },
               }}
-              className="relative rounded-3xl overflow-hidden shadow-2xl border border-[color:var(--color-border)] bg-[color:var(--color-bg-elevated)]"
+              className="relative rounded-3xl overflow-hidden shadow-soft border border-[color:var(--color-border)] bg-[color:var(--color-card)]"
               style={{ transformStyle: "preserve-3d" }}
             >
-              {/* thin accent border strip instead of glow */}
-              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[color:var(--color-primary)] to-[color:var(--color-accent)]" />
+              {/* thin accent top bar */}
+              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[color:var(--color-primary)] via-[color:var(--color-secondary)] to-[color:var(--color-accent)]" />
+
               <div className="relative p-3">
                 <img
                   src="/profile.png"
@@ -114,7 +117,7 @@ const About = () => {
                 { label: "Years Experience", value: "3+" },
                 { label: "Projects", value: "15+" },
                 { label: "Technologies", value: "10+" },
-                { label: "Certifications", value: "5+" }
+                { label: "Certifications", value: "5+" },
               ].map((stat, idx) => (
                 <motion.div
                   key={idx}
@@ -123,8 +126,8 @@ const About = () => {
                   transition={{ delay: 0.5 + idx * 0.1 }}
                   className="relative"
                 >
-                  <div className="relative rounded-xl p-5 border border-[color:var(--color-border)] bg-[color:var(--color-bg-elevated)] text-center">
-                    <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[color:var(--color-primary)] to-[color:var(--color-accent)] bg-clip-text text-transparent">
+                  <div className="relative rounded-xl p-5 border border-[color:var(--color-border)] bg-[color:var(--color-bg-elevated)] text-center shadow-soft">
+                    <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[color:var(--color-primary)] to-[color:var(--color-secondary)] bg-clip-text text-transparent">
                       {stat.value}
                     </p>
                     <p className="text-xs md:text-sm text-[color:var(--color-muted)] mt-1">
@@ -147,7 +150,7 @@ const About = () => {
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.97 }}
                 href="#projects"
-                className="relative px-8 py-3 rounded-xl border-2 border-[color:var(--color-primary)] text-[color:var(--color-primary)] font-semibold transition-colors bg-transparent hover:bg-[color:var(--color-primary)] hover:text-[color:var(--color-bg-elevated)]"
+                className="relative px-8 py-3 rounded-xl border-2 border-[color:var(--color-primary)] text-[color:var(--color-primary)] font-semibold transition-colors bg-transparent hover:bg-[color:var(--color-primary)] hover:text-[color:var(--color-bg)]"
               >
                 View My Works
               </motion.a>
@@ -157,7 +160,7 @@ const About = () => {
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.97 }}
                 href="#contact"
-                className="relative px-8 py-3 rounded-xl border-2 border-[color:var(--color-accent)] text-[color:var(--color-accent)] font-semibold transition-colors bg-transparent hover:bg-[color:var(--color-accent)] hover:text-[color:var(--color-bg-elevated)]"
+                className="relative px-8 py-3 rounded-xl border-2 border-[color:var(--color-secondary)] text-[color:var(--color-secondary)] font-semibold transition-colors bg-transparent hover:bg-[color:var(--color-secondary)] hover:text-[color:var(--color-bg)]"
               >
                 Get In Touch
               </motion.a>
@@ -168,7 +171,7 @@ const About = () => {
                 whileTap={{ scale: 0.97 }}
                 href="/resume.pdf"
                 download="Madhumitha_Resume.pdf"
-                className="relative px-8 py-3 rounded-xl border-2 border-[color:var(--color-primary)] text-[color:var(--color-primary)] font-semibold transition-colors bg-transparent hover:bg-[color:var(--color-primary)] hover:text-[color:var(--color-bg-elevated)]"
+                className="relative px-8 py-3 rounded-xl border-2 border-[color:var(--color-accent)] text-[color:var(--color-accent)] font-semibold transition-colors bg-transparent hover:bg-[color:var(--color-accent)] hover:text-[color:var(--color-bg)]"
               >
                 <span className="flex items-center gap-2">
                   <svg
