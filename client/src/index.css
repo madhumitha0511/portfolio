@@ -107,7 +107,7 @@
   --color-muted: #9CA3AF;
 
   /* UI */
-  --color-border: rgba(193, 18, 31, 0.22);
+  --color-border: #ababab;
   --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.55);
   --shadow-elevated: 0 20px 50px rgba(0, 0, 0, 0.75);
 
