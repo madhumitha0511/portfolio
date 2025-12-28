@@ -171,7 +171,7 @@ const About = () => {
                 whileTap={{ scale: 0.97 }}
                 href="/resume.pdf"
                 download="Madhumitha_Resume.pdf"
-               className="relative px-8 py-3 rounded-xl border-2 border-[color:var(--color-secondary)] text-[color:var(--color-secondary)] font-semibold transition-colors bg-transparent hover:bg-[color:var(--color-secondary)] hover:text-[color:var(--color-bg)]"
+               className="relative px-8 py-3 rounded-xl border-2 border-[color:var(--color-primary)] text-[color:var(--color-primary)] font-semibold transition-colors bg-transparent hover:bg-[color:var(--color-primary)] hover:text-[color:var(--color-bg)]"
               >
                 <span className="flex items-center gap-2">
                   <svg

@@ -1,11 +1,6 @@
-// src/App.js
+// src/App.js - 80/20 PERFECT BALANCE
 import React, { useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import Navbar from "./components/Navbar";
@@ -41,7 +36,6 @@ function App() {
 
   const loadPortfolioData = async () => {
     try {
-      // TODO: fetch from your API
       setIsLoading(false);
     } catch (error) {
       console.error("Error loading portfolio:", error);
@@ -51,7 +45,7 @@ function App() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-[#0f0000]">
+      <div className="flex items-center justify-center h-screen bg-[#050006]">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
@@ -63,8 +57,7 @@ function App() {
 
   return (
     <Router>
-      {/* Base dark tone under everything */}
-      <div className="min-h-screen bg-[#050006] text-[color:var(--color-text)] relative">
+      <div className="min-h-screen bg-[#050006] text-[color:var(--color-text)] relative overflow-x-hidden">
         <Routes>
           <Route
             path="/"
@@ -72,38 +65,32 @@ function App() {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.3 }}
               >
                 <Navbar />
-                {/* Hero sits on clean dark base */}
                 <Hero />
 
-               {/* GLOBAL DYNAMIC SPOTLIGHT LAYER (About -> Footer) */}
-<div className="relative z-0">
-  {/* Animated spotlight background */}
-  <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-    <motion.div
-      className="absolute inset-0 spotlight-bg"
-      animate={{ backgroundPosition: ["0% 0%", "100% 50%", "50% 100%", "0% 0%"] }}
-      transition={{
-        duration: 24,
-        repeat: Infinity,
-        ease: "easeInOut",
-      }}
-    />
-    {/* Subtle noise for texture (keep same for both themes) */}
-    <div
-      className="absolute inset-0 opacity-[0.018]"
-      style={{
-        backgroundImage:
-          "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
-      }}
-    />
-  </div>
-
-  
-
-                  {/* Foreground content */}
+                {/* ✅ 80% BLACK + 20% RED - PERFECT BALANCE */}
+                <div 
+                  className="relative z-0"
+                  style={{
+                    background: `
+                      /* PRIMARY SPOTLIGHTS - 20% RED INTENSITY */
+                      radial-gradient(ellipse 1100px 800px at 20% 15%, rgba(140,29,24,0.18) 0%, transparent 65%),
+                      radial-gradient(ellipse 950px 700px at 80% 70%, rgba(140,29,24,0.15) 0%, transparent 65%),
+                      radial-gradient(ellipse 850px 600px at 45% 92%, rgba(178,37,30,0.12) 0%, transparent 65%),
+                      
+                      /* SUBTLE ENHANCERS - 5% RED */
+                      radial-gradient(ellipse 1000px 750px at 35% 75%, rgba(140,29,24,0.08) 0%, transparent 75%),
+                      radial-gradient(circle 180px at 70% 30%, rgba(220,38,38,0.10) 0%, transparent 70%),
+                      
+                      /* WHITE HIGHLIGHTS - 2% */
+                      radial-gradient(circle 120px at 55% 8%, rgba(255,255,255,0.06) 0%, transparent 60%)
+                    `,
+                    backgroundAttachment: 'fixed',
+                    backgroundSize: 'cover'
+                  }}
+                >
                   <About />
                   <Experience />
                   <Projects />
@@ -121,7 +108,6 @@ function App() {
               </motion.div>
             }
           />
-
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route
             path="/admin/*"
