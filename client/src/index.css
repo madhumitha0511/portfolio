@@ -34,7 +34,7 @@
   --color-primary-soft: rgba(31, 58, 138, 0.1);
   
   /* Secondary Accents */
-  --color-secondary: #F4A261;       /* Sunset Gold */
+  --color-secondary: #61a3f4;       /* Sunset Gold */
   --color-accent: #2A9D8F;          /* Gym Green */
   
   /* Text */
@@ -66,7 +66,7 @@
   
   /* Secondary Accents */
   --color-secondary: #F97362;;       /* Vein Red */
-  --color-accent: #3A1C3D;          /* Corrupted Purple */
+  --color-accent: rgba(193, 18, 31, 0.2);          /* Corrupted Purple */
   
   /* Text */
   --color-text: #E5E5E5;            /* Bone White */

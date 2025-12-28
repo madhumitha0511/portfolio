@@ -127,7 +127,7 @@ const About = () => {
                   className="relative"
                 >
                   <div className="relative rounded-xl p-5 border border-[color:var(--color-border)] bg-[color:var(--color-bg-elevated)] text-center shadow-soft">
-                    <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[color:var(--color-primary)] to-[color:var(--color-secondary)] bg-clip-text text-transparent">
+                    <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[color:var(--color-primary)] to-[color:var(--color-accent)] bg-clip-text text-transparent">
                       {stat.value}
                     </p>
                     <p className="text-xs md:text-sm text-[color:var(--color-muted)] mt-1">
@@ -171,7 +171,7 @@ const About = () => {
                 whileTap={{ scale: 0.97 }}
                 href="/resume.pdf"
                 download="Madhumitha_Resume.pdf"
-                className="relative px-8 py-3 rounded-xl border-2 border-[color:var(--color-accent)] text-[color:var(--color-accent)] font-semibold transition-colors bg-transparent hover:bg-[color:var(--color-accent)] hover:text-[color:var(--color-bg)]"
+               className="relative px-8 py-3 rounded-xl border-2 border-[color:var(--color-secondary)] text-[color:var(--color-secondary)] font-semibold transition-colors bg-transparent hover:bg-[color:var(--color-secondary)] hover:text-[color:var(--color-bg)]"
               >
                 <span className="flex items-center gap-2">
                   <svg
