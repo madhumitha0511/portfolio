@@ -1,9 +1,8 @@
 @tailwind base;
 @tailwind components;
+
 @tailwind utilities;
-
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap');
-
 .font-handwriting {
   font-family: 'Caveat', cursive;
   font-size: 1.1em;
@@ -48,11 +47,11 @@
   --color-card: rgba(18, 10, 18, 0.95); /* Blood Shadow with transparency */
   
   /* Primary Accent */
-  --color-primary: #F97362;         /* Vecna Crimson */
+  --color-primary: #F97362;;         /* Vecna Crimson */
   --color-primary-soft: rgba(139, 0, 0, 0.15);
   
   /* Secondary Accents */
-  --color-secondary: #F97362;       /* Vein Red */
+  --color-secondary: #F97362;;       /* Vein Red */
   --color-accent: #3A1C3D;          /* Corrupted Purple */
   
   /* Text */
@@ -63,6 +62,7 @@
   --color-border: rgba(193, 18, 31, 0.2);
   --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.5);
   --shadow-elevated: 0 20px 50px rgba(0, 0, 0, 0.7);
+
 }
 
 /* ========================================
@@ -99,6 +99,8 @@ body {
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
+
+
 
 /* ========================================
    LIGHT MODE SPECIFIC EFFECTS
@@ -168,6 +170,7 @@ body {
 :root[data-theme="dark"] ::-webkit-scrollbar-thumb {
   background: var(--color-primary);
   border-radius: 5px;
+  
 }
 
 :root[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
@@ -186,4 +189,5 @@ body {
 :root[data-theme="dark"] ::selection {
   background-color: var(--color-primary);
   color: var(--color-text);
+
 }
