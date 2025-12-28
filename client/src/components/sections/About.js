@@ -26,7 +26,7 @@ const About = () => {
       className="relative py-20 px-4 overflow-hidden" // ✅ REMOVED bg/border-t
     >
       {/* ✅ GLASS CONTENT CONTAINER */}
-      <div className="relative max-w-7xl mx-auto backdrop-blur-xl bg-[color:var(--color-card)]/10 border border-[color:var(--color-border)]/40 rounded-4xl p-8 md:p-12 mx-4 shadow-2xl">
+      <div className="relative max-w-7xl mx-auto backdrop-blur-xl rounded-4xl p-8 md:p-12 mx-4 shadow-2xl">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* LEFT SIDE - Glass Image Card */}
           <motion.div
@@ -43,7 +43,7 @@ const About = () => {
                 rotateX: -2,
                 transition: { duration: 0.3 },
               }}
-              className="relative rounded-3xl overflow-hidden shadow-2xl border border-[color:var(--color-border)]/50 bg-[color:var(--color-card)]/80 backdrop-blur-xl"
+              className="relative rounded-3xl overflow-hidden shadow-2xl backdrop-blur-xl"
               style={{ transformStyle: "preserve-3d" }}
             >
               {/* Glass accent top bar */}
@@ -132,7 +132,7 @@ const About = () => {
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.97 }}
                 href="#projects"
-                className="relative px-8 py-4 rounded-2xl border-2 border-[color:var(--color-primary)]/70 text-[color:var(--color-primary)] font-bold bg-[color:var(--color-card)]/50 backdrop-blur-md shadow-lg hover:bg-[color:var(--color-primary)] hover:text-[color:var(--color-bg)] hover:shadow-xl hover:border-[color:var(--color-primary)] transition-all"
+                className="relative px-8 py-4 rounded-2xl  text-[color:var(--color-primary)] font-bold bg-[color:var(--color-card)]/50 backdrop-blur-md shadow-lg hover:bg-[color:var(--color-primary)] hover:text-[color:var(--color-bg)] hover:shadow-xl hover:border-[color:var(--color-primary)] transition-all"
               >
                 View My Works
               </motion.a>
@@ -141,7 +141,7 @@ const About = () => {
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.97 }}
                 href="#contact"
-                className="relative px-8 py-4 rounded-2xl border-2 border-[color:var(--color-primary)]/70 text-[color:var(--color-primary)] font-bold bg-[color:var(--color-card)]/50 backdrop-blur-md shadow-lg hover:bg-[color:var(--color-primary)] hover:text-[color:var(--color-bg)] hover:shadow-xl hover:border-[color:var(--color-primary)] transition-all"
+                className="relative px-8 py-4 rounded-2xl  text-[color:var(--color-primary)] font-bold bg-[color:var(--color-card)]/50 backdrop-blur-md shadow-lg hover:bg-[color:var(--color-primary)] hover:text-[color:var(--color-bg)] hover:shadow-xl hover:border-[color:var(--color-primary)] transition-all"
               >
                 Get In Touch
               </motion.a>
@@ -151,7 +151,7 @@ const About = () => {
                 whileTap={{ scale: 0.97 }}
                 href="/resume.pdf"
                 download="Madhumitha_Resume.pdf"
-                className="relative px-8 py-4 rounded-2xl border-2 border-[color:var(--color-primary)]/70 text-[color:var(--color-primary)] font-bold bg-[color:var(--color-card)]/50 backdrop-blur-md shadow-lg hover:bg-[color:var(--color-primary)] hover:text-[color:var(--color-bg)] hover:shadow-xl hover:border-[color:var(--color-primary)] transition-all flex items-center gap-2"
+                className="relative px-8 py-4 rounded-2xl  text-[color:var(--color-primary)] font-bold bg-[color:var(--color-card)]/50 backdrop-blur-md shadow-lg hover:bg-[color:var(--color-primary)] hover:text-[color:var(--color-bg)] hover:shadow-xl hover:border-[color:var(--color-primary)] transition-all flex items-center gap-2"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
