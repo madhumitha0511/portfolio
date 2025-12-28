@@ -71,27 +71,7 @@ const Navbar = () => {
               </button>
 
               
-            <AnimatePresence>
-                {otherOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute right-0 mt-0 w-48 rounded-xl bg-[color:var(--color-bg-elevated)] border border-[color:var(--color-border)] shadow-lg py-2 z-50"
-                  >
-                    {otherLinks.map((link) => (
-                      <a
-                        key={link.name}
-                        href={link.href}
-                        className="block px-4 py-2 text-sm font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)] hover:bg-[color:var(--color-bg)]/70 transition"
-                      >
-                        {link.name}
-                      </a>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+           
             </div>
 
             <ThemeToggle />
