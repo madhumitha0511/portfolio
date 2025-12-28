@@ -160,7 +160,7 @@ const About = () => {
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.97 }}
                 href="#contact"
-                className="relative px-8 py-3 rounded-xl border-2 border-[color:var(--color-secondary)] text-[color:var(--color-secondary)] font-semibold transition-colors bg-transparent hover:bg-[color:var(--color-secondary)] hover:text-[color:var(--color-bg)]"
+                className="relative px-8 py-3 rounded-xl border-2 border-[color:var(--color-primary)] text-[color:var(--color-primary)] font-semibold transition-colors bg-transparent hover:bg-[color:var(--color-primary)] hover:text-[color:var(--color-bg)]"
               >
                 Get In Touch
               </motion.a>
