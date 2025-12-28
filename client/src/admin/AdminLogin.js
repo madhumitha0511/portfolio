@@ -116,18 +116,7 @@ const AdminLogin = () => {
             </motion.button>
           </form>
 
-          {/* Demo Credentials */}
-          <div className="mt-6 p-3 bg-slate-900/40 border border-slate-700/60 rounded text-sm text-slate-300">
-            <p className="font-semibold mb-1">Demo Credentials:</p>
-            <p>
-              Username:{" "}
-              <code className="bg-slate-900 px-2 py-1 rounded">admin</code>
-            </p>
-            <p>
-              Password:{" "}
-              <code className="bg-slate-900 px-2 py-1 rounded">admin123</code>
-            </p>
-          </div>
+          
         </div>
       </motion.div>
     </div>
