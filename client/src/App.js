@@ -78,40 +78,30 @@ function App() {
                 {/* Hero sits on clean dark base */}
                 <Hero />
 
-                {/* GLOBAL DYNAMIC SPOTLIGHT LAYER (About -> Footer) */}
-                <div className="relative z-0">
-                  {/* Animated red spotlight background */}
-                  <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-                    <motion.div
-                      className="absolute inset-0"
-                      style={{ backgroundColor: "#050006" }}
-                      animate={{
-                        backgroundImage: [
-                          // Frame 1
-                          "radial-gradient(ellipse 900px 650px at 15% 10%, rgba(140,29,24,0.26) 0%, transparent 55%), radial-gradient(ellipse 800px 550px at 85% 65%, rgba(140,29,24,0.20) 0%, transparent 55%), radial-gradient(ellipse 700px 500px at 50% 95%, rgba(140,29,24,0.16) 0%, transparent 55%), radial-gradient(circle at 50% 0%, rgba(255,255,255,0.03) 0%, transparent 45%)",
-                          // Frame 2
-                          "radial-gradient(ellipse 850px 600px at 80% 30%, rgba(140,29,24,0.26) 0%, transparent 55%), radial-gradient(ellipse 750px 550px at 10% 75%, rgba(140,29,24,0.20) 0%, transparent 55%), radial-gradient(ellipse 700px 500px at 50% 90%, rgba(140,29,24,0.16) 0%, transparent 55%), radial-gradient(circle at 40% 5%, rgba(255,255,255,0.03) 0%, transparent 45%)",
-                          // Frame 3
-                          "radial-gradient(ellipse 900px 650px at 30% 80%, rgba(140,29,24,0.26) 0%, transparent 55%), radial-gradient(ellipse 800px 550px at 90% 20%, rgba(140,29,24,0.20) 0%, transparent 55%), radial-gradient(ellipse 700px 500px at 50% 50%, rgba(140,29,24,0.16) 0%, transparent 55%), radial-gradient(circle at 60% 0%, rgba(255,255,255,0.03) 0%, transparent 45%)",
-                          // Back to frame 1
-                          "radial-gradient(ellipse 900px 650px at 15% 10%, rgba(140,29,24,0.26) 0%, transparent 55%), radial-gradient(ellipse 800px 550px at 85% 65%, rgba(140,29,24,0.20) 0%, transparent 55%), radial-gradient(ellipse 700px 500px at 50% 95%, rgba(140,29,24,0.16) 0%, transparent 55%), radial-gradient(circle at 50% 0%, rgba(255,255,255,0.03) 0%, transparent 45%)",
-                        ],
-                      }}
-                      transition={{
-                        duration: 24,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                    />
-                    {/* Subtle noise for texture */}
-                    <div
-                      className="absolute inset-0 opacity-[0.018]"
-                      style={{
-                        backgroundImage:
-                          "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
-                      }}
-                    />
-                  </div>
+               {/* GLOBAL DYNAMIC SPOTLIGHT LAYER (About -> Footer) */}
+<div className="relative z-0">
+  {/* Animated spotlight background */}
+  <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+    <motion.div
+      className="absolute inset-0 spotlight-bg"
+      animate={{ backgroundPosition: ["0% 0%", "100% 50%", "50% 100%", "0% 0%"] }}
+      transition={{
+        duration: 24,
+        repeat: Infinity,
+        ease: "easeInOut",
+      }}
+    />
+    {/* Subtle noise for texture (keep same for both themes) */}
+    <div
+      className="absolute inset-0 opacity-[0.018]"
+      style={{
+        backgroundImage:
+          "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+      }}
+    />
+  </div>
+
+  
 
                   {/* Foreground content */}
                   <About />

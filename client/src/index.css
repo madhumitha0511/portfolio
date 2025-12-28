@@ -63,8 +63,7 @@
   --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.5);
   --shadow-elevated: 0 20px 50px rgba(0, 0, 0, 0.7);
   
-  /* Subtle red glow for hover states */
-  --glow-red: 0 0 8px #F97362;;
+  
 }
 
 /* ========================================
@@ -102,11 +101,7 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
-/* Red glow on hover for dark mode interactive elements */
-:root[data-theme="dark"] a:hover,
-:root[data-theme="dark"] button:hover {
-  filter: drop-shadow(var(--glow-red));
-}
+
 
 /* ========================================
    LIGHT MODE SPECIFIC EFFECTS
@@ -176,7 +171,7 @@ body {
 :root[data-theme="dark"] ::-webkit-scrollbar-thumb {
   background: var(--color-primary);
   border-radius: 5px;
-  box-shadow: var(--glow-red);
+  
 }
 
 :root[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
@@ -195,5 +190,5 @@ body {
 :root[data-theme="dark"] ::selection {
   background-color: var(--color-primary);
   color: var(--color-text);
-  text-shadow: var(--glow-red);
+  
 }
