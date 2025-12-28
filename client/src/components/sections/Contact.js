@@ -39,21 +39,9 @@ export const Contact = () => {
   return (
     <section
       id="contact"
-      className="relative py-24 px-4 bg-[color:var(--color-bg)] overflow-hidden"
+      className="relative py-24 px-4 overflow-hidden"
+      // REMOVED: bg-[color:var(--color-bg)] and animated background - using global now!
     >
-      {/* spotlight overlay – SAME style as Certifications */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        animate={{
-          background: [
-            "radial-gradient(circle at 20% 10%, rgba(140,29,24,0.15), transparent 60%)",
-            "radial-gradient(circle at 80% 90%, rgba(140,29,24,0.15), transparent 60%)",
-            "radial-gradient(circle at 20% 10%, rgba(140,29,24,0.15), transparent 60%)",
-          ],
-        }}
-        transition={{ duration: 16, repeat: Infinity }}
-      />
-
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="grid md:grid-cols-2 gap-10 items-start">
           {/* LEFT COLUMN – text + bullets */}
@@ -91,7 +79,7 @@ export const Contact = () => {
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="relative rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card)]/92 shadow-[0_20px_60px_rgba(0,0,0,0.5)] px-6 py-7 md:px-7 md:py-8"
+            className="relative rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card)]/92 backdrop-blur-xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] px-6 py-7 md:px-7 md:py-8"
           >
             {success && (
               <motion.div

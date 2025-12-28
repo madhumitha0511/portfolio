@@ -23,21 +23,9 @@ const Testimonials = () => {
   return (
     <section
       id="testimonials"
-      className="relative py-24 px-4 bg-[color:var(--color-bg)] overflow-hidden"
+      className="relative py-24 px-4 overflow-hidden"
+      // REMOVED: bg-[color:var(--color-bg)] and animated background - using global now!
     >
-      {/* soft backdrop */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        animate={{
-          background: [
-            "radial-gradient(circle at 20% 0%, rgba(140,29,24,0.15), transparent 60%)",
-            "radial-gradient(circle at 80% 100%, rgba(140,29,24,0.2), transparent 60%)",
-            "radial-gradient(circle at 20% 0%, rgba(140,29,24,0.15), transparent 60%)",
-          ],
-        }}
-        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-      />
-
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-[color:var(--color-text)]">
@@ -74,7 +62,7 @@ const Testimonials = () => {
               </div>
 
               {/* card */}
-              <div className="relative w-full rounded-3xl bg-[color:var(--color-card)]/95 border border-[color:var(--color-border)] px-5 pt-10 pb-6 text-center shadow-[0_18px_40px_rgba(0,0,0,0.7)]">
+              <div className="relative w-full rounded-3xl bg-[color:var(--color-card)]/95 backdrop-blur-xl border border-[color:var(--color-border)] px-5 pt-10 pb-6 text-center shadow-[0_18px_40px_rgba(0,0,0,0.7)]">
                 {/* light overlay like reference */}
                 <div
                   className="pointer-events-none absolute inset-0 rounded-3xl opacity-60"
@@ -94,7 +82,7 @@ const Testimonials = () => {
                   </p>
 
                   <p className="mt-3 text-[11px] text-[color:var(--color-text)]/85 leading-relaxed">
-                    “{t.message}”
+                    "{t.message}"
                   </p>
 
                   {/* rating dots (static 5 or from t.rating if exists) */}

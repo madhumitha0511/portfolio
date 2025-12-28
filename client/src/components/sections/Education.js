@@ -74,34 +74,9 @@ const Education = () => {
   return (
     <section
       id="education"
-      className="relative py-40 px-4 md:px-8 bg-[color:var(--color-bg)] overflow-hidden"
+      className="relative py-40 px-4 md:px-8 overflow-hidden"
+      // REMOVED: bg-[color:var(--color-bg)] and animated background glows - using global now!
     >
-      {/* BACKGROUND GLOW */}
-      <div className="absolute inset-0 pointer-events-none -z-10">
-        <motion.div
-          animate={{
-            opacity: [0.4, 0.6, 0.4],
-            scale: [0.95, 1.05, 0.95],
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[900px] rounded-full blur-[150px]"
-          style={{
-            background:
-              "radial-gradient(circle, rgba(140,29,24,0.5), transparent 70%)",
-          }}
-        />
-
-        <motion.div
-          animate={{ opacity: [0.2, 0.35, 0.2] }}
-          transition={{ duration: 10, repeat: Infinity, delay: 1 }}
-          className="absolute -bottom-40 -right-40 w-[600px] h-[600px] rounded-full blur-[120px]"
-          style={{
-            background:
-              "radial-gradient(circle, rgba(140,29,24,0.3), transparent 60%)",
-          }}
-        />
-      </div>
-
       <div className="max-w-6xl mx-auto relative z-10">
         {/* HEADER */}
         <motion.div
@@ -115,7 +90,7 @@ const Education = () => {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="inline-block px-4 py-2 rounded-full bg-[color:var(--color-primary-soft)] border border-[color:var(--color-primary)]/40 text-[11px] font-bold uppercase tracking-[0.18em] text-[color:var(--color-primary)] mb-4"
+            className="inline-block px-4 py-2 rounded-full bg-[color:var(--color-primary-soft)] border border-[color:var(--color-primary)]/40 text-[11px] font-bold uppercase tracking-[0.18em] text-[color:var(--color-primary)] mb-4 backdrop-blur-sm"
           >
             ✦ Academic Records
           </motion.span>
@@ -150,7 +125,7 @@ const Education = () => {
           />
 
           {/* TABLE HEADER */}
-          <div className="relative z-10 grid grid-cols-12 gap-0 px-6 md:px-8 py-6 border-b border-white/12 bg-gradient-to-r from-[color:var(--color-primary)]/8 via-transparent to-transparent">
+          <div className="relative z-10 grid grid-cols-12 gap-0 px-6 md:px-8 py-6 border-b border-white/12 bg-gradient-to-r from-[color:var(--color-primary)]/8 via-transparent to-transparent backdrop-blur-sm">
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -211,7 +186,7 @@ const Education = () => {
                       backgroundColor: "rgba(140, 29, 24, 0.08)",
                       transition: { duration: 0.2 },
                     }}
-                    className="grid grid-cols-12 gap-0 px-6 md:px-8 py-5 md:py-6 items-center cursor-pointer transition-colors duration-200 group/row"
+                    className="grid grid-cols-12 gap-0 px-6 md:px-8 py-5 md:py-6 items-center cursor-pointer transition-colors duration-200 group/row backdrop-blur-sm"
                     onClick={() =>
                       setExpandedRow(expandedRow === idx ? null : idx)
                     }
@@ -346,7 +321,7 @@ const Education = () => {
                     transition={{ duration: 0.3 }}
                     className="overflow-hidden"
                   >
-                    <div className="grid grid-cols-12 gap-0 px-6 md:px-8 py-5 md:py-6 bg-gradient-to-r from-[color:var(--color-primary)]/5 via-transparent to-transparent border-t border-white/5">
+                    <div className="grid grid-cols-12 gap-0 px-6 md:px-8 py-5 md:py-6 bg-gradient-to-r from-[color:var(--color-primary)]/5 via-transparent to-transparent border-t border-white/5 backdrop-blur-md">
                       <div className="col-span-full">
                         <div className="space-y-3">
                           <div>

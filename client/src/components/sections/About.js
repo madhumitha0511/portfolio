@@ -52,11 +52,8 @@ const About = () => {
               className="relative rounded-3xl overflow-hidden shadow-elevated"
               style={{ transformStyle: "preserve-3d" }}
             >
-              {/* Glow Effect */}
-              <div className="absolute -inset-1 bg-[color:var(--color-primary)] rounded-3xl blur-xl opacity-20 hover:opacity-40 transition-opacity" />
-              
               {/* Image Container */}
-              <div className="relative bg-[color:var(--color-bg-elevated)] rounded-3xl p-2 border border-[color:var(--color-border)]">
+              <div className="relative bg-[color:var(--color-bg-elevated)] rounded-3xl p-2 border-2 border-[color:var(--color-border)] hover:border-[color:var(--color-primary)] transition-colors">
                 <img
                   src="/profile.png"
                   alt="About Madhumitha"
@@ -116,13 +113,10 @@ const About = () => {
                   whileInView={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.5 + idx * 0.1 }}
                   whileHover={{ scale: 1.05, y: -5 }}
-                  className="relative group"
+                  className="relative"
                 >
-                  {/* Glow on Hover - Theme Adaptive */}
-                  <div className="absolute inset-0 bg-[color:var(--color-primary-soft)] rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity" />
-                  
                   {/* Card */}
-                  <div className="relative bg-[color:var(--color-card)] rounded-xl p-5 border border-[color:var(--color-border)] shadow-soft text-center">
+                  <div className="relative bg-[color:var(--color-card)] rounded-xl p-5 border-2 border-[color:var(--color-border)] hover:border-[color:var(--color-primary)] shadow-soft text-center transition-all">
                     <p className="text-3xl md:text-4xl font-bold text-[color:var(--color-primary)]">
                       {stat.value}
                     </p>

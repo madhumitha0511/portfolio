@@ -159,7 +159,8 @@ const Hero = () => {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative flex justify-center lg:justify-end items-center h-[600px]"
+          className="relative hidden lg:flex justify-end items-center h-[600px]"
+
         >
           {/* Large Organic Blob Background - Theme Adaptive */}
           <motion.div

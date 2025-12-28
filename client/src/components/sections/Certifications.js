@@ -70,21 +70,9 @@ const Certifications = () => {
   return (
     <section
       id="certifications"
-      className="py-24 px-4 bg-[color:var(--color-bg)] border-t border-[color:var(--color-border)] relative overflow-hidden"
+      className="py-20 px-4 relative overflow-hidden"
+      // REMOVED: bg-[color:var(--color-bg)] and animated background - using global now!
     >
-      {/* animated warm background */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        animate={{
-          background: [
-            "radial-gradient(circle at 20% 10%, rgba(140,29,24,0.15), transparent 60%)",
-            "radial-gradient(circle at 80% 90%, rgba(140,29,24,0.15), transparent 60%)",
-            "radial-gradient(circle at 20% 10%, rgba(140,29,24,0.15), transparent 60%)",
-          ],
-        }}
-        transition={{ duration: 16, repeat: Infinity }}
-      />
-
       <div className="max-w-6xl mx-auto relative z-10">
         <motion.h2
           initial={{ opacity: 0, y: -18 }}
@@ -110,7 +98,7 @@ const Certifications = () => {
                   initial={{ opacity: 0, x: -40, scale: 0.8 }}
                   animate={{ opacity: 0.35, x: 0, scale: 0.9 }}
                   exit={{ opacity: 0, x: -40, scale: 0.8 }}
-                  className="hidden md:block w-64 h-72 rounded-3xl bg-[color:var(--color-primary-soft)]/40 border border-[color:var(--color-border)] shadow-soft overflow-hidden"
+                  className="hidden md:block w-64 h-72 rounded-3xl bg-[color:var(--color-primary-soft)]/40 backdrop-blur-xl border border-[color:var(--color-border)] shadow-soft overflow-hidden"
                 >
                   <SideCertCard cert={left} />
                 </motion.div>
@@ -200,7 +188,7 @@ const Certifications = () => {
                   initial={{ opacity: 0, x: 40, scale: 0.8 }}
                   animate={{ opacity: 0.35, x: 0, scale: 0.9 }}
                   exit={{ opacity: 0, x: 40, scale: 0.8 }}
-                  className="hidden md:block w-64 h-72 rounded-3xl bg-[color:var(--color-primary-soft)]/40 border border-[color:var(--color-border)] shadow-soft overflow-hidden"
+                  className="hidden md:block w-64 h-72 rounded-3xl bg-[color:var(--color-primary-soft)]/40 backdrop-blur-xl border border-[color:var(--color-border)] shadow-soft overflow-hidden"
                 >
                   <SideCertCard cert={right} align="right" />
                 </motion.div>
@@ -213,7 +201,7 @@ const Certifications = () => {
                 All Certifications
               </div>
 
-              <div className="relative h-[320px] overflow-hidden rounded-3xl bg-[color:var(--color-card)] border border-[color:var(--color-border)] shadow-soft">
+              <div className="relative h-[320px] overflow-hidden rounded-3xl bg-[color:var(--color-card)]/90 backdrop-blur-xl border border-[color:var(--color-border)] shadow-soft">
                 <div className="absolute inset-0 overflow-hidden">
                   <ul className="absolute inset-0 flex flex-col items-stretch">
                     {listWindow.map(({ cert, idx, isActive, key, offset }) => (
@@ -280,7 +268,7 @@ const Certifications = () => {
                     whileHover={{ scale: 1.05, y: -1 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={goPrev}
-                    className="w-8 h-8 rounded-full bg-[color:var(--color-card)] border border-[color:var(--color-border)] text-[color:var(--color-text)] flex items-center justify-center shadow-soft"
+                    className="w-8 h-8 rounded-full bg-[color:var(--color-card)]/90 backdrop-blur-md border border-[color:var(--color-border)] text-[color:var(--color-text)] flex items-center justify-center shadow-soft"
                   >
                     ‹
                   </motion.button>
@@ -288,7 +276,7 @@ const Certifications = () => {
                     whileHover={{ scale: 1.05, y: -1 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={goNext}
-                    className="w-8 h-8 rounded-full bg-[color:var(--color-card)] border border-[color:var(--color-border)] text-[color:var(--color-text)] flex items-center justify-center shadow-soft"
+                    className="w-8 h-8 rounded-full bg-[color:var(--color-card)]/90 backdrop-blur-md border border-[color:var(--color-border)] text-[color:var(--color-text)] flex items-center justify-center shadow-soft"
                   >
                     ›
                   </motion.button>

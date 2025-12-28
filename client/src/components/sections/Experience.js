@@ -1,5 +1,3 @@
-// EXPLANATION ENDS - Here's the full updated component:
-
 import React, { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { experienceAPI } from "../../services/api";
@@ -105,21 +103,9 @@ const Experience = () => {
   return (
     <section
       id="experience"
-      className="py-20 px-4 bg-[color:var(--color-bg)] border-t border-[color:var(--color-border)] relative overflow-hidden"
+      className="py-20 px-4 relative overflow-hidden"
+      // REMOVED: bg-[color:var(--color-bg)] and animated background - using global now!
     >
-      {/* Animated background */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        animate={{
-          background: [
-            "radial-gradient(circle at 0% 0%, rgba(140,29,24,0.12), transparent 60%)",
-            "radial-gradient(circle at 100% 100%, rgba(140,29,24,0.12), transparent 60%)",
-            "radial-gradient(circle at 0% 0%, rgba(140,29,24,0.12), transparent 60%)",
-          ],
-        }}
-        transition={{ duration: 16, repeat: Infinity }}
-      />
-
       <div className="max-w-full mx-auto relative z-10 px-6">
         <motion.h2
           initial={{ opacity: 0, y: -20 }}
@@ -136,12 +122,12 @@ const Experience = () => {
           </p>
         ) : (
           <>
-            {/* THREE COLUMN LAYOUT: Left (Mac Window - Wide) | Center (Spacing) | Right (Details Panel - Narrow) */}
+            {/* THREE COLUMN LAYOUT */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               
-              {/* LEFT SIDE: Mac Window (spans 2 columns - WIDER) - WITH 3D ELEVATION + DYNAMIC HALO GLOW */}
+              {/* LEFT SIDE: Mac Window */}
               <div className="lg:col-span-2 relative">
-                {/* DYNAMIC HALO GLOW - Behind the window, grows on hover */}
+                {/* DYNAMIC HALO GLOW */}
                 <motion.div
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 0 }}
@@ -178,11 +164,11 @@ const Experience = () => {
                        inset 1px 1px 2px rgba(255, 255, 255, 0.05)`,
                     backdropFilter: "blur(10px)",
                     transform: "translateZ(0)",
-                    perspective: "1200px",
+                    perspective: "1200px)",
                     zIndex: 1,
                   }}
                 >
-                  {/* BEVELED LIGHTING OVERLAY - Top-Left (Subtle Light Source) */}
+                  {/* BEVELED LIGHTING OVERLAY - Top-Left */}
                   <div
                     className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-3xl"
                     style={{
@@ -191,7 +177,7 @@ const Experience = () => {
                     }}
                   />
 
-                  {/* BEVELED LIGHTING OVERLAY - Bottom-Right (Reflection Shimmer) */}
+                  {/* BEVELED LIGHTING OVERLAY - Bottom-Right */}
                   <div
                     className="absolute bottom-0 right-0 w-full h-full pointer-events-none rounded-3xl"
                     style={{
@@ -295,15 +281,24 @@ const Experience = () => {
                               }}
                               whileHover={{ y: -6, scale: 1.01 }}
                               onClick={() => setActiveId(exp.id)}
-                              className={`relative rounded-2xl p-5 border-2 transition-all overflow-hidden group backdrop-blur-sm h-full ${
+                              className={`relative rounded-2xl p-5 border-2 transition-all overflow-hidden group backdrop-blur-sm h-full text-white ${
                                 isActive
-                                  ? "bg-[color:var(--color-primary)] border-[color:var(--color-primary)] text-[color:var(--color-bg)] shadow-lg ring-2 ring-[color:var(--color-primary)]/50"
-                                  : "bg-gradient-to-br from-[#1f2937]/60 to-[#111827]/40 border-[color:var(--color-primary-soft)]/40 text-white hover:border-[color:var(--color-primary)]/60 hover:from-[#2d3e52]/70 hover:to-[#1f2937]/50"
+                                  ? "bg-gradient-to-br from-[#2d3e52]/70 to-[#1f2937]/60 border-[color:var(--color-primary)] shadow-lg ring-2 ring-[color:var(--color-primary)]/50"
+                                  : "bg-gradient-to-br from-[#1f2937]/60 to-[#111827]/40 border-[color:var(--color-primary-soft)]/40 hover:border-[color:var(--color-primary)]/60 hover:from-[#2d3e52]/70 hover:to-[#1f2937]/50"
                               }`}
                               style={{ cursor: cursorUrl }}
                             >
                               {/* Gradient shine effect */}
                               <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity bg-gradient-to-br from-white to-transparent" />
+
+                              {/* Active glow indicator (subtle) */}
+                              {isActive && (
+                                <motion.div
+                                  initial={{ opacity: 0 }}
+                                  animate={{ opacity: 1 }}
+                                  className="absolute inset-0 bg-gradient-to-br from-[color:var(--color-primary)]/5 to-transparent pointer-events-none"
+                                />
+                              )}
 
                               {/* Content */}
                               <div className="relative flex flex-col h-full">
@@ -361,9 +356,9 @@ const Experience = () => {
                 </motion.div>
               </div>
 
-              {/* RIGHT SIDE: Details Panel (narrower - 1 column) - WITH 3D ELEVATION + DYNAMIC HALO */}
+              {/* RIGHT SIDE: Details Panel */}
               <div className="lg:col-span-1 flex items-center relative">
-                {/* DYNAMIC HALO GLOW - Behind the panel, grows on hover */}
+                {/* DYNAMIC HALO GLOW */}
                 <motion.div
                   initial={{ opacity: 0 }}
                   whileHover={{ opacity: 0.12 }}
@@ -402,7 +397,7 @@ const Experience = () => {
                         zIndex: 1,
                       }}
                     >
-                      {/* BEVELED LIGHTING OVERLAY - Top-Left (Subtle Light Source) */}
+                      {/* BEVELED LIGHTING OVERLAY - Top-Left */}
                       <div
                         className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-2xl"
                         style={{
@@ -411,7 +406,7 @@ const Experience = () => {
                         }}
                       />
 
-                      {/* BEVELED LIGHTING OVERLAY - Bottom-Right (Reflection Shimmer) */}
+                      {/* BEVELED LIGHTING OVERLAY - Bottom-Right */}
                       <div
                         className="absolute bottom-0 right-0 w-full h-full pointer-events-none rounded-2xl"
                         style={{

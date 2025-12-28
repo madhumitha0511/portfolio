@@ -39,21 +39,9 @@ export const Skills = () => {
   return (
     <section
       id="skills"
-      className="relative py-24 px-4 bg-[color:var(--color-bg)] overflow-hidden border-t border-[color:var(--color-border)]"
+      className="py-20 px-4 relative overflow-hidden"
+      // REMOVED: bg-[color:var(--color-bg)] and animated background - using global now!
     >
-      {/* animated spotlight overlay */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        animate={{
-          background: [
-            "radial-gradient(circle at 10% 20%, rgba(140,29,24,0.18), transparent 60%)",
-            "radial-gradient(circle at 90% 80%, rgba(140,29,24,0.18), transparent 60%)",
-            "radial-gradient(circle at 10% 20%, rgba(140,29,24,0.18), transparent 60%)",
-          ],
-        }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-      />
-
       <div className="max-w-6xl mx-auto relative z-10">
         {/* header */}
         <div className="text-center mb-12">
@@ -95,7 +83,7 @@ export const Skills = () => {
                       key={skill.id}
                       whileHover={{ y: -2, scale: 1.04 }}
                       whileTap={{ scale: 0.97 }}
-                      className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full border text-[11px] md:text-[12px] shadow-[0_1px_0_rgba(255,255,255,0.04)] transition ${accent}`}
+                      className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full border text-[11px] md:text-[12px] shadow-[0_1px_0_rgba(255,255,255,0.04)] transition backdrop-blur-sm ${accent}`}
                     >
                       <span className="h-1.5 w-1.5 rounded-full bg-current" />
                       <span>{skill.skill_name}</span>

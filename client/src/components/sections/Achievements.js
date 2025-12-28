@@ -32,21 +32,9 @@ const Achievements = () => {
   return (
     <section
       id="achievements"
-      className="relative py-24 px-4 bg-[color:var(--color-bg)] overflow-hidden"
+      className="relative py-24 px-4 overflow-hidden"
+      // REMOVED: bg-[color:var(--color-bg)] and animated background - using global now!
     >
-      {/* ambient background glow */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        animate={{
-          background: [
-            "radial-gradient(circle at 50% 0%, rgba(140,29,24,0.25), transparent 65%)",
-            "radial-gradient(circle at 50% 40%, rgba(140,29,24,0.28), transparent 65%)",
-            "radial-gradient(circle at 50% 0%, rgba(140,29,24,0.25), transparent 65%)",
-          ],
-        }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-      />
-
       <div className="max-w-5xl mx-auto relative z-10">
         {/* header */}
         <div className="text-center mb-10">
@@ -76,7 +64,7 @@ const Achievements = () => {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -20, scale: 0.9 }}
                   transition={{ duration: 0.4, ease: "easeOut" }}
-                  className="relative w-[260px] sm:w-[280px] md:w-[320px] h-[380px] sm:h-[380px] md:h-[400px] rounded-[32px] bg-[color:var(--color-card)]/95 shadow-[0_26px_70px_rgba(0,0,0,0.8)] flex flex-col items-center justify-between px-6 py-6 overflow-hidden"
+                  className="relative w-[260px] sm:w-[280px] md:w-[320px] h-[380px] sm:h-[380px] md:h-[400px] rounded-[32px] bg-[color:var(--color-card)]/95 backdrop-blur-xl shadow-[0_26px_70px_rgba(0,0,0,0.8)] flex flex-col items-center justify-between px-6 py-6 overflow-hidden"
                 >
                   {/* circular glow ring behind icon */}
                   <div className="mt-4 mb-6 relative flex items-center justify-center">
@@ -164,7 +152,7 @@ const SideCard = ({ item, position, onClick }) => {
       whileHover={{ y: -4 }}
     >
       <div
-        className={`w-44 md:w-52 h-[320px] rounded-[32px] bg-[color:var(--color-card)]/80 shadow-[0_20px_60px_rgba(0,0,0,0.75)] flex flex-col items-center justify-end pb-10 px-4 overflow-hidden`}
+        className={`w-44 md:w-52 h-[320px] rounded-[32px] bg-[color:var(--color-card)]/80 backdrop-blur-xl shadow-[0_20px_60px_rgba(0,0,0,0.75)] flex flex-col items-center justify-end pb-10 px-4 overflow-hidden`}
         style={{
           transform: `rotate(${rotate}deg) translateX(${translateX})`,
         }}

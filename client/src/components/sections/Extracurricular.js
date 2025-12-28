@@ -57,28 +57,11 @@ const Extracurricular = () => {
   return (
     <section
       id="extracurricular"
-      className="py-40 px-4 bg-[color:var(--color-bg)] relative overflow-hidden"
+      className="py-40 px-4 relative overflow-hidden"
+      // REMOVED: bg-[color:var(--color-bg)] and animated background - using global now!
       onMouseEnter={() => setAutoPlay(false)}
       onMouseLeave={() => setAutoPlay(true)}
     >
-      {/* FIXED BACKGROUND OVERLAY - NOW VISIBLE & WORKING */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Animated background (clean, no ghost box) */}
-              <motion.div
-                className="absolute inset-0 pointer-events-none"
-                animate={{
-                  background: [
-                    "radial-gradient(circle at 0% 0%, rgba(140,29,24,0.12), transparent 60%)",
-                    "radial-gradient(circle at 100% 100%, rgba(140,29,24,0.12), transparent 60%)",
-                    "radial-gradient(circle at 0% 0%, rgba(140,29,24,0.12), transparent 60%)",
-                  ],
-                }}
-                transition={{ duration: 16, repeat: Infinity }}
-              />
-        
-              
-      </div>
-
       {/* Content - positioned above background */}
       <div className="max-w-7xl mx-auto relative z-10">
         {/* HEADER SECTION */}
@@ -93,7 +76,7 @@ const Extracurricular = () => {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="inline-block px-4 py-2 rounded-full bg-[color:var(--color-primary-soft)] border border-[color:var(--color-primary)]/40 text-[11px] font-bold uppercase tracking-[0.18em] text-[color:var(--color-primary)] mb-4"
+            className="inline-block px-4 py-2 rounded-full bg-[color:var(--color-primary-soft)] border border-[color:var(--color-primary)]/40 text-[11px] font-bold uppercase tracking-[0.18em] text-[color:var(--color-primary)] mb-4 backdrop-blur-sm"
           >
             ✦ Leadership & Impact
           </motion.span>
@@ -114,7 +97,7 @@ const Extracurricular = () => {
             whileHover={{ scale: 1.15, x: -6 }}
             whileTap={{ scale: 0.9 }}
             onClick={prev}
-            className="absolute -left-8 z-30 w-12 h-12 rounded-full bg-[color:var(--color-card)] border-2 border-[color:var(--color-primary)] text-[color:var(--color-primary)] flex items-center justify-center shadow-soft font-bold text-xl hover:bg-[color:var(--color-primary-soft)] transition-all"
+            className="absolute -left-8 z-30 w-12 h-12 rounded-full bg-[color:var(--color-card)]/90 backdrop-blur-md border-2 border-[color:var(--color-primary)] text-[color:var(--color-primary)] flex items-center justify-center shadow-soft font-bold text-xl hover:bg-[color:var(--color-primary-soft)] transition-all"
           >
             <motion.span
               animate={{ x: [0, -3, 0] }}
@@ -199,7 +182,7 @@ const Extracurricular = () => {
                       initial={{ y: -15, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ delay: 0.25 }}
-                      className="self-center mt-5 px-5 py-1.5 rounded-full bg-[color:var(--color-card)] border border-[color:var(--color-border)] text-[9px] font-extrabold uppercase tracking-[0.2em] text-[color:var(--color-muted)] shadow-soft"
+                      className="self-center mt-5 px-5 py-1.5 rounded-full bg-[color:var(--color-card)]/90 backdrop-blur-md border border-[color:var(--color-border)] text-[9px] font-extrabold uppercase tracking-[0.2em] text-[color:var(--color-muted)] shadow-soft"
                     >
                       {main.start_date?.slice(0, 4) || "Active"}
                     </motion.div>
@@ -282,7 +265,7 @@ const Extracurricular = () => {
                           boxShadow:
                             "0 0 30px rgba(140,29,24,0.3), inset 0 0 20px rgba(255,255,255,0.1)",
                         }}
-                        className="w-full rounded-2xl bg-[color:var(--color-card)] border border-[color:var(--color-border)] flex items-center justify-between px-5 py-3 shadow-soft backdrop-blur-sm"
+                        className="w-full rounded-2xl bg-[color:var(--color-card)]/90 backdrop-blur-md border border-[color:var(--color-border)] flex items-center justify-between px-5 py-3 shadow-soft"
                       >
                         <div className="flex-1">
                           <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[color:var(--color-text)]">
@@ -349,7 +332,7 @@ const Extracurricular = () => {
             whileHover={{ scale: 1.15, x: 6 }}
             whileTap={{ scale: 0.9 }}
             onClick={next}
-            className="absolute -right-8 z-30 w-12 h-12 rounded-full bg-[color:var(--color-card)] border-2 border-[color:var(--color-primary)] text-[color:var(--color-primary)] flex items-center justify-center shadow-soft font-bold text-xl hover:bg-[color:var(--color-primary-soft)] transition-all"
+            className="absolute -right-8 z-30 w-12 h-12 rounded-full bg-[color:var(--color-card)]/90 backdrop-blur-md border-2 border-[color:var(--color-primary)] text-[color:var(--color-primary)] flex items-center justify-center shadow-soft font-bold text-xl hover:bg-[color:var(--color-primary-soft)] transition-all"
           >
             <motion.span
               animate={{ x: [0, 3, 0] }}

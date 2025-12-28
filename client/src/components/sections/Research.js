@@ -21,21 +21,9 @@ const Research = () => {
   return (
     <section
       id="research"
-      className="relative py-24 px-4 bg-[color:var(--color-bg)] overflow-hidden border-t border-[color:var(--color-border)]"
+      className="py-20 px-4 relative overflow-hidden"
+      // REMOVED: bg-[color:var(--color-bg)] and animated background - using global now!
     >
-      {/* moving warm overlay */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        animate={{
-          background: [
-            "radial-gradient(circle at 15% 10%, rgba(140,29,24,0.22), transparent 60%)",
-            "radial-gradient(circle at 85% 90%, rgba(140,29,24,0.22), transparent 60%)",
-            "radial-gradient(circle at 15% 10%, rgba(140,29,24,0.22), transparent 60%)",
-          ],
-        }}
-        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-      />
-
       <div className="max-w-5xl mx-auto relative z-10">
         {/* header */}
         <div className="text-center mb-10">
@@ -82,7 +70,7 @@ const Research = () => {
                     {r.start_date} – {r.end_date || "Ongoing"}
                   </p>
                   {r.research_type && (
-                    <span className="mt-2 inline-flex items-center rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-bg)]/85 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--color-primary)]">
+                    <span className="mt-2 inline-flex items-center rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-bg)]/85 backdrop-blur-sm px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--color-primary)]">
                       {r.research_type}
                     </span>
                   )}
@@ -118,7 +106,7 @@ const Research = () => {
                         .map((tag, idx) => (
                           <span
                             key={idx}
-                            className="px-2 py-0.5 rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-bg)]/80 text-[9px] uppercase tracking-[0.14em] text-[color:var(--color-muted)]"
+                            className="px-2 py-0.5 rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-bg)]/80 backdrop-blur-sm text-[9px] uppercase tracking-[0.14em] text-[color:var(--color-muted)]"
                           >
                             {tag}
                           </span>
@@ -129,7 +117,7 @@ const Research = () => {
 
                 {/* small CTA badge */}
                 <div className="mt-3 md:mt-0 md:self-center">
-                  <span className="inline-flex items-center rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-bg)]/80 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-[color:var(--color-muted)]">
+                  <span className="inline-flex items-center rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-bg)]/80 backdrop-blur-sm px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-[color:var(--color-muted)]">
                     Research project
                   </span>
                 </div>
