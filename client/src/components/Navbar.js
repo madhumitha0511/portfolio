@@ -26,7 +26,7 @@ const Navbar = () => {
 
   return (
     <motion.nav
-      
+      initial={{ y: -100 }}
       animate={{ y: 0 }}
       className="sticky top-0 z-50 backdrop-blur-xl bg-[color:var(--color-bg)]/80 border-b border-[color:var(--color-border)] shadow-soft"
     >
@@ -38,7 +38,7 @@ const Navbar = () => {
             whileHover={{ scale: 1.05 }}
             className="text-2xl font-bold text-[color:var(--color-primary)]"
           >
-            M
+            R
           </motion.a>
 
           {/* Desktop Nav */}
@@ -53,17 +53,28 @@ const Navbar = () => {
               </a>
             ))}
 
-            {/* Other dropdown - Fixed with padding to bridge gap */}
+            {/* Other dropdown - Fixed with padding and delay */}
             <div
               className="relative"
               onMouseEnter={() => setOtherOpen(true)}
               onMouseLeave={() => setOtherOpen(false)}
             >
-              <button className="text-sm font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)] transition flex items-center gap-1">
+              <button className="text-sm font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)] transition flex items-center gap-1 py-2">
                 Other
-                <span className="text-xs">▾</span>
+                <motion.span
+                  animate={{ rotate: otherOpen ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="text-xs"
+                >
+                  ▾
+                </motion.span>
               </button>
-              
+
+              {/* Invisible bridge to prevent gap */}
+              {otherOpen && (
+                <div className="absolute left-0 right-0 h-2 top-full" />
+              )}
+
               <AnimatePresence>
                 {otherOpen && (
                   <motion.div
@@ -71,7 +82,7 @@ const Navbar = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute right-0 mt-2 w-48 rounded-xl bg-[color:var(--color-bg-elevated)] border border-[color:var(--color-border)] shadow-lg py-2"
+                    className="absolute right-0 mt-0 w-48 rounded-xl bg-[color:var(--color-bg-elevated)] border border-[color:var(--color-border)] shadow-lg py-2 z-50"
                   >
                     {otherLinks.map((link) => (
                       <a
