@@ -26,7 +26,7 @@ const Navbar = () => {
 
   return (
     <motion.nav
-      initial={{ y: -100 }}
+      
       animate={{ y: 0 }}
       className="sticky top-0 z-50 backdrop-blur-xl bg-[color:var(--color-bg)]/80 border-b border-[color:var(--color-border)] shadow-soft"
     >
@@ -38,7 +38,7 @@ const Navbar = () => {
             whileHover={{ scale: 1.05 }}
             className="text-2xl font-bold text-[color:var(--color-primary)]"
           >
-            R
+            M
           </motion.a>
 
           {/* Desktop Nav */}
@@ -70,12 +70,8 @@ const Navbar = () => {
                 </motion.span>
               </button>
 
-              {/* Invisible bridge to prevent gap */}
-              {otherOpen && (
-                <div className="absolute left-0 right-0 h-2 top-full" />
-              )}
-
-              <AnimatePresence>
+              
+            <AnimatePresence>
                 {otherOpen && (
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
