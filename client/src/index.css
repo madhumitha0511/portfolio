@@ -15,6 +15,14 @@
 /* ☀️ LIGHT MODE — Hawkins / Normal World
    Vibe: Safe, nostalgic, small-town, trustworthy */
 :root[data-theme="light"] {
+
+  --color-bg: #f5f5f7;                 /* navbar + page background */
+  --color-bg-elevated: #ffffff;        /* cards, dropdowns, toggle background */
+  --color-border: rgba(15, 23, 42, 0.08);
+  --color-text: #020617;               /* near black, but softer */
+  --color-muted: #6b7280;
+  --color-primary: #1d4ed8;            /* rich blue for links / logo */
+  
   /* Base / Surfaces */
   --color-bg: #FAFAF8;              /* Paper White */
   --color-bg-elevated: #F1E9DA;     /* Soft Beige */
