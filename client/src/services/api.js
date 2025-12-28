@@ -1,160 +1,181 @@
-// ============================================
-// API SERVICE - api.js
-// ============================================
-// Save as: src/services/api.js
+// src/App.js
+import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { motion } from "framer-motion";
 
-import axios from 'axios';
+import Navbar from "./components/Navbar";
+import Hero from "./components/sections/Hero";
+import About from "./components/sections/About";
+import Experience from "./components/sections/Experience";
+import Projects from "./components/sections/Projects";
+import Skills from "./components/sections/Skills";
+import Education from "./components/sections/Education";
+import Certifications from "./components/sections/Certifications";
+import Achievements from "./components/sections/Achievements";
+import Hackathons from "./components/sections/Hackathons";
+import Research from "./components/sections/Research";
+import Extracurricular from "./components/sections/Extracurricular";
+import Testimonials from "./components/sections/Testimonials";
+import Contact from "./components/sections/Contact";
+import Footer from "./components/Footer";
 
-const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+import AdminDashboard from "./admin/AdminDashboard";
+import AdminLogin from "./admin/AdminLogin";
 
-// Create axios instance with interceptors
-const apiClient = axios.create({
-  baseURL: API_BASE,
-  headers: {
-    'Content-Type': 'application/json'
+const ProtectedRoute = ({ children }) => {
+  const token = localStorage.getItem("authToken");
+  return token ? children : <Navigate to="/admin/login" />;
+};
+
+function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [theme, setTheme] = useState("light");
+
+  useEffect(() => {
+    // Get theme from localStorage or default to light
+    const savedTheme = localStorage.getItem("theme") || "light";
+    setTheme(savedTheme);
+    document.documentElement.setAttribute("data-theme", savedTheme);
+
+    // Listen for theme changes
+    const handleThemeChange = () => {
+      const currentTheme = document.documentElement.getAttribute("data-theme");
+      setTheme(currentTheme);
+    };
+
+    // Poll for theme changes (in case ThemeToggle updates it)
+    const interval = setInterval(() => {
+      const currentTheme = document.documentElement.getAttribute("data-theme");
+      if (currentTheme !== theme) {
+        setTheme(currentTheme);
+      }
+    }, 100);
+
+    loadPortfolioData();
+
+    return () => clearInterval(interval);
+  }, [theme]);
+
+  const loadPortfolioData = async () => {
+    try {
+      // TODO: fetch from your API
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error loading portfolio:", error);
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-[color:var(--color-bg)]">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+          className="w-16 h-16 border-4 border-[color:var(--color-primary)] border-t-transparent rounded-full"
+        />
+      </div>
+    );
   }
-});
 
-// Add token to every request
-apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem('authToken');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+  return (
+    <Router>
+      {/* Base background adapts to theme */}
+      <div className="min-h-screen bg-[color:var(--color-bg)] text-[color:var(--color-text)] relative">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <Navbar />
+                <Hero />
 
-// ========== PORTFOLIO API CALLS ==========
-export const portfolioAPI = {
-  // Portfolio Owner
-  getOwner: () => apiClient.get('/portfolio/owner'),
-  updateOwner: (data) => apiClient.put('/portfolio/owner', data),
+                {/* THEME-ADAPTIVE SPOTLIGHT LAYER */}
+                <div className="relative z-0">
+                  {/* Animated background spotlight (only visible in dark mode) */}
+                  {theme === "dark" && (
+                    <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+                      <motion.div
+                        className="absolute inset-0"
+                        style={{ backgroundColor: "#050006" }}
+                        animate={{
+                          backgroundImage: [
+                            "radial-gradient(ellipse 900px 650px at 15% 10%, rgba(140,29,24,0.26) 0%, transparent 55%), radial-gradient(ellipse 800px 550px at 85% 65%, rgba(140,29,24,0.20) 0%, transparent 55%), radial-gradient(ellipse 700px 500px at 50% 95%, rgba(140,29,24,0.16) 0%, transparent 55%), radial-gradient(circle at 50% 0%, rgba(255,255,255,0.03) 0%, transparent 45%)",
+                            "radial-gradient(ellipse 850px 600px at 80% 30%, rgba(140,29,24,0.26) 0%, transparent 55%), radial-gradient(ellipse 750px 550px at 10% 75%, rgba(140,29,24,0.20) 0%, transparent 55%), radial-gradient(ellipse 700px 500px at 50% 90%, rgba(140,29,24,0.16) 0%, transparent 55%), radial-gradient(circle at 40% 5%, rgba(255,255,255,0.03) 0%, transparent 45%)",
+                            "radial-gradient(ellipse 900px 650px at 30% 80%, rgba(140,29,24,0.26) 0%, transparent 55%), radial-gradient(ellipse 800px 550px at 90% 20%, rgba(140,29,24,0.20) 0%, transparent 55%), radial-gradient(ellipse 700px 500px at 50% 50%, rgba(140,29,24,0.16) 0%, transparent 55%), radial-gradient(circle at 60% 0%, rgba(255,255,255,0.03) 0%, transparent 45%)",
+                            "radial-gradient(ellipse 900px 650px at 15% 10%, rgba(140,29,24,0.26) 0%, transparent 55%), radial-gradient(ellipse 800px 550px at 85% 65%, rgba(140,29,24,0.20) 0%, transparent 55%), radial-gradient(ellipse 700px 500px at 50% 95%, rgba(140,29,24,0.16) 0%, transparent 55%), radial-gradient(circle at 50% 0%, rgba(255,255,255,0.03) 0%, transparent 45%)",
+                          ],
+                        }}
+                        transition={{
+                          duration: 24,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                        }}
+                      />
+                      {/* Subtle noise for texture */}
+                      <div
+                        className="absolute inset-0 opacity-[0.018]"
+                        style={{
+                          backgroundImage:
+                            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+                        }}
+                      />
+                    </div>
+                  )}
 
-  // Hero Section
-  getHero: () => apiClient.get('/portfolio/hero'),
-  updateHero: (data) => apiClient.put('/portfolio/hero', data),
+                  {/* Light mode: clean, minimal background */}
+                  {theme === "light" && (
+                    <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+                      <div
+                        className="absolute inset-0"
+                        style={{
+                          background: "linear-gradient(180deg, #FAFAF8 0%, #F1E9DA 100%)",
+                        }}
+                      />
+                    </div>
+                  )}
 
-  // About Section (merged - removed duplicate)
-  getAbout: () => apiClient.get('/portfolio/about'),
-  updateAbout: (data) => apiClient.put('/portfolio/about', data),
-};
+                  {/* Foreground content */}
+                  <About />
+                  <Experience />
+                  <Projects />
+                  <Skills />
+                  <Education />
+                  <Certifications />
+                  <Achievements />
+                  <Hackathons />
+                  <Research />
+                  <Extracurricular />
+                  <Testimonials />
+                  <Contact />
+                  <Footer />
+                </div>
+              </motion.div>
+            }
+          />
 
-// ========== ABOUT API (standalone for About.js) ==========
-export const aboutAPI = {
-  get: () => apiClient.get('/portfolio/about'), // Fixed: uses apiClient, not "api"
-  update: (data) => apiClient.put('/portfolio/about', data),
-};
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route
+            path="/admin/*"
+            element={
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </div>
+    </Router>
+  );
+}
 
-// ========== EXPERIENCE API ==========
-export const experienceAPI = {
-  getAll: () => apiClient.get('/experience'),
-  getById: (id) => apiClient.get(`/experience/${id}`),
-  create: (data) => apiClient.post('/experience', data),
-  update: (id, data) => apiClient.put(`/experience/${id}`, data),
-  delete: (id) => apiClient.delete(`/experience/${id}`),
-};
-
-// ========== PROJECTS API ==========
-export const projectsAPI = {
-  getAll: () => apiClient.get('/projects'),
-  getFeatured: () => apiClient.get('/projects/featured'),
-  getById: (id) => apiClient.get(`/projects/${id}`),
-  create: (data) => apiClient.post('/projects', data),
-  update: (id, data) => apiClient.put(`/projects/${id}`, data),
-  delete: (id) => apiClient.delete(`/projects/${id}`),
-};
-
-// ========== SKILLS API ==========
-export const skillsAPI = {
-  getAll: () => apiClient.get('/skills'),
-  getByCategory: (category) => apiClient.get(`/skills/category/${category}`),
-  create: (data) => apiClient.post('/skills', data),
-  update: (id, data) => apiClient.put(`/skills/${id}`, data),
-  delete: (id) => apiClient.delete(`/skills/${id}`),
-};
-
-// ========== EDUCATION API ==========
-export const educationAPI = {
-  getAll: () => apiClient.get('/education'),
-  getById: (id) => apiClient.get(`/education/${id}`),
-  create: (data) => apiClient.post('/education', data),
-  update: (id, data) => apiClient.put(`/education/${id}`, data),
-  delete: (id) => apiClient.delete(`/education/${id}`),
-};
-
-// ========== CERTIFICATIONS API ==========
-export const certificationsAPI = {
-  getAll: () => apiClient.get('/certifications'),
-  getById: (id) => apiClient.get(`/certifications/${id}`),
-  create: (data) => apiClient.post('/certifications', data),
-  update: (id, data) => apiClient.put(`/certifications/${id}`, data),
-  delete: (id) => apiClient.delete(`/certifications/${id}`),
-};
-
-// ========== ACHIEVEMENTS API ==========
-export const achievementsAPI = {
-  getAll: () => apiClient.get('/achievements'),
-  create: (data) => apiClient.post('/achievements', data),
-  update: (id, data) => apiClient.put(`/achievements/${id}`, data),
-  delete: (id) => apiClient.delete(`/achievements/${id}`),
-};
-
-// ========== HACKATHONS API ==========
-export const hackathonsAPI = {
-  getAll: () => apiClient.get('/hackathons'),
-  create: (data) => apiClient.post('/hackathons', data),
-  update: (id, data) => apiClient.put(`/hackathons/${id}`, data),
-  delete: (id) => apiClient.delete(`/hackathons/${id}`),
-};
-
-// ========== RESEARCH API ==========
-export const researchAPI = {
-  getAll: () => apiClient.get('/research'),
-  create: (data) => apiClient.post('/research', data),
-  update: (id, data) => apiClient.put(`/research/${id}`, data),
-  delete: (id) => apiClient.delete(`/research/${id}`),
-};
-
-// ========== EXTRACURRICULAR API ==========
-export const extracurricularAPI = {
-  getAll: () => apiClient.get('/extracurricular'),
-  create: (data) => apiClient.post('/extracurricular', data),
-  update: (id, data) => apiClient.put(`/extracurricular/${id}`, data),
-  delete: (id) => apiClient.delete(`/extracurricular/${id}`),
-};
-
-// ========== TESTIMONIALS API ==========
-export const testimonialsAPI = {
-  getAll: () => apiClient.get('/testimonials'),
-  create: (data) => apiClient.post('/testimonials', data),
-  update: (id, data) => apiClient.put(`/testimonials/${id}`, data),
-  delete: (id) => apiClient.delete(`/testimonials/${id}`),
-};
-
-// ========== CONTACT API ==========
-export const contactAPI = {
-  sendMessage: (data) => apiClient.post('/contact', data),
-  getMessages: () => apiClient.get('/contact'), // Admin only
-  markAsRead: (id) => apiClient.put(`/contact/${id}/read`, {}),
-};
-
-// ========== AUTH API ==========
-export const authAPI = {
-  login: (username, password) => 
-    axios.post(`${API_BASE}/auth/login`, { username, password }),
-  verify: (token) => 
-    axios.post(`${API_BASE}/auth/verify`, {}, {
-      headers: { Authorization: `Bearer ${token}` }
-    }),
-};
-
-export default apiClient;
-
-// ============================================
-// EXPLANATION FOR BEGINNERS:
-// ============================================
-// 1. axios.create() - Creates reusable HTTP client
-// 2. interceptors - Automatically adds auth token to all requests
-// 3. Each API module has methods: getAll, create, update, delete (CRUD)
-// 4. All errors are caught by global error handlers
-// 5. Organized by feature (portfolio, experience, projects, etc.)
+export default App;
