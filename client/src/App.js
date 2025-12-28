@@ -74,19 +74,7 @@ function App() {
                 <div 
                   className="relative z-0"
                   style={{
-                    background: `
-                      /* PRIMARY SPOTLIGHTS - 20% RED INTENSITY */
-                      radial-gradient(ellipse 1100px 800px at 20% 15%, rgba(140,29,24,0.18) 0%, transparent 65%),
-                      radial-gradient(ellipse 950px 700px at 80% 70%, rgba(140,29,24,0.15) 0%, transparent 65%),
-                      radial-gradient(ellipse 850px 600px at 45% 92%, rgba(178,37,30,0.12) 0%, transparent 65%),
-                      
-                      /* SUBTLE ENHANCERS - 5% RED */
-                      radial-gradient(ellipse 1000px 750px at 35% 75%, rgba(140,29,24,0.08) 0%, transparent 75%),
-                      radial-gradient(circle 180px at 70% 30%, rgba(220,38,38,0.10) 0%, transparent 70%),
-                      
-                      /* WHITE HIGHLIGHTS - 2% */
-                      radial-gradient(circle 120px at 55% 8%, rgba(255,255,255,0.06) 0%, transparent 60%)
-                    `,
+                    background: "var(--hero-bg)",
                     backgroundAttachment: 'fixed',
                     backgroundSize: 'cover'
                   }}
