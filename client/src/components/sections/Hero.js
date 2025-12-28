@@ -28,7 +28,7 @@ const Hero = () => {
   return (
     <section
       id="hero"
-      className="min-h-screen flex items-center bg-[color:var(--color-bg)] relative overflow-hidden"
+      className="min-h-screen flex items-center bg-[color:var(--color-bg)] relative overflow-hidden pt-14"
     >
       {/* Decorative background blob - Theme Adaptive */}
       <motion.div
@@ -41,7 +41,7 @@ const Hero = () => {
         }}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 grid lg:grid-cols-2 gap-12 items-center relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center relative z-10">
         {/* LEFT SIDE - Text Content */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
@@ -66,7 +66,6 @@ const Hero = () => {
             transition={{ delay: 0.3 }}
             className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-[color:var(--color-text)]"
           >
-            Hello, my name is <br />
             <span className="text-[color:var(--color-primary)]">{owner.first_name} {owner.last_name}</span>
           </motion.h1>
 
@@ -85,7 +84,7 @@ const Hero = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="flex gap-4 pt-6"
+            className="flex gap-4 pt-4"
           >
             {/* Resume Download */}
             {owner.resume_url && (
@@ -160,7 +159,6 @@ const Hero = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           className="relative hidden lg:flex justify-end items-center h-[600px]"
-
         >
           {/* Large Organic Blob Background - Theme Adaptive */}
           <motion.div

@@ -54,21 +54,15 @@ const Navbar = () => {
               </a>
             ))}
 
-           {/* Other dropdown - Fixed with padding and delay */}
+            {/* Other dropdown */}
             <div
               className="relative"
               onMouseEnter={() => setOtherOpen(true)}
               onMouseLeave={() => setOtherOpen(false)}
             >
-              <button className="text-sm font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)] transition flex items-center gap-1 py-2">
+              <button className="text-sm font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)] transition flex items-center gap-1">
                 Other
-                <motion.span
-                  animate={{ rotate: otherOpen ? 180 : 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="text-xs"
-                >
-                  ▾
-                </motion.span>
+                <span className="text-xs">▾</span>
               </button>
               {otherOpen && (
                 <div className="absolute right-0 mt-2 w-44 rounded-xl bg-[color:var(--color-bg-elevated)] border border-[color:var(--color-border)] shadow-soft py-2">
