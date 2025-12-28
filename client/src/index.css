@@ -8,37 +8,192 @@
   font-size: 1.1em;
 }
 
-/* COLOR PALETTE VARIABLES
-   Light and dark share the same semantic names.
-   Change only these to restyle the whole site. */
+/* ========================================
+   STRANGER THINGS INSPIRED COLOR PALETTES
+   ======================================== */
 
+/* ☀️ LIGHT MODE — Hawkins / Normal World
+   Vibe: Safe, nostalgic, small-town, trustworthy */
 :root[data-theme="light"] {
-  --color-bg: #FAF7F2;        /* Base: Warm ivory */
-  --color-bg-elevated: #ffffff;
-  --color-primary: #8C1D18;   /* Oxide red */
-  --color-primary-soft: #FBE4E0;
-  --color-text: #1F2933;      /* Deep graphite */
-  --color-muted: #9CA3AF;     /* Ash grey */
-  --color-border: rgba(31, 41, 51, 0.12);
-  --color-card: rgba(255, 255, 255, 0.9);
-  --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.13);
+  /* Base / Surfaces */
+  --color-bg: #FAFAF8;              /* Paper White */
+  --color-bg-elevated: #F1E9DA;     /* Soft Beige */
+  --color-card: rgba(255, 255, 255, 0.95);
+  
+  /* Primary Accent */
+  --color-primary: #1F3A8A;         /* Hawkins Blue */
+  --color-primary-soft: rgba(31, 58, 138, 0.1);
+  
+  /* Secondary Accents */
+  --color-secondary: #F4A261;       /* Sunset Gold */
+  --color-accent: #2A9D8F;          /* Gym Green */
+  
+  /* Text */
+  --color-text: #1E293B;            /* Ink Navy */
+  --color-muted: #64748B;           /* Slate Grey */
+  
+  /* UI Elements */
+  --color-border: rgba(30, 41, 59, 0.15);
+  --shadow-soft: 0 10px 30px rgba(30, 41, 59, 0.12);
+  --shadow-elevated: 0 20px 50px rgba(30, 41, 59, 0.18);
 }
 
+/* 🌑 DARK MODE — Vecna / Upside Down
+   Vibe: Horror-tech, distorted, high tension, cinematic */
 :root[data-theme="dark"] {
-  --color-bg: #050608;
-  --color-bg-elevated: #111827;
-  --color-primary: #F97362;   /* lighter oxide-style accent for dark */
-  --color-primary-soft: rgba(252, 165, 165, 0.08);
-  --color-text: #E5E7EB;
-  --color-muted: #9CA3AF;
-  --color-border: rgba(148, 163, 184, 0.25);
-  --color-card: rgba(15, 23, 42, 0.95);
-  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.6);
+  /* Base / Surfaces */
+  --color-bg: #0B0B0F;              /* Void Black */
+  --color-bg-elevated: #1A1A22;     /* Ash Charcoal */
+  --color-card: rgba(18, 10, 18, 0.95); /* Blood Shadow with transparency */
+  
+  /* Primary Accent */
+  --color-primary: #F97362;;         /* Vecna Crimson */
+  --color-primary-soft: rgba(139, 0, 0, 0.15);
+  
+  /* Secondary Accents */
+  --color-secondary: #F97362;;       /* Vein Red */
+  --color-accent: #3A1C3D;          /* Corrupted Purple */
+  
+  /* Text */
+  --color-text: #E5E5E5;            /* Bone White */
+  --color-muted: #9CA3AF;           /* Fog Grey */
+  
+  /* UI Elements */
+  --color-border: rgba(193, 18, 31, 0.2);
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --shadow-elevated: 0 20px 50px rgba(0, 0, 0, 0.7);
+  
+  /* Subtle red glow for hover states */
+  --glow-red: 0 0 8px #F97362;;
 }
 
-/* Base styles using the variables */
+/* ========================================
+   BASE STYLES & TRANSITIONS
+   ======================================== */
+
+* {
+  transition: background-color 350ms ease, 
+              border-color 350ms ease, 
+              color 350ms ease;
+}
+
 body {
   @apply antialiased;
   background-color: var(--color-bg);
   color: var(--color-text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ========================================
+   DARK MODE SPECIFIC EFFECTS
+   ======================================== */
+
+/* Subtle noise/grain overlay for dark mode */
+:root[data-theme="dark"] body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.03;
+  z-index: 9999;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Red glow on hover for dark mode interactive elements */
+:root[data-theme="dark"] a:hover,
+:root[data-theme="dark"] button:hover {
+  filter: drop-shadow(var(--glow-red));
+}
+
+/* ========================================
+   LIGHT MODE SPECIFIC EFFECTS
+   ======================================== */
+
+/* Warmer, cleaner shadows for light mode */
+:root[data-theme="light"] .shadow-soft {
+  box-shadow: var(--shadow-soft);
+}
+
+:root[data-theme="light"] .rounded-xl,
+:root[data-theme="light"] .rounded-2xl,
+:root[data-theme="light"] .rounded-3xl {
+  border-radius: 1rem; /* Slightly more rounded for warmth */
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+.shadow-soft {
+  box-shadow: var(--shadow-soft);
+}
+
+.shadow-elevated {
+  box-shadow: var(--shadow-elevated);
+}
+
+/* Gradient overlays for dark mode only */
+:root[data-theme="dark"] .gradient-overlay {
+  background: linear-gradient(135deg, 
+    rgba(139, 0, 0, 0.05) 0%, 
+    rgba(58, 28, 61, 0.05) 100%);
+}
+
+/* ========================================
+   SCROLLBAR STYLING
+   ======================================== */
+
+/* Light mode scrollbar */
+:root[data-theme="light"] ::-webkit-scrollbar {
+  width: 10px;
+}
+
+:root[data-theme="light"] ::-webkit-scrollbar-track {
+  background: var(--color-bg-elevated);
+}
+
+:root[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 5px;
+}
+
+:root[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: #163270;
+}
+
+/* Dark mode scrollbar */
+:root[data-theme="dark"] ::-webkit-scrollbar {
+  width: 10px;
+}
+
+:root[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+:root[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 5px;
+  box-shadow: var(--glow-red);
+}
+
+:root[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: #F97362;
+}
+ 
+/* ========================================
+   SELECTION STYLING
+   ======================================== */
+
+:root[data-theme="light"] ::selection {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+:root[data-theme="dark"] ::selection {
+  background-color: var(--color-primary);
+  color: var(--color-text);
+  text-shadow: var(--glow-red);
 }
