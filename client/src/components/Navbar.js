@@ -32,7 +32,7 @@ const Navbar = () => {
       className="sticky top-0 z-50 backdrop-blur-xl bg-[color:var(--color-bg)]/80 border-b border-[color:var(--color-border)] shadow-soft"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-14">
           {/* Logo */}
           <motion.a
             href="#hero"
@@ -43,7 +43,7 @@ const Navbar = () => {
           </motion.a>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
               <a
                 key={link.name}
@@ -88,7 +88,7 @@ const Navbar = () => {
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: idx * 0.03 }}
-                        className="block px-4 py-2.5 text-sm font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)] hover:bg-[color:var(--color-bg)]/70 transition"
+                        className="block px-3 py-1.5 text-sm font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)] hover:bg-[color:var(--color-bg)]/70 transition"
                       >
                         {link.name}
                       </motion.a>
