@@ -111,10 +111,7 @@ const Education = () => {
           <h2 className="text-4xl md:text-5xl font-bold mb-3 text-[color:var(--color-text)]">
             Education
           </h2>
-          <p className="text-sm md:text-base text-[color:var(--color-muted)] max-w-2xl mx-auto">
-            Structured learning experience showcasing academic excellence and specialization in engineering and AI.
-          </p>
-        </motion.div>
+          </motion.div>
 
         {/* ✅ ORIGINAL DESKTOP TABLE + MOBILE CARDS */}
         <motion.div
