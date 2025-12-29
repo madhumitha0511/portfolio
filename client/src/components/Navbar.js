@@ -1,14 +1,12 @@
 // client/src/components/Navbar.js
-import React, { useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [otherOpen, setOtherOpen] = useState(false);
-
-  // timeout ref for delayed close of "Other"
-  const otherTimeoutRef = useRef(null);
+  const [hoverTimeout, setHoverTimeout] = useState(null); // ✅ Delay timer
 
   const navLinks = [
     { name: "About", href: "#about" },
@@ -27,36 +25,34 @@ const Navbar = () => {
     { name: "Testimonials", href: "#testimonials" },
   ];
 
-  const handleOtherEnter = () => {
-    if (otherTimeoutRef.current) clearTimeout(otherTimeoutRef.current);
+  // ✅ HOVER DELAY FUNCTIONS (1 second hold)
+  const handleMouseEnter = () => {
+    if (hoverTimeout) clearTimeout(hoverTimeout);
     setOtherOpen(true);
   };
 
-  const handleOtherLeave = () => {
-    // small delay (300–400 ms) so submenu doesn’t vanish instantly
-    otherTimeoutRef.current = setTimeout(() => {
+  const handleMouseLeave = () => {
+    const timeout = setTimeout(() => {
       setOtherOpen(false);
-    }, 350);
+    }, 200); // 1 second delay
+    setHoverTimeout(timeout);
   };
 
   return (
-   <motion.nav
-  initial={{ y: -80, opacity: 0 }}
-  animate={{ y: 0, opacity: 1 }}
-  transition={{ duration: 0.5, ease: "easeOut" }}
-  className="sticky top-0 z-50 backdrop-blur-xl bg-[color:var(--color-bg)] border-b border-[color:var(--color-border)] shadow-soft"
->
-
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      className="sticky top-0 z-50 backdrop-blur-xl bg-[color:var(--color-bg)]/80 border-b border-[color:var(--color-border)] shadow-soft"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <motion.a
             href="#hero"
-            whileHover={{ scale: 1.06 }}
-            whileTap={{ scale: 0.96 }}
-            className="text-2xl font-bold tracking-tight text-[color:var(--color-primary)]"
+            whileHover={{ scale: 1.05 }}
+            className="text-2xl font-bold text-[color:var(--color-primary)]"
           >
-            M
+            R
           </motion.a>
 
           {/* Desktop Nav */}
@@ -65,45 +61,42 @@ const Navbar = () => {
               <a
                 key={link.name}
                 href={link.href}
-                className="text-sm font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)] transition-colors"
+                className="text-sm font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)] transition"
               >
                 {link.name}
               </a>
             ))}
 
-            {/* Other dropdown with delay */}
+            {/* ✅ OTHER DROPDOWN WITH 1s HOVER DELAY */}
             <div
               className="relative"
-              onMouseEnter={handleOtherEnter}
-              onMouseLeave={handleOtherLeave}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
             >
-              <button className="text-sm font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)] transition-colors flex items-center gap-1">
+              <button className="text-sm font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)] transition flex items-center gap-1">
                 Other
                 <span className="text-xs">▾</span>
               </button>
-
-              <AnimatePresence>
-                {otherOpen && (
-                  <motion.div
-                    key="other-menu"
-                    initial={{ opacity: 0, y: 6, scale: 0.98 }}
-                    animate={{ opacity: 1, y: 10, scale: 1 }}
-                    exit={{ opacity: 0, y: 0, scale: 0.98 }}
-                    transition={{ duration: 0.18, ease: "easeOut" }}
-                    className="absolute right-0 mt-2 w-48 rounded-xl bg-[color:var(--color-bg-elevated)] border border-[color:var(--color-border)] shadow-soft/70 py-2"
-                  >
+              {otherOpen && (
+                <motion.div 
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="absolute -left-[150%] translate-x-[150%] mt-5 w-52 rounded-xl bg-[color:var(--color-bg-elevated)] border border-[color:var(--color-border)] shadow-elevated py-3 px-4"
+                >
+                  <div className="flex flex-col items-center space-y-2 text-center">
                     {otherLinks.map((link) => (
                       <a
                         key={link.name}
                         href={link.href}
-                        className="block px-4 py-1.5 text-xs font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)] hover:bg-[color:var(--color-bg)]/80 transition-colors"
+                        className="block px-4 py-2 text-sm font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)] hover:bg-[color:var(--color-bg)]/50 rounded-lg transition-all w-full"
                       >
                         {link.name}
                       </a>
                     ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                  </div>
+                </motion.div>
+              )}
             </div>
 
             <ThemeToggle />
@@ -111,7 +104,7 @@ const Navbar = () => {
             {/* Login button */}
             <a
               href="/admin/login"
-              className="px-4 py-2 text-xs font-semibold rounded-lg border border-[color:var(--color-border)] text-[color:var(--color-text)] hover:bg-[color:var(--color-bg-elevated)] hover:text-[color:var(--color-primary)] transition-colors"
+              className="px-4 py-2 text-xs font-semibold rounded-lg border border-[color:var(--color-border)] text-[color:var(--color-text)] hover:bg-[color:var(--color-bg-elevated)] transition"
             >
               Login
             </a>
@@ -147,57 +140,52 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            key="mobile-menu"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.22, ease: "easeOut" }}
-            className="md:hidden bg-[color:var(--color-bg-elevated)] border-t border-[color:var(--color-border)]"
-          >
-            <div className="px-4 py-4 space-y-3">
-              {navLinks.map((link) => (
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          className="md:hidden bg-[color:var(--color-bg-elevated)] border-t border-[color:var(--color-border)]"
+        >
+          <div className="px-4 py-4 space-y-3">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={() => setIsOpen(false)}
+                className="block text-sm font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)]"
+              >
+                {link.name}
+              </a>
+            ))}
+
+            {/* Other group on mobile */}
+            <div className="pt-2 border-t border-[color:var(--color-border)]">
+              <p className="text-[11px] uppercase tracking-[0.16em] text-[color:var(--color-muted)] mb-2">
+                Other
+              </p>
+              {otherLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className="block text-sm font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)] transition-colors"
+                  className="block text-sm font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)]"
                 >
                   {link.name}
                 </a>
               ))}
-
-              {/* Other group on mobile */}
-              <div className="pt-2 border-t border-[color:var(--color-border)]">
-                <p className="text-[11px] uppercase tracking-[0.16em] text-[color:var(--color-muted)] mb-2">
-                  Other
-                </p>
-                {otherLinks.map((link) => (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    onClick={() => setIsOpen(false)}
-                    className="block text-sm font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)] transition-colors"
-                  >
-                    {link.name}
-                  </a>
-                ))}
-              </div>
-
-              {/* Login button mobile */}
-              <a
-                href="/admin/login"
-                onClick={() => setIsOpen(false)}
-                className="block mt-2 text-sm font-semibold text-[color:var(--color-primary)]"
-              >
-                Login
-              </a>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+
+            {/* Login button mobile */}
+            <a
+              href="/admin/login"
+              onClick={() => setIsOpen(false)}
+              className="block mt-2 text-sm font-semibold text-[color:var(--color-primary)]"
+            >
+              Login
+            </a>
+          </div>
+        </motion.div>
+      )}
     </motion.nav>
   );
 };
