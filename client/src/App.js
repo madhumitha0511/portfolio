@@ -1,4 +1,4 @@
-// src/App.js - 80/20 PERFECT BALANCE
+// src/App.js - NAVBAR FIXED PERMANENTLY ON TOP
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -58,19 +58,21 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen bg-[#050006] text-[color:var(--color-text)] relative overflow-x-hidden">
+        {/* ✅ NAVBAR = ALWAYS FIXED ON TOP */}
+        <div className="fixed top-0 left-0 right-0 z-[100]">
+          <Navbar />
+        </div>
+
         <Routes>
           <Route
             path="/"
             element={
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Navbar />
-                <Hero />
-
-                {/* ✅ 80% BLACK + 20% RED - PERFECT BALANCE */}
+              <>
+                {/* ✅ HERO = High z-index (below navbar) */}
+                <div className="pt-20 relative z-50"> {/* Offset for fixed navbar */}
+                  <Hero />
+                </div>
+{/* ✅ 80% BLACK + 20% RED - PERFECT BALANCE */}
                 <div 
                   className="relative z-0"
                   style={{
@@ -93,7 +95,7 @@ function App() {
                   <Contact />
                   <Footer />
                 </div>
-              </motion.div>
+              </>
             }
           />
           <Route path="/admin/login" element={<AdminLogin />} />
