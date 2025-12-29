@@ -1,4 +1,6 @@
-// client/src/components/sections/Extracurricular.js - MOBILE BUTTONS + BIGGER CIRCLE
+// client/src/components/sections/Extracurricular.js - NO IMAGE BORDER + MAX PIC + SMALLER TEXT
+// ✅ Clean image, 95% pic size, compact content
+
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { extracurricularAPI } from "../../services/api";
@@ -39,7 +41,7 @@ const Extracurricular = () => {
     load();
   }, []);
 
-  // Auto-advance every 3 seconds (faster)
+  // Auto-advance every 3 seconds
   useEffect(() => {
     if (!autoPlay || items.length === 0) return;
     const timer = setInterval(() => {
@@ -50,7 +52,6 @@ const Extracurricular = () => {
 
   const hasItems = items.length > 0;
 
-  // ✅ Side card click handlers
   const goNext = () => {
     if (!hasItems) return;
     setIndex((prev) => (prev + 1) % items.length);
@@ -81,7 +82,6 @@ const Extracurricular = () => {
       onMouseEnter={() => setAutoPlay(false)}
       onMouseLeave={() => setAutoPlay(true)}
     >
-      {/* Content - positioned above background */}
       <div className="max-w-7xl mx-auto relative z-10">
         {/* HEADER SECTION */}
         <motion.div
@@ -112,13 +112,12 @@ const Extracurricular = () => {
           </p>
         </motion.div>
 
-        {/* ✅ MOBILE: Single Card WITH BUTTONS + BIGGER CIRCLE | DESKTOP: 3-Card Carousel */}
+        {/* 60/40 CAROUSEL */}
         <div className="relative flex items-center justify-center">
-          {/* Carousel Container */}
-          <div className="w-full flex justify-center items-center relative h-[480px] md:h-[540px]">
+          <div className="w-full flex justify-center items-center relative h-[520px] md:h-[600px]">
             
-            {/* ✅ MOBILE CARD */}
-            <div className="lg:hidden w-full max-w-sm mx-auto relative">
+            {/* ✅ MOBILE: CLEAN MAX IMAGE + COMPACT CONTENT */}
+            <div className="lg:hidden w-full max-w-md mx-auto relative">
               <AnimatePresence mode="wait">
                 {main && (
                   <motion.article
@@ -127,145 +126,154 @@ const Extracurricular = () => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.9 }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
-                    className="relative w-full h-[420px] rounded-[1.5rem] overflow-hidden z-20 mx-auto"
+                    className="relative w-full h-[460px] rounded-[2rem] overflow-hidden z-20 mx-auto"
                     onHoverStart={() => setAutoPlay(false)}
                     onHoverEnd={() => setAutoPlay(true)}
                   >
-                    {/* Solid background */}
+                    {/* Background - UNCHANGED */}
                     <div className={isDark
                       ? "absolute inset-0 bg-[color:var(--color-primary-soft)] -z-10"
                       : "absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50 -z-10"
                     } />
 
-                    {/* Premium glow border */}
+                    {/* Glow border - UNCHANGED */}
                     <motion.div
                       animate={isDark ? {
                         boxShadow: [
-                          "inset 0 0 40px rgba(140,29,24,0.15), 0 0 0 1px rgba(140,29,24,0.3)",
-                          "inset 0 0 60px rgba(140,29,24,0.25), 0 0 0 2px rgba(140,29,24,0.4)",
-                          "inset 0 0 40px rgba(140,29,24,0.15), 0 0 0 1px rgba(140,29,24,0.3)",
+                          "inset 0 0 50px rgba(140,29,24,0.2), 0 0 0 2px rgba(140,29,24,0.4)",
+                          "inset 0 0 70px rgba(140,29,24,0.3), 0 0 0 3px rgba(140,29,24,0.5)",
+                          "inset 0 0 50px rgba(140,29,24,0.2), 0 0 0 2px rgba(140,29,24,0.4)",
                         ],
                       } : {
                         boxShadow: [
-                          "inset 0 0 30px rgba(59,130,246,0.1), 0 0 0 1px rgba(59,130,246,0.2)",
-                          "inset 0 0 50px rgba(59,130,246,0.15), 0 0 0 2px rgba(59,130,246,0.3)",
-                          "inset 0 0 30px rgba(59,130,246,0.1), 0 0 0 1px rgba(59,130,246,0.2)",
+                          "inset 0 0 40px rgba(59,130,246,0.15), 0 0 0 2px rgba(59,130,246,0.3)",
+                          "inset 0 0 60px rgba(59,130,246,0.2), 0 0 0 3px rgba(59,130,246,0.4)",
+                          "inset 0 0 40px rgba(59,130,246,0.15), 0 0 0 2px rgba(59,130,246,0.3)",
                         ],
                       }}
-                      transition={{ duration: 5, repeat: Infinity }}
-                      className="absolute inset-0 rounded-[1.5rem] pointer-events-none"
+                      transition={{ duration: 6, repeat: Infinity }}
+                      className="absolute inset-0 rounded-[2rem] pointer-events-none"
                     />
 
-                    {/* Content */}
-                    <div className="relative z-10 h-full flex flex-col p-6">
-                      {/* Year badge */}
+                    {/* ✅ 60% MAX IMAGE - NO BORDER */}
+                    <div className="relative z-10 h-[60%] w-full">
                       <motion.div
-                        initial={{ y: -15, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.25 }}
-                        className={isDark
-                          ? "self-center mb-4 px-4 py-1.5 rounded-full bg-[color:var(--color-card)]/90 backdrop-blur-md border border-[color:var(--color-border)] text-[10px] font-extrabold uppercase tracking-[0.18em] text-[color:var(--color-muted)] shadow-soft"
-                          : "self-center mb-4 px-4 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-[color:var(--color-border)] text-[10px] font-extrabold uppercase tracking-[0.18em] text-[color:var(--color-primary)] shadow-soft"
-                        }
+                        initial={{ scale: 0.95, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ delay: 0.15, duration: 0.8 }}
+                        className="absolute inset-0 flex items-center justify-center"
                       >
-                        {main.start_date?.slice(0, 4) || "Active"}
-                      </motion.div>
-
-                      {/* Center animated circle - BIGGER */}
-                      <div className="flex-1 flex items-center justify-center mb-6">
+                        {/* Rotating frame only */}
                         <motion.div
-                          initial={{ scale: 0, rotate: -180 }}
-                          animate={{ scale: 1, rotate: 0 }}
+                          animate={{ rotate: 360 }}
                           transition={{
-                            delay: 0.2,
-                            type: "spring",
-                            stiffness: 150,
-                            damping: 20,
+                            duration: 35,
+                            repeat: Infinity,
+                            ease: "linear",
                           }}
-                          className="relative"
-                        >
-                          {/* Outer rotating ring - BIGGER */}
-                          <motion.div
-                            animate={{ rotate: 360 }}
-                            transition={{
-                              duration: 20,
-                              repeat: Infinity,
-                              ease: "linear",
-                            }}
-                            className={isDark
-                              ? "absolute inset-0 rounded-full border-2 border-transparent border-t-[color:var(--color-primary)]/40 border-r-[color:var(--color-primary)]/20 w-32 h-32"
-                              : "absolute inset-0 rounded-full border-2 border-transparent border-t-[color:var(--color-primary)]/50 border-r-[color:var(--color-primary)]/30 w-32 h-32"
-                            }
+                          className={isDark
+                            ? "absolute inset-2 rounded-3xl border-[1px] border-transparent border-t-[color:var(--color-primary)]/40 border-r-[color:var(--color-primary)]/20"
+                            : "absolute inset-2 rounded-3xl border-[1px] border-transparent border-t-[color:var(--color-primary)]/50 border-r-[color:var(--color-primary)]/30"
+                          }
+                        />
+                        
+                        {/* ✅ NO BORDER - FULL SIZE IMAGE */}
+                        <div className={isDark
+  ? "w-[95%] h-[95%] rounded-3xl overflow-hidden shadow-2xl shadow-[color:var(--color-primary)]/20 flex items-center justify-center bg-[color:var(--color-card)]/90 backdrop-blur-md"
+  : "w-[95%] h-[95%] rounded-3xl overflow-hidden shadow-3xl shadow-[color:var(--color-primary)]/30 flex items-center justify-center"
+}>
+
+                          <motion.img
+                            src={main.image_url || "/api/placeholder/500/500"}
+                            alt={main.organization_name || "Club"}
+                            className="w-full h-full object-contain object-center"
+                            whileHover={{ scale: 1.02, y: -1 }}
+                            transition={{ type: "spring", stiffness: 600, damping: 25 }}
                           />
+                        </div>
+                      </motion.div>
+                    </div>
 
-                          {/* Main circle - BIGGER */}
-                          <div className={isDark
-                            ? "w-28 h-28 rounded-full border-[3px] border-[color:var(--color-text)]/15 flex items-center justify-center bg-[color:var(--color-bg)] shadow-soft"
-                            : "w-28 h-28 rounded-full border-[3px] border-[color:var(--color-primary)]/20 flex items-center justify-center bg-white shadow-elevated"
-                          }>
-                            <span className="text-center text-base font-bold text-[color:var(--color-primary)] px-2 leading-tight">
-                              {main.organization_name
-                                ?.split(" ")
-                                .slice(0, 2)
-                                .join(" ") || "Club"}
-                            </span>
-                          </div>
-                        </motion.div>
-                      </div>
-
-                      {/* Title & Description */}
-                      <div className="flex-1 flex flex-col items-center justify-center text-center space-y-2">
+                    {/* ✅ 40% COMPACT CONTENT - SMALLER TEXT */}
+                    <div className="relative z-20 h-[40%] px-5 pt-2 pb-5 flex flex-col justify-between">
+                      {/* Title & Organization - SMALLER */}
+                      <div className="space-y-1 mb-2">
                         <motion.h3
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.3 }}
-                          className="text-lg font-extrabold text-[color:var(--color-text)] leading-snug line-clamp-2"
+                          className="text-base font-black text-[color:var(--color-text)] leading-tight line-clamp-1 tracking-tight"
                         >
                           {main.activity_title}
                         </motion.h3>
-
+                        
                         <motion.p
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.35 }}
-                          className="text-xs text-[color:var(--color-muted)] leading-relaxed line-clamp-2 px-2"
+                          className="text-xs font-semibold text-[color:var(--color-muted)] leading-tight line-clamp-1 tracking-wide"
                         >
-                          {main.description}
-                        </motion.p>
-
-                        <motion.p
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ delay: 0.4 }}
-                          className={isDark
-                            ? "text-[9px] font-extrabold uppercase tracking-[0.15em] text-[color:var(--color-text)]"
-                            : "text-[9px] font-extrabold uppercase tracking-[0.15em] text-[color:var(--color-primary)]"
-                          }
-                        >
-                          {main.position || "Contributor"}
+                          {main.organization_name}
                         </motion.p>
                       </div>
 
-                      {/* ✅ MOBILE NAVIGATION BUTTONS */}
-                      <div className="flex items-center justify-center gap-4 pt-4">
+                      {/* Description - SMALLER */}
+                      <motion.p
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4 }}
+                        className="text-[11px] text-[color:var(--color-muted)] leading-relaxed line-clamp-3 mb-3 tracking-tight"
+                      >
+                        {main.description}
+                      </motion.p>
+
+                      {/* Position & Year - SMALLER & TIGHTER */}
+                      <div className="flex items-center justify-between pt-1 border-t border-[color:var(--color-border)]/40">
+                        <motion.p
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 0.45 }}
+                          className={isDark
+                            ? "px-2.5 py-1 rounded-full bg-[color:var(--color-card)]/95 backdrop-blur-md border border-[color:var(--color-border)] text-[9px] font-bold uppercase tracking-[0.15em] text-[color:var(--color-muted)]"
+                            : "px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-md border border-[color:var(--color-border)] text-[9px] font-bold uppercase tracking-[0.15em] text-[color:var(--color-primary)]"
+                          }
+                        >
+                          {main.start_date?.slice(0, 4) || "Active"}
+                        </motion.p>
+                        
+                        <motion.p
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 0.5 }}
+                          className={isDark
+                            ? "px-3 py-1 rounded-full bg-[color:var(--color-primary-soft)] border border-[color:var(--color-primary)] text-[9px] font-black uppercase tracking-[0.15em] text-[color:var(--color-primary)] shadow-soft"
+                            : "px-3 py-1 rounded-full bg-[color:var(--color-primary)]/20 border border-[color:var(--color-primary)] text-[9px] font-black uppercase tracking-[0.15em] text-[color:var(--color-primary)] shadow-soft"
+                          }
+                        >
+                          {main.position || "Team Lead"}
+                        </motion.p>
+                      </div>
+
+                      {/* Nav buttons - bottom center */}
+                      <div className="flex items-center justify-center gap-3 mt-2 pt-2 border-t border-[color:var(--color-border)]/30">
                         <motion.button
-                          whileHover={{ scale: 1.1 }}
+                          whileHover={{ scale: 1.08 }}
                           whileTap={{ scale: 0.95 }}
                           onClick={goPrev}
                           className={isDark
-                            ? "w-10 h-10 rounded-full bg-[color:var(--color-card)]/90 backdrop-blur-md border border-[color:var(--color-border)] text-[color:var(--color-text)] flex items-center justify-center shadow-soft text-lg"
-                            : "w-10 h-10 rounded-full bg-white/90 backdrop-blur-md border border-[color:var(--color-border)] text-[color:var(--color-text)] flex items-center justify-center shadow-soft hover:shadow-elevated transition-all text-lg"
+                            ? "w-10 h-10 rounded-full bg-[color:var(--color-card)]/90 backdrop-blur-md border-2 border-[color:var(--color-border)] text-[color:var(--color-text)] flex items-center justify-center shadow-soft text-lg font-bold"
+                            : "w-10 h-10 rounded-full bg-white/90 backdrop-blur-md border-2 border-[color:var(--color-border)] text-[color:var(--color-text)] flex items-center justify-center shadow-soft hover:shadow-elevated text-lg font-bold"
                           }
                         >
                           ‹
                         </motion.button>
                         <motion.button
-                          whileHover={{ scale: 1.1 }}
+                          whileHover={{ scale: 1.08 }}
                           whileTap={{ scale: 0.95 }}
                           onClick={goNext}
                           className={isDark
-                            ? "w-10 h-10 rounded-full bg-[color:var(--color-card)]/90 backdrop-blur-md border border-[color:var(--color-border)] text-[color:var(--color-text)] flex items-center justify-center shadow-soft text-lg"
-                            : "w-10 h-10 rounded-full bg-white/90 backdrop-blur-md border border-[color:var(--color-border)] text-[color:var(--color-text)] flex items-center justify-center shadow-soft hover:shadow-elevated transition-all text-lg"
+                            ? "w-10 h-10 rounded-full bg-[color:var(--color-card)]/90 backdrop-blur-md border-2 border-[color:var(--color-border)] text-[color:var(--color-text)] flex items-center justify-center shadow-soft text-lg font-bold"
+                            : "w-10 h-10 rounded-full bg-white/90 backdrop-blur-md border-2 border-[color:var(--color-border)] text-[color:var(--color-text)] flex items-center justify-center shadow-soft hover:shadow-elevated text-lg font-bold"
                           }
                         >
                           ›
@@ -277,8 +285,137 @@ const Extracurricular = () => {
               </AnimatePresence>
             </div>
 
-            {/* ✅ DESKTOP 3-CARD CAROUSEL */}
-            {/* Left Card */}
+            {/* DESKTOP - SAME CHANGES */}
+            <AnimatePresence mode="wait">
+              {main && (
+                <motion.article
+                  key={main.id}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  className="hidden lg:block relative w-full max-w-xl h-[520px] rounded-[3rem] overflow-hidden z-20"
+                  onHoverStart={() => setAutoPlay(false)}
+                  onHoverEnd={() => setAutoPlay(true)}
+                >
+                  {/* Background - UNCHANGED */}
+                  <div className={isDark
+                    ? "absolute inset-0 bg-[color:var(--color-primary-soft)] -z-10"
+                    : "absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50 -z-10"
+                  } />
+                  
+                  <motion.div
+                    animate={isDark ? {
+                      boxShadow: [
+                        "inset 0 0 50px rgba(140,29,24,0.2), 0 0 0 2px rgba(140,29,24,0.4)",
+                        "inset 0 0 70px rgba(140,29,24,0.3), 0 0 0 3px rgba(140,29,24,0.5)",
+                        "inset 0 0 50px rgba(140,29,24,0.2), 0 0 0 2px rgba(140,29,24,0.4)",
+                      ],
+                    } : {
+                      boxShadow: [
+                        "inset 0 0 40px rgba(59,130,246,0.15), 0 0 0 2px rgba(59,130,246,0.3)",
+                        "inset 0 0 60px rgba(59,130,246,0.2), 0 0 0 3px rgba(59,130,246,0.4)",
+                        "inset 0 0 40px rgba(59,130,246,0.15), 0 0 0 2px rgba(59,130,246,0.3)",
+                      ],
+                    }}
+                    transition={{ duration: 6, repeat: Infinity }}
+                    className="absolute inset-0 rounded-[3rem] pointer-events-none"
+                  />
+
+                  {/* Desktop 60% MAX IMAGE - NO BORDER */}
+                  <div className="relative z-10 h-[60%] w-full">
+                    <motion.div
+                      initial={{ scale: 0.95, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ delay: 0.15, duration: 0.8 }}
+                      className="absolute inset-0 flex items-center justify-center"
+                    >
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 35, repeat: Infinity, ease: "linear" }}
+                        className={isDark
+                          ? "absolute inset-3 rounded-[2rem] border-[1px] border-transparent border-t-[color:var(--color-primary)]/40 border-r-[color:var(--color-primary)]/20"
+                          : "absolute inset-3 rounded-[2rem] border-[1px] border-transparent border-t-[color:var(--color-primary)]/50 border-r-[color:var(--color-primary)]/30"
+                        }
+                      />
+                      <div className={isDark
+  ? "w-[95%] h-[95%] rounded-[2rem] overflow-hidden shadow-3xl shadow-[color:var(--color-primary)]/25 flex items-center justify-center bg-[color:var(--color-card)]/90 backdrop-blur-md"
+  : "w-[95%] h-[95%] rounded-[2rem] overflow-hidden shadow-3xl shadow-[color:var(--color-primary)]/40 flex items-center justify-center"
+}>
+
+                        <motion.img
+                          src={main.image_url || "/api/placeholder/600/600"}
+                          alt={main.organization_name || "Club"}
+                          className="w-full h-full object-contain object-center"
+                          whileHover={{ scale: 1.02, y: -1 }}
+                          transition={{ type: "spring", stiffness: 600, damping: 25 }}
+                        />
+                      </div>
+                    </motion.div>
+                  </div>
+
+                  {/* Desktop 40% COMPACT CONTENT - SMALLER TEXT */}
+                  <div className="relative z-20 h-[40%] px-8 pt-4 pb-8 flex flex-col justify-between">
+                    <div className="space-y-2 mb-3">
+                      <motion.h3
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="text-xl font-black text-[color:var(--color-text)] leading-tight line-clamp-1 tracking-tight"
+                      >
+                        {main.activity_title}
+                      </motion.h3>
+                      
+                      <motion.p
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.35 }}
+                        className="text-sm font-semibold text-[color:var(--color-muted)] leading-tight line-clamp-1 tracking-wide"
+                      >
+                        {main.organization_name}
+                      </motion.p>
+
+                      <motion.p
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4 }}
+                        className="text-[13px] text-[color:var(--color-muted)] leading-relaxed line-clamp-3 tracking-tight"
+                      >
+                        {main.description}
+                      </motion.p>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-2 border-t border-[color:var(--color-border)]/50">
+                      <motion.p
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.45 }}
+                        className={isDark
+                          ? "px-3 py-1.5 rounded-full bg-[color:var(--color-card)]/95 backdrop-blur-md border border-[color:var(--color-border)] text-sm font-bold uppercase tracking-wider text-[color:var(--color-muted)]"
+                          : "px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-[color:var(--color-border)] text-sm font-bold uppercase tracking-wider text-[color:var(--color-primary)]"
+                        }
+                      >
+                        {main.start_date?.slice(0, 4) || "Active"}
+                      </motion.p>
+                      
+                      <motion.p
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.5 }}
+                        className={isDark
+                          ? "px-5 py-2 rounded-full bg-[color:var(--color-primary-soft)] border-2 border-[color:var(--color-primary)] text-sm font-black uppercase tracking-[0.18em] text-[color:var(--color-primary)] shadow-lg"
+                          : "px-5 py-2 rounded-full bg-[color:var(--color-primary)]/20 border-2 border-[color:var(--color-primary)] text-sm font-black uppercase tracking-[0.18em] text-[color:var(--color-primary)] shadow-lg"
+                        }
+                      >
+                        {main.position || "Team Lead"}
+                      </motion.p>
+                    </div>
+                  </div>
+                </motion.article>
+              )}
+            </AnimatePresence>
+
+            {/* Left & Right cards unchanged */}
             {left && (
               <motion.div
                 initial={{ opacity: 0, x: -100, scale: 0.65 }}
@@ -293,150 +430,22 @@ const Extracurricular = () => {
                   ? "absolute inset-0 bg-gradient-to-br from-[color:var(--color-primary-soft)]/30 via-[color:var(--color-card)]/50 to-[color:var(--color-bg)]/70 backdrop-blur-xl"
                   : "absolute inset-0 bg-gradient-to-br from-blue-50/70 via-white/80 to-purple-50/70 backdrop-blur-xl"
                 } />
-                <div className={isDark
-                  ? "absolute inset-0 border border-[color:var(--color-primary)]/30 rounded-2xl"
-                  : "absolute inset-0 border border-[color:var(--color-primary)]/20 rounded-2xl"
-                } />
                 <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-5 py-8 text-center space-y-4">
                   <div className={isDark
-                    ? "w-12 h-12 rounded-full bg-[color:var(--color-primary)]/20 flex items-center justify-center border border-[color:var(--color-primary)]/40"
-                    : "w-12 h-12 rounded-full bg-[color:var(--color-primary)]/10 flex items-center justify-center border border-[color:var(--color-primary)]/30"
+                    ? "w-14 h-14 rounded-2xl bg-[color:var(--color-primary)]/20 flex items-center justify-center border border-[color:var(--color-primary)]/40 shadow-lg"
+                    : "w-14 h-14 rounded-2xl bg-[color:var(--color-primary)]/10 flex items-center justify-center border border-[color:var(--color-primary)]/30 shadow-lg"
                   }>
-                    <span className="text-[18px]">←</span>
+                    <span className="text-xl font-bold">←</span>
                   </div>
                   <div className="space-y-2">
-                    <p className="text-[9px] font-extrabold text-[color:var(--color-muted)] uppercase tracking-[0.15em]">
-                      Previous
-                    </p>
-                    <p className="text-[12px] font-bold text-[color:var(--color-text)] line-clamp-2 leading-tight">
-                      {left.activity_title}
-                    </p>
-                    <p className="text-[10px] font-medium text-[color:var(--color-muted)]">
-                      {left.organization_name}
-                    </p>
+                    <p className="text-[9px] font-extrabold text-[color:var(--color-muted)] uppercase tracking-[0.15em]">Previous</p>
+                    <p className="text-[12px] font-bold text-[color:var(--color-text)] line-clamp-2 leading-tight">{left.activity_title}</p>
+                    <p className="text-[10px] font-medium text-[color:var(--color-muted)]">{left.organization_name}</p>
                   </div>
                 </div>
               </motion.div>
             )}
 
-            {/* Desktop Main Card */}
-            <AnimatePresence mode="wait">
-              {main && (
-                <motion.article
-                  key={main.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.6, ease: "easeOut" }}
-                  className="hidden lg:block relative w-full max-w-md h-96 md:h-[480px] rounded-[3rem] overflow-hidden z-20"
-                  onHoverStart={() => setAutoPlay(false)}
-                  onHoverEnd={() => setAutoPlay(true)}
-                >
-                  <div className={isDark
-                    ? "absolute inset-0 bg-[color:var(--color-primary-soft)] -z-10"
-                    : "absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50 -z-10"
-                  } />
-                  <motion.div
-                    animate={isDark ? {
-                      boxShadow: [
-                        "inset 0 0 40px rgba(140,29,24,0.15), 0 0 0 1px rgba(140,29,24,0.3)",
-                        "inset 0 0 60px rgba(140,29,24,0.25), 0 0 0 2px rgba(140,29,24,0.4)",
-                        "inset 0 0 40px rgba(140,29,24,0.15), 0 0 0 1px rgba(140,29,24,0.3)",
-                      ],
-                    } : {
-                      boxShadow: [
-                        "inset 0 0 30px rgba(59,130,246,0.1), 0 0 0 1px rgba(59,130,246,0.2)",
-                        "inset 0 0 50px rgba(59,130,246,0.15), 0 0 0 2px rgba(59,130,246,0.3)",
-                        "inset 0 0 30px rgba(59,130,246,0.1), 0 0 0 1px rgba(59,130,246,0.2)",
-                      ],
-                    }}
-                    transition={{ duration: 5, repeat: Infinity }}
-                    className="absolute inset-0 rounded-[3rem] pointer-events-none"
-                  />
-                  <div className="relative z-10 h-full flex flex-col">
-                    <motion.div
-                      initial={{ y: -15, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: 0.25 }}
-                      className={isDark
-                        ? "self-center mt-5 px-5 py-1.5 rounded-full bg-[color:var(--color-card)]/90 backdrop-blur-md border border-[color:var(--color-border)] text-[9px] font-extrabold uppercase tracking-[0.2em] text-[color:var(--color-muted)] shadow-soft"
-                        : "self-center mt-5 px-5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-[color:var(--color-border)] text-[9px] font-extrabold uppercase tracking-[0.2em] text-[color:var(--color-primary)] shadow-soft"
-                      }
-                    >
-                      {main.start_date?.slice(0, 4) || "Active"}
-                    </motion.div>
-                    <div className="flex-1 flex items-center justify-center">
-                      <motion.div
-                        initial={{ scale: 0, rotate: -180 }}
-                        animate={{ scale: 1, rotate: 0 }}
-                        transition={{
-                          delay: 0.2,
-                          type: "spring",
-                          stiffness: 150,
-                          damping: 20,
-                        }}
-                        className="relative"
-                      >
-                        <motion.div
-                          animate={{ rotate: 360 }}
-                          transition={{
-                            duration: 20,
-                            repeat: Infinity,
-                            ease: "linear",
-                          }}
-                          className={isDark
-                            ? "absolute inset-0 rounded-full border-2 border-transparent border-t-[color:var(--color-primary)]/40 border-r-[color:var(--color-primary)]/20 w-32 h-32"
-                            : "absolute inset-0 rounded-full border-2 border-transparent border-t-[color:var(--color-primary)]/50 border-r-[color:var(--color-primary)]/30 w-32 h-32"
-                          }
-                        />
-                        <div className={isDark
-                          ? "w-28 h-28 rounded-full border-[3px] border-[color:var(--color-text)]/15 flex items-center justify-center bg-[color:var(--color-bg)] shadow-soft"
-                          : "w-28 h-28 rounded-full border-[3px] border-[color:var(--color-primary)]/20 flex items-center justify-center bg-white shadow-elevated"
-                        }>
-                          <span className="text-center text-[12px] font-bold text-[color:var(--color-primary)] px-3 leading-tight">
-                            {main.organization_name
-                              ?.split(" ")
-                              .slice(0, 2)
-                              .join(" ") || "Club"}
-                          </span>
-                        </div>
-                      </motion.div>
-                    </div>
-                    <div className="flex-1 flex flex-col items-center justify-center px-8 text-center space-y-3 pb-8">
-                      <motion.h3
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.3 }}
-                        className="text-xl md:text-2xl font-extrabold text-[color:var(--color-text)] leading-snug"
-                      >
-                        {main.activity_title}
-                      </motion.h3>
-                      <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.35 }}
-                        className="text-[11px] md:text-[12px] text-[color:var(--color-muted)] leading-relaxed line-clamp-2"
-                      >
-                        {main.description}
-                      </motion.p>
-                      <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.4 }}
-                        className={isDark
-                          ? "text-[10px] font-extrabold uppercase tracking-[0.2em] text-[color:var(--color-text)]"
-                          : "text-[10px] font-extrabold uppercase tracking-[0.2em] text-[color:var(--color-primary)]"
-                        }
-                      >
-                        {main.position || "Contributor"}
-                      </motion.p>
-                    </div>
-                  </div>
-                </motion.article>
-              )}
-            </AnimatePresence>
-
-            {/* Right Card */}
             {right && (
               <motion.div
                 initial={{ opacity: 0, x: 100, scale: 0.65 }}
@@ -451,27 +460,17 @@ const Extracurricular = () => {
                   ? "absolute inset-0 bg-gradient-to-br from-[color:var(--color-primary-soft)]/30 via-[color:var(--color-card)]/50 to-[color:var(--color-bg)]/70 backdrop-blur-xl"
                   : "absolute inset-0 bg-gradient-to-br from-blue-50/70 via-white/80 to-purple-50/70 backdrop-blur-xl"
                 } />
-                <div className={isDark
-                  ? "absolute inset-0 border border-[color:var(--color-primary)]/30 rounded-2xl"
-                  : "absolute inset-0 border border-[color:var(--color-primary)]/20 rounded-2xl"
-                } />
                 <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-5 py-8 text-center space-y-4">
                   <div className={isDark
-                    ? "w-12 h-12 rounded-full bg-[color:var(--color-primary)]/20 flex items-center justify-center border border-[color:var(--color-primary)]/40"
-                    : "w-12 h-12 rounded-full bg-[color:var(--color-primary)]/10 flex items-center justify-center border border-[color:var(--color-primary)]/30"
+                    ? "w-14 h-14 rounded-2xl bg-[color:var(--color-primary)]/20 flex items-center justify-center border border-[color:var(--color-primary)]/40 shadow-lg"
+                    : "w-14 h-14 rounded-2xl bg-[color:var(--color-primary)]/10 flex items-center justify-center border border-[color:var(--color-primary)]/30 shadow-lg"
                   }>
-                    <span className="text-[18px]">→</span>
+                    <span className="text-xl font-bold">→</span>
                   </div>
                   <div className="space-y-2">
-                    <p className="text-[9px] font-extrabold text-[color:var(--color-muted)] uppercase tracking-[0.15em]">
-                      Next
-                    </p>
-                    <p className="text-[12px] font-bold text-[color:var(--color-text)] line-clamp-2 leading-tight">
-                      {right.activity_title}
-                    </p>
-                    <p className="text-[10px] font-medium text-[color:var(--color-muted)]">
-                      {right.organization_name}
-                    </p>
+                    <p className="text-[9px] font-extrabold text-[color:var(--color-muted)] uppercase tracking-[0.15em]">Next</p>
+                    <p className="text-[12px] font-bold text-[color:var(--color-text)] line-clamp-2 leading-tight">{right.activity_title}</p>
+                    <p className="text-[10px] font-medium text-[color:var(--color-muted)]">{right.organization_name}</p>
                   </div>
                 </div>
               </motion.div>
@@ -480,7 +479,7 @@ const Extracurricular = () => {
         </div>
 
         {/* Progress Dots */}
-        <div className="flex justify-center items-center gap-4 mt-14">
+        <div className="flex justify-center items-center gap-4 mt-16">
           <div className="flex gap-3">
             {items.map((item, i) => (
               <motion.button
@@ -501,7 +500,6 @@ const Extracurricular = () => {
               />
             ))}
           </div>
-
           <span className="text-[11px] font-semibold text-[color:var(--color-muted)] tracking-[0.12em] uppercase ml-4">
             {String(index + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
           </span>
