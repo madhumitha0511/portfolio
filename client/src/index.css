@@ -127,10 +127,10 @@
   --color-card: rgba(18, 10, 12, 0.92);
 
   /* Brand (SANGRIA) */
-  --color-primary: #d60200;      /* sangria-700 */
+  --color-primary: #C1121F;      /* sangria-700 */
   --color-primary-soft: rgba(214, 2, 0, 0.18);
-  --color-secondary: #b10403;    /* sangria-800 */
-  --color-accent: #880b0a;       /* sangria-900 */
+  --color-secondary: #F97362;    /* sangria-800 */
+  --color-accent:#d6242f9f ;       /* sangria-900 */
 
   /* Text */
   --color-text: #EDEDED;
