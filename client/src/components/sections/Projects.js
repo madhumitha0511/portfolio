@@ -1,6 +1,6 @@
 // client/src/components/sections/Projects.js
 import React, { useEffect, useState, useMemo, useCallback } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { projectsAPI } from "../../services/api";
 
 export const Projects = () => {
@@ -27,6 +27,10 @@ export const Projects = () => {
     
     return () => observer.disconnect();
   }, []);
+
+  const { scrollYProgress } = useScroll();
+  const headingY = useTransform(scrollYProgress, [0, 0.2], [50, 0]);
+  const headingOpacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -103,31 +107,26 @@ export const Projects = () => {
   const activeProject = projects[activeIndex];
 
   const getActiveBorderColor = (index) => {
-    if (isDark) {
-      const colorMap = {
-        0: "border-orange-500/80",
-        1: "border-cyan-500/80",
-        2: "border-emerald-500/80",
-        3: "border-violet-500/80",
-        4: "border-yellow-500/80",
-        5: "border-pink-500/80",
-        6: "border-indigo-500/80",
-        7: "border-teal-500/80",
-      };
-      return colorMap[index % 8] || "border-orange-500/80";
-    } else {
-      const colorMap = {
-        0: "border-[color:var(--color-primary)]",
-        1: "border-[color:var(--color-accent)]",
-        2: "border-[color:var(--color-secondary)]",
-        3: "border-[color:var(--color-primary)]",
-        4: "border-[color:var(--color-accent)]",
-        5: "border-[color:var(--color-secondary)]",
-        6: "border-[color:var(--color-primary)]",
-        7: "border-[color:var(--color-accent)]",
-      };
-      return colorMap[index % 8] || "border-[color:var(--color-primary)]";
-    }
+    const colorMap = isDark ? {
+      0: "border-orange-500/80",
+      1: "border-cyan-500/80",
+      2: "border-emerald-500/80",
+      3: "border-violet-500/80",
+      4: "border-yellow-500/80",
+      5: "border-pink-500/80",
+      6: "border-indigo-500/80",
+      7: "border-teal-500/80",
+    } : {
+      0: "border-[#F4A261]",
+      1: "border-[#1F3A8A]",
+      2: "border-[#2A9D8F]",
+      3: "border-[#1F3A8A]",
+      4: "border-[#F4A261]",
+      5: "border-[#2A9D8F]",
+      6: "border-[#1F3A8A]",
+      7: "border-[#F4A261]",
+    };
+    return colorMap[index % 8] || (isDark ? "border-orange-500/80" : "border-[#1F3A8A]");
   };
 
   const handleCardClick = useCallback((index) => {
@@ -135,32 +134,27 @@ export const Projects = () => {
     setTimeout(() => setTempActiveIndex(null), 15000);
   }, []);
 
-  // Define color classes based on theme
-  const colors = useMemo(() => {
-    if (isDark) {
-      return [
-        "from-orange-400 to-red-500",
-        "from-cyan-400 to-blue-500",
-        "from-emerald-400 to-green-500",
-        "from-violet-400 to-purple-500",
-        "from-yellow-400 to-orange-500",
-        "from-pink-400 to-rose-500",
-        "from-indigo-400 to-blue-600",
-        "from-teal-400 to-cyan-500",
-      ];
-    } else {
-      return [
-        "from-[color:var(--color-primary)] via-[color:var(--color-accent)] to-[color:var(--color-secondary)]",
-        "from-[color:var(--color-accent)] via-[color:var(--color-secondary)] to-[color:var(--color-primary)]",
-        "from-[color:var(--color-secondary)] via-[color:var(--color-primary)] to-[color:var(--color-accent)]",
-        "from-[color:var(--color-primary)] via-[color:var(--color-accent)] to-[color:var(--color-secondary)]",
-        "from-[color:var(--color-accent)] via-[color:var(--color-secondary)] to-[color:var(--color-primary)]",
-        "from-[color:var(--color-secondary)] via-[color:var(--color-primary)] to-[color:var(--color-accent)]",
-        "from-[color:var(--color-primary)] via-[color:var(--color-accent)] to-[color:var(--color-secondary)]",
-        "from-[color:var(--color-accent)] via-[color:var(--color-secondary)] to-[color:var(--color-primary)]",
-      ];
-    }
-  }, [isDark]);
+  // Light theme: use solid hex colors for vibrant gradients
+  // Dark theme: keep original vibrant colors
+  const colors = isDark ? [
+    "from-orange-400 to-red-500",
+    "from-cyan-400 to-blue-500",
+    "from-emerald-400 to-green-500",
+    "from-violet-400 to-purple-500",
+    "from-yellow-400 to-orange-500",
+    "from-pink-400 to-rose-500",
+    "from-indigo-400 to-blue-600",
+    "from-teal-400 to-cyan-500",
+  ] : [
+    "from-[#F4A261] via-[#E76F51] to-[#1F3A8A]",
+    "from-[#1F3A8A] via-[#2563eb] to-[#2A9D8F]",
+    "from-[#2A9D8F] via-[#14b8a6] to-[#F4A261]",
+    "from-[#1F3A8A] via-[#3b82f6] to-[#F4A261]",
+    "from-[#F4A261] via-[#fb923c] to-[#2A9D8F]",
+    "from-[#2A9D8F] via-[#0d9488] to-[#1F3A8A]",
+    "from-[#1F3A8A] via-[#4f46e5] to-[#2A9D8F]",
+    "from-[#F4A261] via-[#f97316] to-[#1F3A8A]",
+  ];
   
   const getColorClass = (index) => colors[index % colors.length];
 
@@ -212,7 +206,6 @@ export const Projects = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="relative h-[580px] md:h-[660px] flex items-center justify-center"
           >
-            {/* Orbit Cards */}
             {projects.map((project, index) => {
               const { x, y, angle } = getOrbitPosition(index, projects.length);
               const colorClass = getColorClass(index);
@@ -224,11 +217,10 @@ export const Projects = () => {
               return (
                 <motion.button
                   key={project.id}
-                  className={`absolute w-52 md:w-64 h-40 md:h-44 rounded-2xl border-2 overflow-hidden group hover:scale-105 active:scale-[0.98] transition-all ${
-                    isDark
-                      ? "border-[color:var(--color-border)] bg-[color:var(--color-card)]/85 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,0,0,0.5)]"
-                      : "border-[color:var(--color-border)] bg-white backdrop-blur-xl shadow-soft hover:shadow-elevated"
-                  }`}
+                  className={isDark
+                    ? "absolute w-52 md:w-64 h-40 md:h-44 rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-card)]/85 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,0,0,0.5)] overflow-hidden group hover:scale-105 active:scale-[0.98] transition-all"
+                    : "absolute w-52 md:w-64 h-40 md:h-44 rounded-2xl border-2 border-[color:var(--color-border)] bg-white/95 backdrop-blur-xl shadow-soft overflow-hidden group hover:scale-105 hover:shadow-elevated active:scale-[0.98] transition-all"
+                  }
                   style={{ transformOrigin: "center", zIndex }}
                   animate={{ x, y }}
                   transition={{ type: "tween", ease: "linear", duration: 0.2 }}
@@ -242,7 +234,7 @@ export const Projects = () => {
                     <p className="text-[10px] md:text-[11px] text-[color:var(--color-muted)] line-clamp-2">
                       {project.short_description}
                     </p>
-                    <p className={`text-[10px] mt-1 font-semibold ${isDark ? `bg-gradient-to-r ${colorClass} bg-clip-text text-transparent` : 'text-[color:var(--color-primary)]'}`}>
+                    <p className={`text-[10px] mt-1 font-semibold bg-gradient-to-r ${colorClass} bg-clip-text text-transparent`}>
                       View details →
                     </p>
                   </div>
@@ -250,7 +242,6 @@ export const Projects = () => {
               );
             })}
 
-            {/* Active Card */}
             {activeProject && (
               <div className="absolute top-1/2 -translate-y-8 flex flex-col items-center justify-center">
                 <motion.div
@@ -258,15 +249,15 @@ export const Projects = () => {
                   initial={{ opacity: 0, scale: 0.85, y: 20 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   transition={{ duration: 0.5, ease: "easeOut" }}
-                  className={`relative w-[350px] h-[350px] md:w-[390px] md:h-[390px] rounded-full border-4 overflow-hidden backdrop-blur-xl flex flex-col items-center justify-center p-8 ${
+                  className={`relative w-[350px] h-[350px] md:w-[390px] md:h-[390px] rounded-full border-[6px] overflow-hidden backdrop-blur-xl flex flex-col items-center justify-center p-8 ${
                     isDark 
                       ? "bg-[color:var(--color-card)]/90 shadow-[0_40px_80px_rgba(0,0,0,0.6)]"
-                      : "bg-white shadow-elevated"
+                      : "bg-white/98 shadow-elevated"
                   } ${getActiveBorderColor(activeIndex)}`}
                 >
                   <div className={isDark 
                     ? "absolute inset-8 rounded-full bg-gradient-radial from-[color:var(--color-primary)]/10 to-transparent"
-                    : "absolute inset-8 rounded-full bg-[color:var(--color-primary-soft)]"
+                    : "absolute inset-8 rounded-full bg-gradient-radial from-[#1F3A8A]/8 to-transparent"
                   } />
 
                   <div className="relative z-10 w-full h-full flex flex-col items-center justify-center text-center space-y-4 px-4">
@@ -299,10 +290,10 @@ export const Projects = () => {
                           rel="noopener noreferrer"
                           whileHover={{ scale: 1.05, y: -2 }}
                           whileTap={{ scale: 0.98 }}
-                          className="group relative px-6 py-3 text-sm font-semibold bg-transparent border-2 border-[color:var(--color-primary)] text-[color:var(--color-primary)] rounded-xl overflow-hidden transition-all"
+                          className="group relative px-6 py-3 text-sm font-semibold bg-transparent border-2 border-[color:var(--color-primary)] text-[color:var(--color-primary)] rounded-xl overflow-hidden transition-all hover:bg-[color:var(--color-primary)] hover:text-white"
                         >
                           <div className="absolute inset-0 bg-[color:var(--color-primary)] transform translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                          <span className="relative z-10 group-hover:text-white transition-colors">More Details</span>
+                          <span className="relative z-10">More Details</span>
                         </motion.a>
                       )}
                       {activeProject.demo_link && (
@@ -312,10 +303,10 @@ export const Projects = () => {
                           rel="noopener noreferrer"
                           whileHover={{ scale: 1.05, y: -2 }}
                           whileTap={{ scale: 0.98 }}
-                          className="group relative px-6 py-3 text-sm font-semibold bg-transparent border-2 border-[color:var(--color-accent)] text-[color:var(--color-accent)] rounded-xl overflow-hidden transition-all"
+                          className="group relative px-6 py-3 text-sm font-semibold bg-transparent border-2 border-[color:var(--color-secondary)] text-[color:var(--color-secondary)] rounded-xl overflow-hidden transition-all hover:bg-[color:var(--color-secondary)] hover:text-white"
                         >
-                          <div className="absolute inset-0 bg-[color:var(--color-accent)] transform translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                          <span className="relative z-10 group-hover:text-white transition-colors">Live Demo</span>
+                          <div className="absolute inset-0 bg-[color:var(--color-secondary)] transform translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                          <span className="relative z-10">Live Demo</span>
                         </motion.a>
                       )}
                     </div>
@@ -337,13 +328,10 @@ export const Projects = () => {
                 className="group"
                 onClick={() => handleCardClick(index)}
               >
-                <div className={`backdrop-blur-xl rounded-3xl p-6 border-2 transition-all cursor-pointer ${
-                  isDark
-                    ? "bg-[color:var(--color-card)]/90 border-[color:var(--color-border)] shadow-2xl hover:shadow-3xl"
-                    : "bg-white border-[color:var(--color-border)] shadow-soft hover:shadow-elevated"
-                }`}>
-                  <div className={`h-1.5 w-full mb-4 rounded-full bg-gradient-to-r ${getColorClass(index)}`} />
-                  
+                <div className={isDark
+                  ? "bg-[color:var(--color-card)]/90 backdrop-blur-xl rounded-3xl p-6 border border-[color:var(--color-border)] shadow-2xl hover:shadow-3xl transition-all cursor-pointer"
+                  : "bg-white/95 backdrop-blur-xl rounded-3xl p-6 border-2 border-[color:var(--color-border)] shadow-soft hover:shadow-elevated transition-all cursor-pointer"
+                }>
                   <div className="flex items-start justify-between mb-3">
                     <h3 className="text-lg font-bold text-[color:var(--color-text)] flex-1 pr-3">
                       {project.title}
