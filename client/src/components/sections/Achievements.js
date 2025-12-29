@@ -91,72 +91,77 @@ const Achievements = () => {
             </motion.button>
 
             {/* CARDS CONTAINER */}
-            <div className="relative flex items-center justify-center gap-0">
-              {/* left card */}
-              <SideCard
-                item={items[leftIdx]}
-                position="left"
-                onClick={goPrev}
-                isDark={isDark}
-              />
+<div className="relative flex items-center justify-center gap-4 md:gap-6">
+  {/* left card */}
+  <div className="hidden lg:block">
+    <SideCard
+      item={items[leftIdx]}
+      position="left"
+      onClick={goPrev}
+      isDark={isDark}
+    />
+  </div>
 
-              {/* center card */}
-              <div className="relative z-20">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={items[centerIdx].id}
-                    initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95, y: -20 }}
-                    transition={{ duration: 0.4, ease: "easeOut" }}
-                    className={isDark
-                      ? "relative w-[320px] sm:w-[360px] md:w-[400px] min-h-[440px] rounded-[28px] bg-gradient-to-br from-slate-800/40 via-slate-900/50 to-slate-800/40 backdrop-blur-xl shadow-2xl border border-[color:var(--color-border)] flex flex-col items-center px-8 py-8"
-                      : "relative w-[320px] sm:w-[360px] md:w-[400px] min-h-[440px] rounded-[28px] bg-white/95 backdrop-blur-xl shadow-2xl border border-[color:var(--color-border)] flex flex-col items-center px-8 py-8"
-                    }
-                  >
-                    {/* emoji */}
-                    <div className="mb-6">
-                      <span className="text-8xl">🏆</span>
-                    </div>
+  {/* center card */}
+  <div className="relative z-20 mx-2">
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={items[centerIdx].id}
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: -20 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className={isDark
+          ? "relative w-[320px] sm:w-[360px] md:w-[400px] min-h-[440px] rounded-[28px] bg-gradient-to-br from-slate-800/40 via-slate-900/50 to-slate-800/40 backdrop-blur-xl shadow-2xl border border-[color:var(--color-border)] flex flex-col items-center px-8 py-8"
+          : "relative w-[320px] sm:w-[360px] md:w-[400px] min-h-[440px] rounded-[28px] bg-white/95 backdrop-blur-xl shadow-2xl border border-[color:var(--color-border)] flex flex-col items-center px-8 py-8"
+        }
+      >
+        {/* emoji */}
+        <div className="mb-6">
+          <span className="text-8xl">🏆</span>
+        </div>
 
-                    {/* counter pill */}
-                    <div className={isDark
-                      ? "px-4 py-1.5 rounded-full bg-[color:var(--color-primary)]/20 backdrop-blur-md text-xs text-[color:var(--color-primary)] font-semibold mb-6 border border-[color:var(--color-primary)]/30"
-                      : "px-4 py-1.5 rounded-full bg-[color:var(--color-primary)]/10 backdrop-blur-md text-xs text-[color:var(--color-primary)] font-semibold mb-6 border border-[color:var(--color-primary)]/20"
-                    }>
-                      {centerIdx + 1} / {items.length}
-                    </div>
+        {/* counter pill */}
+        <div className={isDark
+          ? "px-4 py-1.5 rounded-full bg-[color:var(--color-primary)]/20 backdrop-blur-md text-xs text-[color:var(--color-primary)] font-semibold mb-6 border border-[color:var(--color-primary)]/30"
+          : "px-4 py-1.5 rounded-full bg-[color:var(--color-primary)]/10 backdrop-blur-md text-xs text-[color:var(--color-primary)] font-semibold mb-6 border border-[color:var(--color-primary)]/20"
+        }>
+          {centerIdx + 1} / {items.length}
+        </div>
 
-                    {/* text content */}
-                    <div className="text-center space-y-3 flex-1 flex flex-col justify-center">
-                      <h3 className="text-xl md:text-2xl font-bold text-[color:var(--color-text)] leading-tight">
-                        {items[centerIdx].achievement_title}
-                      </h3>
-                      <p className="text-xs text-[color:var(--color-muted)] leading-relaxed">
-                        {items[centerIdx].organization}
-                        {items[centerIdx].category &&
-                          ` • ${items[centerIdx].category}`}
-                        {items[centerIdx].achievement_date &&
-                          ` • ${items[centerIdx].achievement_date}`}
-                      </p>
-                      {items[centerIdx].description && (
-                        <p className="text-sm text-[color:var(--color-text)]/80 leading-relaxed pt-2">
-                          {items[centerIdx].description}
-                        </p>
-                      )}
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
+        {/* text content */}
+        <div className="text-center space-y-3 flex-1 flex flex-col justify-center">
+          <h3 className="text-xl md:text-2xl font-bold text-[color:var(--color-text)] leading-tight">
+            {items[centerIdx].achievement_title}
+          </h3>
+          <p className="text-xs text-[color:var(--color-muted)] leading-relaxed">
+            {items[centerIdx].organization}
+            {items[centerIdx].category &&
+              ` • ${items[centerIdx].category}`}
+            {items[centerIdx].achievement_date &&
+              ` • ${items[centerIdx].achievement_date}`}
+          </p>
+          {items[centerIdx].description && (
+            <p className="text-sm text-[color:var(--color-text)]/80 leading-relaxed pt-2">
+              {items[centerIdx].description}
+            </p>
+          )}
+        </div>
+      </motion.div>
+    </AnimatePresence>
+  </div>
 
-              {/* right card */}
-              <SideCard
-                item={items[rightIdx]}
-                position="right"
-                onClick={goNext}
-                isDark={isDark}
-              />
-            </div>
+  {/* right card */}
+  <div className="hidden lg:block">
+    <SideCard
+      item={items[rightIdx]}
+      position="right"
+      onClick={goNext}
+      isDark={isDark}
+    />
+  </div>
+</div>
+
 
             {/* RIGHT BUTTON */}
             <motion.button
@@ -184,29 +189,29 @@ const Achievements = () => {
 const SideCard = ({ item, position, onClick, isDark }) => {
   if (!item) return null;
 
-  const rotate = position === "left" ? -8 : 8;
-  const scale = "0.75"; // ✅ Reduced from 0.85 to 0.75
+  const rotate = position === "left" ? -10 : 10;
+  const translateX = position === "left" ? "-40px" : "40px";
 
   return (
     <motion.button
       type="button"
       onClick={onClick}
-      className="hidden lg:block relative z-10"
-      whileHover={{ scale: 0.78, y: -8 }}
+      className="relative"
+      whileHover={{ scale: 0.88, y: -8 }}
       transition={{ duration: 0.2 }}
     >
       <div
         className={isDark
-          ? "w-[240px] h-[380px] rounded-[28px] bg-gradient-to-br from-slate-800/30 via-slate-900/40 to-slate-800/30 backdrop-blur-lg shadow-xl border border-[color:var(--color-border)]/50 flex flex-col items-center justify-center px-5 py-6 overflow-hidden"
-          : "w-[240px] h-[380px] rounded-[28px] bg-white/60 backdrop-blur-lg shadow-lg border border-[color:var(--color-border)] flex flex-col items-center justify-center px-5 py-6 overflow-hidden"
+          ? "w-[220px] h-[360px] rounded-[28px] bg-gradient-to-br from-slate-800/30 via-slate-900/40 to-slate-800/30 backdrop-blur-lg shadow-xl border border-[color:var(--color-border)]/50 flex flex-col items-center justify-center px-5 py-6 overflow-hidden"
+          : "w-[220px] h-[360px] rounded-[28px] bg-white/60 backdrop-blur-lg shadow-lg border border-[color:var(--color-border)] flex flex-col items-center justify-center px-5 py-6 overflow-hidden"
         }
         style={{
-          transform: `rotate(${rotate}deg) scale(${scale})`,
+          transform: `rotate(${rotate}deg) translateX(${translateX}) scale(0.85)`,
         }}
       >
         {/* emoji */}
         <div className="mb-4 opacity-80">
-          <span className="text-6xl">🏆</span>
+          <span className="text-5xl">🏆</span>
         </div>
 
         {/* title */}
