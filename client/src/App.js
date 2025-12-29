@@ -1,6 +1,6 @@
-// src/App.js - NAVBAR FIXED PERMANENTLY ON TOP
+// src/App.js - Navbar HIDDEN on Admin Pages
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import Navbar from "./components/Navbar";
@@ -25,6 +25,18 @@ import AdminLogin from "./admin/AdminLogin";
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("authToken");
   return token ? children : <Navigate to="/admin/login" />;
+};
+
+const NavbarWrapper = ({ children }) => {
+  const location = useLocation();
+  const hideNavbar = location.pathname.startsWith('/admin');
+  
+  return (
+    <>
+      {!hideNavbar && <div className="fixed top-0 left-0 right-0 z-[100]"><Navbar /></div>}
+      <main className={hideNavbar ? "min-h-screen" : "pt-0 relative z-0"}>{children}</main>
+    </>
+  );
 };
 
 function App() {
@@ -57,57 +69,51 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen text-[color:var(--color-text)] relative overflow-x-hidden">
-        {/* ✅ NAVBAR = ALWAYS FIXED ON TOP */}
-        <div className="fixed top-0 left-0 right-0 z-[100]">
-          <Navbar />
-        </div>
-
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                {/* ✅ HERO = High z-index (below navbar) */}
-                <div className="pt-20 relative z-50"> {/* Offset for fixed navbar */}
+      <div className="min-h-screen bg-[#050006] text-[color:var(--color-text)] relative overflow-x-hidden">
+        <NavbarWrapper>
+          <Routes>
+            <Route 
+              path="/" 
+              element={
+                <>
                   <Hero />
-                </div>
-{/* ✅ 80% BLACK + 20% RED - PERFECT BALANCE */}
-                <div 
-                  className="relative z-0"
-                  style={{
-                    background: "var(--hero-bg)",
-                    backgroundAttachment: 'fixed',
-                    backgroundSize: 'cover'
-                  }}
-                >
-                  <About />
-                  <Experience />
-                  <Projects />
-                  <Skills />
-                  <Education />
-                  <Certifications />
-                  <Achievements />
-                  <Hackathons />
-                  <Research />
-                  <Extracurricular />
-                  <Testimonials />
-                  <Contact />
-                  <Footer />
-                </div>
-              </>
-            }
-          />
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route
-            path="/admin/*"
-            element={
-              <ProtectedRoute>
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
+                  <div 
+                    className="relative z-0"
+                    style={{
+                      background: "var(--hero-bg)",
+                      backgroundAttachment: 'fixed',
+                      backgroundSize: 'cover'
+                    }}
+                  >
+                    <About />
+                    <Experience />
+                    <Projects />
+                    <Skills />
+                    <Education />
+                    <Certifications />
+                    <Achievements />
+                    <Hackathons />
+                    <Research />
+                    <Extracurricular />
+                    <Testimonials />
+                    <Contact />
+                    <Footer />
+                  </div>
+                </>
+              } 
+            />
+
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route 
+              path="/admin/*" 
+              element={
+                <ProtectedRoute>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              } 
+            />
+          </Routes>
+        </NavbarWrapper>
       </div>
     </Router>
   );

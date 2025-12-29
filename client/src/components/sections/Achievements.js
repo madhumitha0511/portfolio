@@ -7,6 +7,17 @@ const Achievements = () => {
   const [items, setItems] = useState([]);
   const [index, setIndex] = useState(0);
 
+  // AUTO-SCROLL (15s per achievement)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (items.length > 0) {
+        setIndex((prev) => (prev + 1) % items.length);
+      }
+    }, 15000);
+
+    return () => clearInterval(interval);
+  }, [items.length]);
+
   useEffect(() => {
     const load = async () => {
       try {
@@ -33,7 +44,6 @@ const Achievements = () => {
     <section
       id="achievements"
       className="relative py-24 px-4 overflow-hidden"
-      // REMOVED: bg-[color:var(--color-bg)] and animated background - using global now!
     >
       <div className="max-w-5xl mx-auto relative z-10">
         {/* header */}
@@ -47,7 +57,17 @@ const Achievements = () => {
         </div>
 
         {hasItems ? (
-          <div className="relative flex items-center justify-center py-6">
+          <div className="relative flex items-center justify-center py-6 gap-4 md:gap-6">
+            {/* LEFT BUTTON - SIMPLE ROUND */}
+            <motion.button
+              onClick={goPrev}
+              whileHover={{ scale: 1.15, rotate: -10 }}
+              whileTap={{ scale: 0.9 }}
+              className="w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center z-30 bg-[color:var(--color-bg-elevated)] border border-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)]/10 shadow-soft"
+            >
+              <span className="text-lg md:text-xl font-bold text-[color:var(--color-primary)]">‹</span>
+            </motion.button>
+
             {/* left card */}
             <SideCard
               item={items[leftIdx]}
@@ -60,42 +80,19 @@ const Achievements = () => {
               <AnimatePresence mode="wait">
                 <motion.div
                   key={items[centerIdx].id}
-                  initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -20, scale: 0.9 }}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.4, ease: "easeOut" }}
-                  className="relative w-[260px] sm:w-[280px] md:w-[320px] h-[380px] sm:h-[380px] md:h-[400px] rounded-[32px] bg-[color:var(--color-card)]/95 backdrop-blur-xl shadow-[0_26px_70px_rgba(0,0,0,0.8)] flex flex-col items-center justify-between px-6 py-6 overflow-hidden"
+                  className="relative w-[280px] sm:w-[300px] md:w-[340px] h-[400px] sm:h-[420px] md:h-[440px] rounded-[32px] bg-gradient-to-br from-red-900/20 via-red-800/25 to-red-900/20 backdrop-blur-[20px] shadow-[0_26px_70px_rgba(0,0,0,0.7)] flex flex-col items-center justify-between px-6 py-6 overflow-hidden"
                 >
-                  {/* circular glow ring behind icon */}
-                  <div className="mt-4 mb-6 relative flex items-center justify-center">
-                    <div className="w-40 h-40 rounded-full bg-[color:var(--color-bg)] flex items-center justify-center shadow-[0_20px_50px_rgba(0,0,0,0.7)]">
-                      <div
-                        className="relative w-32 h-32 rounded-full flex items-center justify-center"
-                        style={{
-                          background:
-                            "conic-gradient(from 220deg, #facc15, #f97316, #fb923c, #facc15)",
-                        }}
-                      >
-                        <div className="w-24 h-24 rounded-full bg-[color:var(--color-bg)] flex items-center justify-center">
-                          <div className="w-16 h-16 rounded-full bg-amber-400 flex items-center justify-center shadow-[0_10px_20px_rgba(0,0,0,0.6)] overflow-hidden">
-                            <img
-                              src={
-                                items[centerIdx].badge_icon_url ||
-                                "https://via.placeholder.com/64"
-                              }
-                              alt={items[centerIdx].achievement_title}
-                              className="w-10 h-10 object-contain"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      {/* inner soft glow */}
-                      <div className="absolute w-40 h-40 rounded-full bg-amber-400/20 blur-2xl" />
-                    </div>
+                  {/* ✅ EVEN BIGGER EMOJI - PERFECTLY CENTERED */}
+                  <div className="flex-1 flex items-center justify-center mb-8">
+                    <span className="text-7xl md:text-8xl">🏆</span>
                   </div>
 
-                  {/* counter pill */}
-                  <div className="px-3 py-1 rounded-full bg-[color:var(--color-bg)]/80 text-[11px] text-[color:var(--color-text)] mb-2 shadow-[0_4px_10px_rgba(0,0,0,0.5)]">
+                  {/* counter pill - TRUE GLASS */}
+                  <div className="px-3 py-1 rounded-full bg-[color:var(--color-bg)]/80 backdrop-blur-[15px] text-[11px] text-[color:var(--color-text)] mb-2 shadow-xl">
                     {centerIdx + 1} / {items.length}
                   </div>
 
@@ -112,7 +109,7 @@ const Achievements = () => {
                         ` • ${items[centerIdx].achievement_date}`}
                     </p>
                     {items[centerIdx].description && (
-                      <p className="text-[11px] text-[color:var(--color-text)]/85 leading-relaxed">
+                      <p className="text-[11px] text-[color:var(--color-text)]/95 leading-relaxed">
                         {items[centerIdx].description}
                       </p>
                     )}
@@ -127,6 +124,16 @@ const Achievements = () => {
               position="right"
               onClick={goNext}
             />
+
+            {/* RIGHT BUTTON - SIMPLE ROUND */}
+            <motion.button
+              onClick={goNext}
+              whileHover={{ scale: 1.15, rotate: 10 }}
+              whileTap={{ scale: 0.9 }}
+              className="w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center z-30 bg-[color:var(--color-bg-elevated)] border border-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)]/10 shadow-soft"
+            >
+              <span className="text-lg md:text-xl font-bold text-[color:var(--color-primary)]">›</span>
+            </motion.button>
           </div>
         ) : (
           <p className="text-center text-sm text-[color:var(--color-muted)]">
@@ -152,25 +159,18 @@ const SideCard = ({ item, position, onClick }) => {
       whileHover={{ y: -4 }}
     >
       <div
-        className={`w-44 md:w-52 h-[320px] rounded-[32px] bg-[color:var(--color-card)]/80 backdrop-blur-xl shadow-[0_20px_60px_rgba(0,0,0,0.75)] flex flex-col items-center justify-end pb-10 px-4 overflow-hidden`}
+        className="w-52 md:w-60 h-[360px] md:h-[380px] rounded-[32px] bg-gradient-to-br from-black/20 to-slate-900/20 backdrop-blur-[20px] shadow-[0_20px_60px_rgba(0,0,0,0.6)] flex flex-col items-center justify-end pb-10 px-5 overflow-hidden"
         style={{
           transform: `rotate(${rotate}deg) translateX(${translateX})`,
         }}
       >
-        {/* dimmed icon circle */}
-        <div className="absolute top-8 inset-x-0 flex justify-center opacity-70">
-          <div className="w-28 h-28 rounded-full bg-[color:var(--color-bg)] flex items-center justify-center">
-            <div className="w-18 h-18 rounded-full bg-[color:var(--color-border)]/50 flex items-center justify-center overflow-hidden">
-              <img
-                src={item.badge_icon_url || "https://via.placeholder.com/48"}
-                alt={item.achievement_title}
-                className="w-8 h-8 object-contain opacity-80"
-              />
-            </div>
-          </div>
+        {/* ✅ EVEN BIGGER EMOJI - PERFECTLY CENTERED */}
+        <div className="absolute top-10 inset-x-0 flex justify-center opacity-95">
+          <span className="text-6xl md:text-7xl">🏆</span>
         </div>
 
-        <p className="text-sm font-semibold text-[color:var(--color-text)]/80 text-center line-clamp-1">
+        {/* title - TRUE GLASS */}
+        <p className="text-sm md:text-base font-semibold text-[color:var(--color-text)]/95 text-center line-clamp-2 bg-[color:var(--color-bg)]/80 backdrop-blur-[15px] px-5 py-3 rounded-2xl mx-4 shadow-lg">
           {item.achievement_title}
         </p>
       </div>

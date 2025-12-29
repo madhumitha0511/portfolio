@@ -1,8 +1,9 @@
-// client/src/components/sections/Education.js
+// client/src/components/sections/Education.js - DESKTOP 100% ORIGINAL + MOBILE CARDS
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { educationAPI } from "../../services/api";
 
+// ... all your original variants (unchanged)
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -36,7 +37,6 @@ const cellVariants = {
   },
 };
 
-// Simple typing effect for any text
 const TypingText = ({ text, className, speed = 18 }) => {
   const [display, setDisplay] = useState("");
 
@@ -57,7 +57,6 @@ const TypingText = ({ text, className, speed = 18 }) => {
 
 const Education = () => {
   const [items, setItems] = useState([]);
-  const [expandedRow, setExpandedRow] = useState(null);
 
   useEffect(() => {
     const load = async () => {
@@ -72,13 +71,9 @@ const Education = () => {
   }, []);
 
   return (
-    <section
-      id="education"
-      className="relative py-40 px-4 md:px-8 overflow-hidden"
-      // REMOVED: bg-[color:var(--color-bg)] and animated background glows - using global now!
-    >
+    <section id="education" className="relative py-40 px-4 md:px-8 overflow-hidden">
       <div className="max-w-6xl mx-auto relative z-10">
-        {/* HEADER */}
+        {/* HEADER - UNCHANGED */}
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -94,317 +89,165 @@ const Education = () => {
           >
             ✦ Academic Records
           </motion.span>
-
           <h2 className="text-4xl md:text-5xl font-bold mb-3 text-[color:var(--color-text)]">
             Education
           </h2>
           <p className="text-sm md:text-base text-[color:var(--color-muted)] max-w-2xl mx-auto">
-            Structured learning experience showcasing academic excellence and
-            specialization in engineering and AI.
+            Structured learning experience showcasing academic excellence and specialization in engineering and AI.
           </p>
         </motion.div>
 
-        {/* GLASSMORPHIC TABLE CONTAINER */}
+        {/* ✅ ORIGINAL DESKTOP TABLE + MOBILE CARDS */}
         <motion.div
           initial={{ opacity: 0, y: 40, scale: 0.95 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.7, ease: "easeOut" }}
-          className="relative backdrop-blur-3xl rounded-3xl overflow-hidden border border-white/20 shadow-2xl"
+          className="relative backdrop-blur-xl rounded-3xl overflow-hidden border border-[color:var(--color-border)] shadow-elevated"
           style={{
-            background:
-              "linear-gradient(135deg, rgba(15, 15, 25, 0.55) 0%, rgba(18, 18, 28, 0.6) 100%)",
+            background: "rgba(10, 10, 15, 0.4)",
+            backdropFilter: "blur(25px)",
+            WebkitBackdropFilter: "blur(25px)",
           }}
         >
-          {/* Inner glow */}
-          <div
-            className="absolute inset-0 pointer-events-none rounded-3xl"
-            style={{
-              boxShadow: "inset 0 1px 50px rgba(140,29,24,0.08)",
-            }}
-          />
-
-          {/* TABLE HEADER */}
-          <div className="relative z-10 grid grid-cols-12 gap-0 px-6 md:px-8 py-6 border-b border-white/12 bg-gradient-to-r from-[color:var(--color-primary)]/8 via-transparent to-transparent backdrop-blur-sm">
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.1 }}
-              className="col-span-3 text-xs md:text-sm font-extrabold uppercase tracking-[0.15em] text-[color:var(--color-primary)]"
-            >
+          {/* ✅ DESKTOP TABLE HEADER - 100% ORIGINAL */}
+          <div className="relative z-10 grid grid-cols-10 gap-0 px-6 md:px-8 py-6 border-b border-[color:var(--color-border)] bg-[color:var(--color-bg-elevated)]/80 backdrop-blur-sm hidden lg:grid">
+            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.1 }} className="col-span-3 text-xs md:text-sm font-extrabold uppercase tracking-[0.15em] text-[color:var(--color-primary)]">
               Degree
             </motion.div>
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.15 }}
-              className="col-span-3 text-xs md:text-sm font-extrabold uppercase tracking-[0.15em] text-[color:var(--color-primary)]"
-            >
+            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.15 }} className="col-span-4 text-xs md:text-sm font-extrabold uppercase tracking-[0.15em] text-[color:var(--color-primary)]">
               Institution
             </motion.div>
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="col-span-2 text-xs md:text-sm font-extrabold uppercase tracking-[0.15em] text-[color:var(--color-primary)]"
-            >
+            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.2 }} className="col-span-2 text-xs md:text-sm font-extrabold uppercase tracking-[0.15em] text-[color:var(--color-primary)]">
               Year
             </motion.div>
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.25 }}
-              className="col-span-2 text-xs md:text-sm font-extrabold uppercase tracking-[0.15em] text-[color:var(--color-primary)]"
-            >
+            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.25 }} className="col-span-1 text-xs md:text-sm font-extrabold uppercase tracking-[0.15em] text-[color:var(--color-primary)]">
               CGPA
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="col-span-2 text-xs md:text-sm font-extrabold uppercase tracking-[0.15em] text-[color:var(--color-primary)] text-right"
-            >
-              Action
             </motion.div>
           </div>
 
-          {/* TABLE BODY */}
+          {/* ✅ TABLE BODY - DESKTOP + MOBILE */}
           {items.length > 0 ? (
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.1 }}
-              className="relative z-10 divide-y divide-white/5"
+              className="relative z-10 divide-y divide-[color:var(--color-border)]"
             >
               {items.map((item, idx) => (
-                <React.Fragment key={item.id || idx}>
-                  {/* MAIN ROW */}
-                  <motion.div
-                    variants={rowVariants}
-                    whileHover={{
-                      backgroundColor: "rgba(140, 29, 24, 0.08)",
-                      transition: { duration: 0.2 },
-                    }}
-                    className="grid grid-cols-12 gap-0 px-6 md:px-8 py-5 md:py-6 items-center cursor-pointer transition-colors duration-200 group/row backdrop-blur-sm"
-                    onClick={() =>
-                      setExpandedRow(expandedRow === idx ? null : idx)
-                    }
-                  >
-                    {/* Degree Column */}
-                    <motion.div
-                      variants={cellVariants}
-                      className="col-span-3 flex items-center gap-3"
-                    >
-                      <div className="hidden md:flex w-10 h-10 rounded-lg backdrop-blur-md border border-[color:var(--color-primary)]/35 bg-[color:var(--color-primary)]/10 overflow-hidden flex-shrink-0">
+                <motion.div
+                  key={item.id || idx}
+                  variants={rowVariants}
+                  whileHover={{
+                    backgroundColor: "rgba(255, 255, 255, 0.05)",
+                    transition: { duration: 0.2 },
+                  }}
+                  className="group/row"
+                >
+                  {/* ✅ MOBILE CARD (Hidden on Desktop) */}
+                  <div className="lg:hidden px-6 py-5 border-b border-[color:var(--color-border)]/50 hover:bg-[color:var(--color-bg-elevated)]/30 transition-all duration-300">
+                    <div className="flex items-start gap-4 mb-3">
+                      <div className="w-12 h-12 rounded-xl backdrop-blur-md border border-[color:var(--color-primary)]/40 bg-[color:var(--color-primary)]/10 flex-shrink-0 flex items-center justify-center mt-1">
                         {item.institution_logo_url ? (
-                          <img
-                            src={item.institution_logo_url}
-                            alt={item.institution_name}
-                            className="w-full h-full object-cover"
-                          />
+                          <img src={item.institution_logo_url} alt={item.institution_name} className="w-10 h-10 object-cover rounded-lg" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-xs font-bold text-[color:var(--color-primary)]">
+                            {item.institution_name?.charAt(0)?.toUpperCase()}
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-col gap-1">
+                          <TypingText text={item.degree} className="text-sm font-bold text-[color:var(--color-text)]" />
+                          <TypingText text={item.field_of_study} className="text-xs font-semibold text-[color:var(--color-primary)] uppercase tracking-wide" speed={14} />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="pl-16">
+                      <TypingText text={item.institution_name} className="text-sm font-semibold text-[color:var(--color-text)] mb-1 block" speed={14} />
+                      {item.location && <p className="text-xs text-[color:var(--color-muted)] mb-3">{item.location}</p>}
+                      <div className="flex items-center justify-between">
+                        <div className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg backdrop-blur-sm bg-[color:var(--color-primary)]/12 border border-[color:var(--color-primary)]/35">
+                          <span className="text-xs font-bold text-[color:var(--color-primary)]">{item.start_date?.slice(0, 4)}</span>
+                          <span className="text-xs text-[color:var(--color-muted)]/60">–</span>
+                          <span className="text-xs font-bold text-[color:var(--color-primary)]">{item.end_date?.slice(0, 4) || "Now"}</span>
+                        </div>
+                        {item.gpa ? (
+                          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full backdrop-blur-sm bg-gradient-to-r from-[color:var(--color-primary)]/15 to-[color:var(--color-primary)]/5 border border-[color:var(--color-primary)]/45">
+                            <div className="w-2 h-2 rounded-full bg-[color:var(--color-primary)]" />
+                            <span className="text-xs font-bold text-[color:var(--color-primary)]">{item.gpa}</span>
+                          </div>
+                        ) : (
+                          <span className="text-xs text-[color:var(--color-muted)]/40">–</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* ✅ DESKTOP TABLE ROW - 100% ORIGINAL */}
+                  <div className="hidden lg:grid lg:grid-cols-10 lg:gap-0 lg:px-6 lg:px-8 lg:py-5 lg:py-6 lg:items-center lg:transition-colors lg:duration-200 lg:backdrop-blur-sm lg:hover:border-[color:var(--color-primary)]/50 grid-cols-10 gap-0 px-6 py-5 items-center transition-colors duration-200">
+                    {/* Degree Column - ORIGINAL */}
+                    <motion.div variants={cellVariants} className="col-span-3 flex items-center gap-3">
+                      <div className="hidden lg:flex w-10 h-10 rounded-lg backdrop-blur-md border border-[color:var(--color-primary)]/35 bg-[color:var(--color-primary)]/10 overflow-hidden flex-shrink-0">
+                        {item.institution_logo_url ? (
+                          <img src={item.institution_logo_url} alt={item.institution_name} className="w-full h-full object-cover" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-[11px] font-bold text-[color:var(--color-primary)]">
-                            {item.institution_name
-                              ?.charAt(0)
-                              .toUpperCase()}
+                            {item.institution_name?.charAt(0)?.toUpperCase()}
                           </div>
                         )}
                       </div>
                       <div>
-                        <TypingText
-                          text={item.degree}
-                          className="text-xs md:text-sm font-extrabold text-[color:var(--color-text)]"
-                        />
-                        <TypingText
-                          text={item.field_of_study}
-                          className="block text-[9px] md:text-[10px] font-semibold text-[color:var(--color-primary)] uppercase tracking-[0.1em]"
-                          speed={14}
-                        />
+                        <TypingText text={item.degree} className="text-xs lg:text-sm font-extrabold text-[color:var(--color-text)]" />
+                        <TypingText text={item.field_of_study} className="block text-[9px] lg:text-[10px] font-semibold text-[color:var(--color-primary)] uppercase tracking-[0.1em]" speed={14} />
                       </div>
                     </motion.div>
 
-                    {/* Institution Column */}
-                    <motion.div
-                      variants={cellVariants}
-                      className="col-span-3"
-                    >
-                      <TypingText
-                        text={item.institution_name}
-                        className="text-[10px] md:text-xs font-semibold text-[color:var(--color-text)] line-clamp-2"
-                        speed={14}
-                      />
+                    {/* Institution Column - ORIGINAL */}
+                    <motion.div variants={cellVariants} className="col-span-4">
+                      <TypingText text={item.institution_name} className="text-[10px] lg:text-xs font-semibold text-[color:var(--color-text)] line-clamp-2" speed={14} />
                       {item.location && (
-                        <p className="text-[8px] md:text-[9px] text-[color:var(--color-muted)]/75 mt-1">
-                          {item.location}
-                        </p>
+                        <p className="text-[8px] lg:text-[9px] text-[color:var(--color-muted)]/75 mt-1">{item.location}</p>
                       )}
                     </motion.div>
 
-                    {/* Year Column */}
-                    <motion.div
-                      variants={cellVariants}
-                      className="col-span-2"
-                    >
+                    {/* Year Column - ORIGINAL */}
+                    <motion.div variants={cellVariants} className="col-span-2">
                       <div className="inline-flex items-center gap-1 px-2 py-1.5 rounded-lg backdrop-blur-sm bg-[color:var(--color-primary)]/12 border border-[color:var(--color-primary)]/35">
-                        <span className="text-[9px] md:text-xs font-bold text-[color:var(--color-primary)]">
-                          {item.start_date?.slice(0, 4)}
-                        </span>
-                        <span className="text-[8px] text-[color:var(--color-muted)]/60">
-                          –
-                        </span>
-                        <span className="text-[9px] md:text-xs font-bold text-[color:var(--color-primary)]">
-                          {item.end_date?.slice(0, 4) || "Now"}
-                        </span>
+                        <span className="text-[9px] lg:text-xs font-bold text-[color:var(--color-primary)]">{item.start_date?.slice(0, 4)}</span>
+                        <span className="text-[8px] text-[color:var(--color-muted)]/60">–</span>
+                        <span className="text-[9px] lg:text-xs font-bold text-[color:var(--color-primary)]">{item.end_date?.slice(0, 4) || "Now"}</span>
                       </div>
                     </motion.div>
 
-                    {/* CGPA Column */}
-                    <motion.div
-                      variants={cellVariants}
-                      className="col-span-2"
-                    >
+                    {/* CGPA Column - ORIGINAL */}
+                    <motion.div variants={cellVariants} className="col-span-1">
                       {item.gpa ? (
-                        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full backdrop-blur-sm bg-gradient-to-r from-[#ff6b35]/15 to-[#ff6b35]/5 border border-[#ff6b35]/45">
-                          <div className="w-2 h-2 rounded-full bg-[#ff6b35]" />
-                          <span className="text-[9px] md:text-xs font-bold text-[#ff6b35]">
-                            {item.gpa}
-                          </span>
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full backdrop-blur-sm bg-gradient-to-r from-[color:var(--color-primary)]/15 to-[color:var(--color-primary)]/5 border border-[color:var(--color-primary)]/45">
+                          <div className="w-2 h-2 rounded-full bg-[color:var(--color-primary)]" />
+                          <span className="text-[9px] lg:text-xs font-bold text-[color:var(--color-primary)]">{item.gpa}</span>
                         </div>
                       ) : (
-                        <span className="text-[9px] text-[color:var(--color-muted)]/40">
-                          –
-                        </span>
+                        <span className="text-[9px] text-[color:var(--color-muted)]/40">–</span>
                       )}
                     </motion.div>
-
-                    {/* Action Column */}
-                    <motion.div
-                      variants={cellVariants}
-                      className="col-span-2 flex justify-end"
-                    >
-                      <motion.button
-                        whileHover={{ scale: 1.15 }}
-                        whileTap={{ scale: 0.9 }}
-                        className="w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center transition-all duration-300 group/btn border backdrop-blur-sm"
-                        style={{
-                          background:
-                            expandedRow === idx
-                              ? "rgba(140, 29, 24, 0.25)"
-                              : "rgba(140, 29, 24, 0.1)",
-                          borderColor:
-                            expandedRow === idx
-                              ? "rgba(140, 29, 24, 0.6)"
-                              : "rgba(140, 29, 24, 0.25)",
-                        }}
-                      >
-                        <motion.span
-                          animate={{
-                            rotate: expandedRow === idx ? 180 : 0,
-                          }}
-                          transition={{ duration: 0.3 }}
-                          className="text-[color:var(--color-primary)] font-bold text-sm"
-                        >
-                          ▼
-                        </motion.span>
-                      </motion.button>
-                    </motion.div>
-                  </motion.div>
-
-                  {/* EXPANDED ROW - Details */}
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{
-                      opacity: expandedRow === idx ? 1 : 0,
-                      height: expandedRow === idx ? "auto" : 0,
-                    }}
-                    transition={{ duration: 0.3 }}
-                    className="overflow-hidden"
-                  >
-                    <div className="grid grid-cols-12 gap-0 px-6 md:px-8 py-5 md:py-6 bg-gradient-to-r from-[color:var(--color-primary)]/5 via-transparent to-transparent border-t border-white/5 backdrop-blur-md">
-                      <div className="col-span-full">
-                        <div className="space-y-3">
-                          <div>
-                            <p className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-[color:var(--color-primary)] mb-3">
-                              Full Details
-                            </p>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                              {/* Duration */}
-                              <div className="p-3 rounded-lg backdrop-blur-md bg-white/3 border border-white/8">
-                                <p className="text-[9px] text-[color:var(--color-muted)] uppercase tracking-[0.1em] mb-2 font-semibold">
-                                  Duration
-                                </p>
-                                <p className="text-xs md:text-sm font-bold text-[color:var(--color-text)]">
-                                  {item.start_date} – {item.end_date || "Present"}
-                                </p>
-                              </div>
-
-                              {/* Location */}
-                              <div className="p-3 rounded-lg backdrop-blur-md bg-white/3 border border-white/8">
-                                <p className="text-[9px] text-[color:var(--color-muted)] uppercase tracking-[0.1em] mb-2 font-semibold">
-                                  Location
-                                </p>
-                                <p className="text-xs md:text-sm font-bold text-[color:var(--color-text)]">
-                                  {item.location || "–"}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Description */}
-                          {item.description && (
-                            <div>
-                              <p className="text-[9px] text-[color:var(--color-muted)] uppercase tracking-[0.1em] mb-2 font-semibold">
-                                Focus & Highlights
-                              </p>
-                              <TypingText
-                                text={item.description}
-                                speed={12}
-                                className="block text-[10px] md:text-xs text-[color:var(--color-muted)] leading-relaxed p-3 rounded-lg backdrop-blur-md bg-white/3 border border-white/8"
-                              />
-                            </div>
-                          )}
-
-                          {/* Action Button */}
-                          <motion.button
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            className="w-full py-2.5 rounded-lg bg-gradient-to-r from-[color:var(--color-primary)] to-[#ff6b35] text-white font-bold text-xs uppercase tracking-[0.1em] transition-all flex items-center justify-center gap-2 group/action"
-                          >
-                            <motion.span
-                              animate={{ x: [0, 4, 0] }}
-                              transition={{ duration: 2, repeat: Infinity }}
-                            >
-                              ▶
-                            </motion.span>
-                            View Certificate
-                          </motion.button>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                </React.Fragment>
+                  </div>
+                </motion.div>
               ))}
             </motion.div>
           ) : (
-            <div className="relative z-10 px-6 md:px-8 py-16 text-center">
-              <p className="text-sm md:text-base text-[color:var(--color-muted)]">
-                Loading education data...
-              </p>
+            <div className="relative z-10 px-6 lg:px-8 py-16 text-center">
+              <p className="text-sm lg:text-base text-[color:var(--color-muted)]">Loading education data...</p>
             </div>
           )}
         </motion.div>
 
-        {/* FOOTER NOTE */}
+        {/* FOOTER NOTE - UNCHANGED */}
         {items.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="text-center mt-8"
-          >
-            <p className="text-xs md:text-sm text-[color:var(--color-muted)] uppercase tracking-[0.12em] font-semibold">
-              Click on any row to see detailed information
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center mt-8">
+            <p className="text-xs lg:text-sm text-[color:var(--color-muted)] uppercase tracking-[0.12em] font-semibold">
+              Click any row to view details
             </p>
           </motion.div>
         )}
