@@ -235,12 +235,12 @@ export const Projects = () => {
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   transition={{ duration: 0.5, ease: "easeOut" }}
                   className={isDark
-                    ? `relative w-[350px] h-[250px] md:w-[440px] md:h-[440px]  
+                    ? `relative w-[350px] h-[200px] md:w-[440px] md:h-[440px]  
                        rounded-full border-4 overflow-hidden backdrop-blur-xl 
                        flex flex-col items-center justify-center p-8
                        bg-[color:var(--color-card)]/90 shadow-[0_40px_80px_rgba(0,0,0,0.6)] 
                        ${getActiveBorderColor(activeIndex)}`
-                    : `relative w-[350px] h-[250px] md:w-[440px] md:h-[440px]  
+                    : `relative w-[350px] h-[200px] md:w-[440px] md:h-[440px]  
                        rounded-full border-4 overflow-hidden backdrop-blur-xl 
                        flex flex-col items-center justify-center p-8
                        bg-[color:var(--color-card)] shadow-elevated 
