@@ -147,24 +147,25 @@ const Certifications = () => {
             {/* CENTER: Main 3D card ONLY - NO SIDE CARDS */}
             <AnimatePresence mode="wait">
               {center && (
-                <motion.div
-                  key={center.id}
-                  initial={{ opacity: 0, y: 40, scale: 0.9 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -40, scale: 0.9 }}
-                  transition={{ duration: 0.5, ease: "easeOut" }}
-                  className={isDark
-                    ? "relative w-full max-w-md h-[380px] rounded-[32px] border-[3px] border-[color:var(--color-bg)] bg-[color:var(--color-primary)] shadow-soft overflow-hidden flex flex-col items-center justify-between"
-                    : "relative w-full max-w-md h-[380px] rounded-[32px] border-[3px] border-white/50 bg-[color:var(--color-primary)] shadow-elevated overflow-hidden flex flex-col items-center justify-between"
-                  }
-                  style={isDark ? {
-                    boxShadow:
-                      "0 28px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,0,0,0.25)",
-                  } : {
-                    boxShadow:
-                      "0 28px 80px rgba(31,58,138,0.35), 0 0 0 1px rgba(31,58,138,0.15)",
-                  }}
-                >
+             <motion.div
+  key={center.id}
+  initial={{ opacity: 0, y: 40, scale: 0.95 }}
+  animate={{ opacity: 1, y: 0, scale: 1 }}
+  exit={{ opacity: 0, y: -40, scale: 0.95 }}
+  transition={{ duration: 0.4, ease: "easeOut" }}
+  className={isDark
+    ? "relative w-full max-w-md min-h-[260px] rounded-[32px] border-[3px] border-[color:var(--color-bg)] bg-[color:var(--color-primary)] shadow-soft overflow-hidden flex flex-col items-center justify-between px-8 py-6"
+    : "relative w-full max-w-md min-h-[260px] rounded-[32px] border-[3px] border-white/50 bg-[color:var(--color-primary)] shadow-elevated overflow-hidden flex flex-col items-center justify-between px-8 py-6"
+  }
+  style={isDark ? {
+    boxShadow:
+      "0 24px 70px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,0,0,0.25)",
+  } : {
+    boxShadow:
+      "0 24px 70px rgba(31,58,138,0.35), 0 0 0 1px rgba(31,58,138,0.15)",
+  }}
+>
+
                   {/* top label */}
                   <div className={isDark
                     ? "absolute top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[color:var(--color-bg)] text-[10px] font-semibold tracking-[0.18em] uppercase text-[color:var(--color-primary)] shadow-soft z-10"
@@ -177,21 +178,20 @@ const Certifications = () => {
 
                   {/* inner content */}
 <div className={isDark
-  ? "flex flex-col items-center justify-center flex-1 px-8 pt-10 text-center text-[color:var(--color-bg)]"
-  : "flex flex-col items-center justify-center flex-1 px-8 pt-10 text-center text-white"
+  ? "flex flex-col items-center justify-center flex-1 text-center text-[color:var(--color-bg)] gap-1.5"
+  : "flex flex-col items-center justify-center flex-1 text-center text-white gap-1.5"
 }>
-  {/* ✅ IMAGE REMOVED */}
-
-  <h3 className="text-xl md:text-2xl font-bold mb-2 leading-snug">
+  <h3 className="text-lg md:text-xl font-bold leading-snug">
     {center.certification_name}
   </h3>
-  <p className="text-xs md:text-sm opacity-90 mb-1">
+  <p className="text-xs md:text-sm opacity-90">
     {center.issuer}
   </p>
   <p className="text-[11px] opacity-80">
     {center.category || "Cyber Security"}
   </p>
 </div>
+
 
 {/* ✅ FIXED: Smaller button width */}
 <div className="w-full px-8 pb-6 flex justify-center">
