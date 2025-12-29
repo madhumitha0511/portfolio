@@ -103,8 +103,8 @@
   /* Brand */
   --color-primary: #C1121F;             /* Vecna crimson */
   --color-primary-soft: rgba(139, 0, 0, 0.15);
-  --color-secondary: #d6242f9f;            /* Vein red */
-  --color-accent: #F97362;               /* Corrupted purple */
+  --color-secondary: #F97362;            /* Vein red */
+  --color-accent:#d6242f9f ;               /* Corrupted purple */
   
 
   /* Text */
