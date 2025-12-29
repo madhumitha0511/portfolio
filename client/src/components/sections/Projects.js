@@ -197,12 +197,12 @@ const centerYOffset = 140;  // was 170
 <motion.button
   key={project.id}
   className={isDark 
-    ? `absolute w-64 md:w-72 h-48 md:h-52 rounded-2xl  // was w-52 md:w-64 h-40 md:h-44
+    ? `absolute w-64 md:w-72 h-48 md:h-52 rounded-2xl  
        border border-[color:var(--color-border)] 
        bg-[color:var(--color-card)]/85 backdrop-blur-xl 
        shadow-[0_20px_40px_rgba(0,0,0,0.5)] overflow-hidden 
        group hover:scale-105 active:scale-[0.98] transition-all`
-    : `absolute w-64 md:w-72 h-48 md:h-52 rounded-2xl  // was w-52 md:w-64 h-40 md:h-44
+    : `absolute w-64 md:w-72 h-48 md:h-52 rounded-2xl 
        border border-[color:var(--color-border)] 
        bg-[color:var(--color-card)] backdrop-blur-xl 
        shadow-soft overflow-hidden 
@@ -249,12 +249,12 @@ const centerYOffset = 140;  // was 170
   animate={{ opacity: 1, scale: 1, y: 0 }}
   transition={{ duration: 0.5, ease: "easeOut" }}
   className={isDark
-    ? `relative w-[420px] h-[420px] md:w-[460px] md:h-[460px]  // was w-[350px] h-[350px] md:w-[390px] md:h-[390px]
+    ? `relative w-[420px] h-[420px] md:w-[460px] md:h-[460px]  
        rounded-full border-4 overflow-hidden backdrop-blur-xl 
        flex flex-col items-center justify-center p-8
        bg-[color:var(--color-card)]/90 shadow-[0_40px_80px_rgba(0,0,0,0.6)] 
        ${getActiveBorderColor(activeIndex)}`
-    : `relative w-[420px] h-[420px] md:w-[460px] md:h-[460px]  // was w-[350px] h-[350px] md:w-[390px] md:h-[390px]
+    : `relative w-[420px] h-[420px] md:w-[460px] md:h-[460px]  
        rounded-full border-4 overflow-hidden backdrop-blur-xl 
        flex flex-col items-center justify-center p-8
        bg-[color:var(--color-card)] shadow-elevated 
