@@ -1,7 +1,8 @@
 // client/src/components/sections/Footer.js
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { portfolioAPI } from "../../services/api";
+import { portfolioAPI } from "../services/api";  // ✅ Correct
+
 
 
 export const Footer = () => {
