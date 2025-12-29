@@ -71,11 +71,10 @@ export const Projects = () => {
     return () => cancelAnimationFrame(frameId);
   }, [isMobile]);
   
-// CHANGE: Orbit geometry - TIGHTER and LARGER
-const radiusX = 320;  // was 380
-const radiusY = 280;  // was 350
-const centerYOffset = 140;  // was 170
-
+  // FIXED: Larger orbit radius to prevent overlap
+  const radiusX = 450;
+  const radiusY = 360;
+  const centerYOffset = 160;
 
   const getOrbitPosition = useCallback((i, n) => {
     if (!n || isMobile) return { x: 0, y: 0, angle: 0 };
@@ -181,7 +180,7 @@ const centerYOffset = 140;  // was 170
         </motion.h2>
 
         {!isMobile ? (
-          <div className="relative h-[580px] md:h-[660px] flex items-center justify-center mt-12">
+          <div className="relative h-[700px] md:h-[780px] flex items-center justify-center mt-12">
             {/* Orbit Cards */}
             {projects.map((project, index) => {
               const { x, y, angle } = getOrbitPosition(index, projects.length);
@@ -189,26 +188,24 @@ const centerYOffset = 140;  // was 170
 
               const normalized = ((angle + Math.PI) % (2 * Math.PI)) - Math.PI;
               const isTopHalf = normalized > -Math.PI / 2 && normalized < Math.PI / 2;
-              const zIndex = isTopHalf ? 40 : 5;
+              // FIXED: Lower z-index for orbit cards to stay behind center
+              const zIndex = isTopHalf ? 30 : 5;
 
-              
               return (
-                // CHANGE: Orbit card sizes - BIGGER
-<motion.button
-  key={project.id}
-  className={isDark 
-    ? `absolute w-64 md:w-72 h-48 md:h-52 rounded-2xl  
-       border border-[color:var(--color-border)] 
-       bg-[color:var(--color-card)]/85 backdrop-blur-xl 
-       shadow-[0_20px_40px_rgba(0,0,0,0.5)] overflow-hidden 
-       group hover:scale-105 active:scale-[0.98] transition-all`
-    : `absolute w-64 md:w-72 h-48 md:h-52 rounded-2xl 
-       border border-[color:var(--color-border)] 
-       bg-[color:var(--color-card)] backdrop-blur-xl 
-       shadow-soft overflow-hidden 
-       group hover:scale-105 hover:shadow-elevated active:scale-[0.98] transition-all`
-  }
-
+                <motion.button
+                  key={project.id}
+                  className={isDark 
+                    ? `absolute w-64 md:w-72 h-48 md:h-52 rounded-2xl  
+                       border border-[color:var(--color-border)] 
+                       bg-[color:var(--color-card)]/85 backdrop-blur-xl 
+                       shadow-[0_20px_40px_rgba(0,0,0,0.5)] overflow-hidden 
+                       group hover:scale-105 active:scale-[0.98] transition-all`
+                    : `absolute w-64 md:w-72 h-48 md:h-52 rounded-2xl 
+                       border border-[color:var(--color-border)] 
+                       bg-[color:var(--color-card)] backdrop-blur-xl 
+                       shadow-soft overflow-hidden 
+                       group hover:scale-105 hover:shadow-elevated active:scale-[0.98] transition-all`
+                  }
                   style={{ transformOrigin: "center", zIndex }}
                   animate={{ x, y }}
                   transition={{ type: "tween", ease: "linear", duration: 0.2 }}
@@ -219,53 +216,53 @@ const centerYOffset = 140;  // was 170
                   ) : (
                     <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-[color:var(--color-primary)] to-[color:var(--color-secondary)]" />
                   )}
-                 <div className="h-full w-full px-5 py-4 flex flex-col justify-between">  {/* was px-4 py-3.5 */}
-    <p className="text-sm md:text-base font-semibold text-[color:var(--color-text)] line-clamp-2">  {/* was text-[11px] md:text-[12px] */}
-      {project.title}
-    </p>
-    <p className="text-xs md:text-sm text-[color:var(--color-muted)] line-clamp-2">  {/* was text-[10px] md:text-[11px] */}
-      {project.short_description}
-    </p>
-    {isDark ? (
-      <p className={`text-xs mt-1 font-semibold bg-gradient-to-r ${colorClass} bg-clip-text text-transparent`}>  {/* was text-[10px] */}
-        View details →
-      </p>
-    ) : (
-      <p className="text-xs mt-1 font-semibold text-[color:var(--color-primary)]">  {/* was text-[10px] */}
-        View details →
-      </p>
-    )}
-  </div>
-</motion.button>
+                  <div className="h-full w-full px-5 py-4 flex flex-col justify-between">
+                    <p className="text-sm md:text-base font-semibold text-[color:var(--color-text)] line-clamp-2">
+                      {project.title}
+                    </p>
+                    <p className="text-xs md:text-sm text-[color:var(--color-muted)] line-clamp-2">
+                      {project.short_description}
+                    </p>
+                    {isDark ? (
+                      <p className={`text-xs mt-1 font-semibold bg-gradient-to-r ${colorClass} bg-clip-text text-transparent`}>
+                        View details →
+                      </p>
+                    ) : (
+                      <p className="text-xs mt-1 font-semibold text-[color:var(--color-primary)]">
+                        View details →
+                      </p>
+                    )}
+                  </div>
+                </motion.button>
               );
             })}
 
-            {/* ACTIVE CARD */}
+            {/* ACTIVE CARD - FIXED: Higher z-index to stay on top */}
             {activeProject && (
-              <div className="absolute top-1/2 -translate-y-8 flex flex-col items-center justify-center">
-               <motion.div
-  key={activeProject.id}
-  initial={{ opacity: 0, scale: 0.85, y: 20 }}
-  animate={{ opacity: 1, scale: 1, y: 0 }}
-  transition={{ duration: 0.5, ease: "easeOut" }}
-  className={isDark
-    ? `relative w-[420px] h-[420px] md:w-[460px] md:h-[460px]  
-       rounded-full border-4 overflow-hidden backdrop-blur-xl 
-       flex flex-col items-center justify-center p-8
-       bg-[color:var(--color-card)]/90 shadow-[0_40px_80px_rgba(0,0,0,0.6)] 
-       ${getActiveBorderColor(activeIndex)}`
-    : `relative w-[420px] h-[420px] md:w-[460px] md:h-[460px]  
-       rounded-full border-4 overflow-hidden backdrop-blur-xl 
-       flex flex-col items-center justify-center p-8
-       bg-[color:var(--color-card)] shadow-elevated 
-       ${getActiveBorderColor(activeIndex)}`
-  }
->
+              <div className="absolute top-1/2 -translate-y-8 flex flex-col items-center justify-center" style={{ zIndex: 50 }}>
+                <motion.div
+                  key={activeProject.id}
+                  initial={{ opacity: 0, scale: 0.85, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  className={isDark
+                    ? `relative w-[400px] h-[400px] md:w-[440px] md:h-[440px]  
+                       rounded-full border-4 overflow-hidden backdrop-blur-xl 
+                       flex flex-col items-center justify-center p-8
+                       bg-[color:var(--color-card)]/90 shadow-[0_40px_80px_rgba(0,0,0,0.6)] 
+                       ${getActiveBorderColor(activeIndex)}`
+                    : `relative w-[400px] h-[400px] md:w-[440px] md:h-[440px]  
+                       rounded-full border-4 overflow-hidden backdrop-blur-xl 
+                       flex flex-col items-center justify-center p-8
+                       bg-[color:var(--color-card)] shadow-elevated 
+                       ${getActiveBorderColor(activeIndex)}`
+                  }
+                >
                   {isDark && (
                     <div className="absolute inset-8 rounded-full bg-gradient-radial from-[color:var(--color-primary)]/10 to-transparent" />
                   )}
 
-                  <div className="relative z-10 w-full h-full flex flex-col items-center justify-center text-center space-y-4 px-4">
+                  <div className="relative z-10 w-full h-full flex flex-col items-center justify-center text-center space-y-3 px-4">
                     <h3 className="text-xl md:text-2xl font-bold text-[color:var(--color-text)] leading-tight w-full">
                       {activeProject.title}
                     </h3>
@@ -276,7 +273,7 @@ const centerYOffset = 140;  // was 170
 
                     {activeProject.tech_stack && activeProject.tech_stack.length > 0 && (
                       <div className="flex flex-wrap justify-center gap-1.5 w-full max-w-xs">
-                        {activeProject.tech_stack.map((tech, i) => (
+                        {activeProject.tech_stack.slice(0, 4).map((tech, i) => (
                           <span
                             key={`${tech}-${i}`}
                             className="px-2.5 py-1 text-xs font-medium rounded-full 
@@ -290,7 +287,7 @@ const centerYOffset = 140;  // was 170
                       </div>
                     )}
 
-                    <div className="flex flex-row gap-3 w-full justify-center max-w-xs">
+                    <div className="flex flex-row gap-3 w-full justify-center max-w-xs pt-2">
                       {activeProject.github_link && (
                         <motion.a
                           href={activeProject.github_link}
@@ -298,7 +295,7 @@ const centerYOffset = 140;  // was 170
                           rel="noopener noreferrer"
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.98 }}
-                          className="group relative px-6 py-3 text-sm font-semibold 
+                          className="group relative px-5 py-2.5 text-sm font-semibold 
                                     bg-transparent border-2 border-[color:var(--color-primary)] 
                                     text-[color:var(--color-primary)] rounded-xl overflow-hidden 
                                     transition-all hover:bg-[color:var(--color-primary)] hover:text-white"
@@ -316,7 +313,7 @@ const centerYOffset = 140;  // was 170
                           rel="noopener noreferrer"
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.98 }}
-                          className="group relative px-6 py-3 text-sm font-semibold 
+                          className="group relative px-5 py-2.5 text-sm font-semibold 
                                     bg-transparent border-2 border-[color:var(--color-primary)] 
                                     text-[color:var(--color-primary)] rounded-xl overflow-hidden 
                                     transition-all hover:bg-[color:var(--color-primary)] hover:text-white"
