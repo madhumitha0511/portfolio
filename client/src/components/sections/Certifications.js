@@ -166,20 +166,20 @@ const Certifications = () => {
   }}
 >
 
-                  {/* top label */}
-                  <div className={isDark
-                    ? "absolute top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[color:var(--color-bg)] text-[10px] font-semibold tracking-[0.18em] uppercase text-[color:var(--color-primary)] shadow-soft z-10"
-                    : "absolute top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-white text-[10px] font-semibold tracking-[0.18em] uppercase text-[color:var(--color-primary)] shadow-soft z-10"
-                  }>
-                    {center.issue_date
-                      ? new Date(center.issue_date).getFullYear()
-                      : "Year"}
-                  </div>
-
-                  {/* inner content */}
+                {/* top label */}
 <div className={isDark
-  ? "flex flex-col items-center justify-center flex-1 text-center text-[color:var(--color-bg)] gap-1.5"
-  : "flex flex-col items-center justify-center flex-1 text-center text-white gap-1.5"
+  ? "absolute top-5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[color:var(--color-bg)] text-[10px] font-semibold tracking-[0.18em] uppercase text-[color:var(--color-primary)] shadow-soft z-10"
+  : "absolute top-5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-white text-[10px] font-semibold tracking-[0.18em] uppercase text-[color:var(--color-primary)] shadow-soft z-10"
+}>
+  {center.issue_date
+    ? new Date(center.issue_date).getFullYear()
+    : "Year"}
+</div>
+
+{/* inner content */}
+<div className={isDark
+  ? "flex flex-col items-center justify-center flex-1 text-center text-[color:var(--color-bg)] gap-3 py-6"
+  : "flex flex-col items-center justify-center flex-1 text-center text-white gap-3 py-6"
 }>
   <h3 className="text-lg md:text-xl font-bold leading-snug">
     {center.certification_name}
@@ -192,9 +192,8 @@ const Certifications = () => {
   </p>
 </div>
 
-
-{/* ✅ FIXED: Smaller button width */}
-<div className="w-full px-8 pb-6 flex justify-center">
+{/* ✅ FIXED: Smaller button width with more breathing room */}
+<div className="w-full px-8 pb-8 flex justify-center">
   <motion.button
     whileHover={{ scale: 1.02, y: -1 }}
     whileTap={{ scale: 0.98 }}
