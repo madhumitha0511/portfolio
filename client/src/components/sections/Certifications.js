@@ -10,6 +10,25 @@ const Certifications = () => {
   const [items, setItems] = useState([]);
   const [index, setIndex] = useState(0);
   const [isAutoScrolling, setIsAutoScrolling] = useState(true);
+  const [isDark, setIsDark] = useState(false);
+
+  // Detect theme
+  useEffect(() => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    setIsDark(currentTheme === 'dark');
+
+    const observer = new MutationObserver(() => {
+      const theme = document.documentElement.getAttribute('data-theme');
+      setIsDark(theme === 'dark');
+    });
+    
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme']
+    });
+    
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const load = async () => {
@@ -134,26 +153,41 @@ const Certifications = () => {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -40, scale: 0.9 }}
                   transition={{ duration: 0.5, ease: "easeOut" }}
-                  className="relative w-full max-w-md h-[380px] rounded-[32px] border-[3px] border-[color:var(--color-bg)] bg-[color:var(--color-primary)] shadow-soft overflow-hidden flex flex-col items-center justify-between"
-                  style={{
+                  className={isDark
+                    ? "relative w-full max-w-md h-[380px] rounded-[32px] border-[3px] border-[color:var(--color-bg)] bg-[color:var(--color-primary)] shadow-soft overflow-hidden flex flex-col items-center justify-between"
+                    : "relative w-full max-w-md h-[380px] rounded-[32px] border-[3px] border-white/50 bg-[color:var(--color-primary)] shadow-elevated overflow-hidden flex flex-col items-center justify-between"
+                  }
+                  style={isDark ? {
                     boxShadow:
                       "0 28px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,0,0,0.25)",
+                  } : {
+                    boxShadow:
+                      "0 28px 80px rgba(31,58,138,0.35), 0 0 0 1px rgba(31,58,138,0.15)",
                   }}
                 >
                   {/* top label */}
-                  <div className="absolute top-2 px-4 py-1 rounded-full bg-[color:var(--color-bg)] text-[10px] font-semibold tracking-[0.18em] uppercase text-[color:var(--color-primary)] shadow-soft">
+                  <div className={isDark
+                    ? "absolute top-2 px-4 py-1 rounded-full bg-[color:var(--color-bg)] text-[10px] font-semibold tracking-[0.18em] uppercase text-[color:var(--color-primary)] shadow-soft"
+                    : "absolute top-2 px-4 py-1 rounded-full bg-white text-[10px] font-semibold tracking-[0.18em] uppercase text-[color:var(--color-primary)] shadow-soft"
+                  }>
                     {center.issue_date
                       ? new Date(center.issue_date).getFullYear()
                       : "Year"}
                   </div>
 
                   {/* inner content */}
-                  <div className="flex flex-col items-center justify-center flex-1 px-8 pt-10 text-center text-[color:var(--color-bg)]">
+                  <div className={isDark
+                    ? "flex flex-col items-center justify-center flex-1 px-8 pt-10 text-center text-[color:var(--color-bg)]"
+                    : "flex flex-col items-center justify-center flex-1 px-8 pt-10 text-center text-white"
+                  }>
                     <motion.div
                       initial={{ scale: 0.8, rotate: -10 }}
                       animate={{ scale: 1, rotate: 0 }}
                       transition={{ duration: 0.5 }}
-                      className="w-24 h-24 mb-6 rounded-full border-[3px] border-[color:var(--color-bg)] flex items-center justify-center overflow-hidden bg-[color:var(--color-primary-soft)]/20"
+                      className={isDark
+                        ? "w-24 h-24 mb-6 rounded-full border-[3px] border-[color:var(--color-bg)] flex items-center justify-center overflow-hidden bg-[color:var(--color-primary-soft)]/20"
+                        : "w-24 h-24 mb-6 rounded-full border-[3px] border-white/80 flex items-center justify-center overflow-hidden bg-white/20"
+                      }
                     >
                       <img
                         src={
@@ -181,7 +215,10 @@ const Certifications = () => {
                     <motion.button
                       whileHover={{ scale: 1.03, y: -2 }}
                       whileTap={{ scale: 0.97 }}
-                      className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-2xl bg-[color:var(--color-bg)] text-[color:var(--color-primary)] text-xs md:text-sm font-semibold shadow-soft"
+                      className={isDark
+                        ? "w-full flex items-center justify-between gap-3 px-4 py-3 rounded-2xl bg-[color:var(--color-bg)] text-[color:var(--color-primary)] text-xs md:text-sm font-semibold shadow-soft"
+                        : "w-full flex items-center justify-between gap-3 px-4 py-3 rounded-2xl bg-white text-[color:var(--color-primary)] text-xs md:text-sm font-semibold shadow-soft"
+                      }
                       onClick={() => {
                         if (center.credential_url) {
                           window.open(center.credential_url, "_blank");
@@ -214,7 +251,10 @@ const Certifications = () => {
                 )}
               </div>
 
-              <div className="relative h-[320px] overflow-hidden rounded-3xl bg-[color:var(--color-card)]/90 backdrop-blur-xl border border-[color:var(--color-border)] shadow-soft">
+              <div className={isDark
+                ? "relative h-[320px] overflow-hidden rounded-3xl bg-[color:var(--color-card)]/90 backdrop-blur-xl border border-[color:var(--color-border)] shadow-soft"
+                : "relative h-[320px] overflow-hidden rounded-3xl bg-[color:var(--color-card)] backdrop-blur-xl border border-[color:var(--color-border)] shadow-soft hover:shadow-elevated transition-shadow"
+              }>
                 <div className="absolute inset-0 overflow-hidden">
                   <ul className="absolute inset-0 flex flex-col items-stretch">
                     {listWindow.map(({ cert, idx, isActive, key, offset }) => (
@@ -280,7 +320,10 @@ const Certifications = () => {
                     whileHover={{ scale: 1.05, y: -1 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={goPrev}
-                    className="w-10 h-10 rounded-full bg-[color:var(--color-card)]/90 backdrop-blur-md border border-[color:var(--color-border)] text-[color:var(--color-text)] flex items-center justify-center shadow-soft"
+                    className={isDark
+                      ? "w-10 h-10 rounded-full bg-[color:var(--color-card)]/90 backdrop-blur-md border border-[color:var(--color-border)] text-[color:var(--color-text)] flex items-center justify-center shadow-soft"
+                      : "w-10 h-10 rounded-full bg-[color:var(--color-card)] backdrop-blur-md border border-[color:var(--color-border)] text-[color:var(--color-text)] flex items-center justify-center shadow-soft hover:shadow-elevated transition-shadow"
+                    }
                   >
                     ‹
                   </motion.button>
@@ -288,7 +331,10 @@ const Certifications = () => {
                     whileHover={{ scale: 1.05, y: -1 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={goNext}
-                    className="w-10 h-10 rounded-full bg-[color:var(--color-card)]/90 backdrop-blur-md border border-[color:var(--color-border)] text-[color:var(--color-text)] flex items-center justify-center shadow-soft"
+                    className={isDark
+                      ? "w-10 h-10 rounded-full bg-[color:var(--color-card)]/90 backdrop-blur-md border border-[color:var(--color-border)] text-[color:var(--color-text)] flex items-center justify-center shadow-soft"
+                      : "w-10 h-10 rounded-full bg-[color:var(--color-card)] backdrop-blur-md border border-[color:var(--color-border)] text-[color:var(--color-text)] flex items-center justify-center shadow-soft hover:shadow-elevated transition-shadow"
+                    }
                   >
                     ›
                   </motion.button>
