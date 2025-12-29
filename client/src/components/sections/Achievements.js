@@ -64,9 +64,9 @@ const Achievements = () => {
       id="achievements"
       className="relative py-24 px-4 overflow-hidden"
     >
-      <div className="max-w-5xl mx-auto relative z-10">
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* header */}
-        <div className="text-center mb-10">
+        <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-[color:var(--color-text)]">
             Achievements
           </h2>
@@ -76,99 +76,99 @@ const Achievements = () => {
         </div>
 
         {hasItems ? (
-          <div className="relative flex items-center justify-center py-6 gap-4 md:gap-6">
-            {/* LEFT BUTTON - SIMPLE ROUND */}
+          <div className="relative flex items-center justify-center gap-6 md:gap-8">
+            {/* LEFT BUTTON */}
             <motion.button
               onClick={goPrev}
-              whileHover={{ scale: 1.15, rotate: -10 }}
-              whileTap={{ scale: 0.9 }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
               className={isDark
-                ? "w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center z-30 bg-[color:var(--color-bg-elevated)] border border-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)]/10 shadow-soft"
-                : "w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center z-30 bg-white border-2 border-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)]/5 shadow-soft hover:shadow-elevated transition-all"
+                ? "w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center z-30 bg-[color:var(--color-card)] border-2 border-[color:var(--color-border)] hover:border-[color:var(--color-primary)] shadow-soft transition-all"
+                : "w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center z-30 bg-white border-2 border-[color:var(--color-border)] hover:border-[color:var(--color-primary)] shadow-soft hover:shadow-elevated transition-all"
               }
             >
-              <span className="text-lg md:text-xl font-bold text-[color:var(--color-primary)]">‹</span>
+              <span className="text-xl md:text-2xl font-bold text-[color:var(--color-text)]">‹</span>
             </motion.button>
 
-            {/* left card */}
-            <SideCard
-              item={items[leftIdx]}
-              position="left"
-              onClick={goPrev}
-              isDark={isDark}
-            />
+            {/* CARDS CONTAINER */}
+            <div className="relative flex items-center justify-center gap-0">
+              {/* left card */}
+              <SideCard
+                item={items[leftIdx]}
+                position="left"
+                onClick={goPrev}
+                isDark={isDark}
+              />
 
-            {/* center card */}
-            <div className="relative z-20 mx-3 md:mx-6">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={items[centerIdx].id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
-                  className={isDark
-                    ? "relative w-[280px] sm:w-[300px] md:w-[340px] h-[400px] sm:h-[420px] md:h-[440px] rounded-[32px] bg-gradient-to-br from-red-900/20 via-red-800/25 to-red-900/20 backdrop-blur-[20px] shadow-[0_26px_70px_rgba(0,0,0,0.7)] flex flex-col items-center justify-between px-6 py-6 overflow-hidden"
-                    : "relative w-[280px] sm:w-[300px] md:w-[340px] h-[400px] sm:h-[420px] md:h-[440px] rounded-[32px] bg-gradient-to-br from-blue-50/90 via-white/95 to-purple-50/90 backdrop-blur-[20px] shadow-elevated border border-[color:var(--color-border)] flex flex-col items-center justify-between px-6 py-6 overflow-hidden"
-                  }
-                >
-                  {/* ✅ EVEN BIGGER EMOJI - PERFECTLY CENTERED */}
-                  <div className="flex-1 flex items-center justify-center mb-8">
-                    <span className="text-7xl md:text-8xl">🏆</span>
-                  </div>
+              {/* center card */}
+              <div className="relative z-20">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={items[centerIdx].id}
+                    initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: -20 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    className={isDark
+                      ? "relative w-[320px] sm:w-[360px] md:w-[400px] min-h-[440px] rounded-[28px] bg-gradient-to-br from-slate-800/40 via-slate-900/50 to-slate-800/40 backdrop-blur-xl shadow-2xl border border-[color:var(--color-border)] flex flex-col items-center px-8 py-8"
+                      : "relative w-[320px] sm:w-[360px] md:w-[400px] min-h-[440px] rounded-[28px] bg-white/95 backdrop-blur-xl shadow-2xl border border-[color:var(--color-border)] flex flex-col items-center px-8 py-8"
+                    }
+                  >
+                    {/* emoji */}
+                    <div className="mb-6">
+                      <span className="text-8xl">🏆</span>
+                    </div>
 
-                  {/* counter pill - TRUE GLASS */}
-                  <div className={isDark
-                    ? "px-3 py-1 rounded-full bg-[color:var(--color-bg)]/80 backdrop-blur-[15px] text-[11px] text-[color:var(--color-text)] mb-2 shadow-xl"
-                    : "px-3 py-1 rounded-full bg-white/90 backdrop-blur-[15px] text-[11px] text-[color:var(--color-primary)] font-semibold mb-2 shadow-soft border border-[color:var(--color-border)]"
-                  }>
-                    {centerIdx + 1} / {items.length}
-                  </div>
+                    {/* counter pill */}
+                    <div className={isDark
+                      ? "px-4 py-1.5 rounded-full bg-[color:var(--color-primary)]/20 backdrop-blur-md text-xs text-[color:var(--color-primary)] font-semibold mb-6 border border-[color:var(--color-primary)]/30"
+                      : "px-4 py-1.5 rounded-full bg-[color:var(--color-primary)]/10 backdrop-blur-md text-xs text-[color:var(--color-primary)] font-semibold mb-6 border border-[color:var(--color-primary)]/20"
+                    }>
+                      {centerIdx + 1} / {items.length}
+                    </div>
 
-                  {/* text content */}
-                  <div className="text-center px-2 space-y-2 mb-4">
-                    <h3 className="text-lg md:text-xl font-bold text-[color:var(--color-text)]">
-                      {items[centerIdx].achievement_title}
-                    </h3>
-                    <p className="text-[11px] text-[color:var(--color-muted)]">
-                      {items[centerIdx].organization}
-                      {items[centerIdx].category &&
-                        ` • ${items[centerIdx].category}`}
-                      {items[centerIdx].achievement_date &&
-                        ` • ${items[centerIdx].achievement_date}`}
-                    </p>
-                    {items[centerIdx].description && (
-                      <p className={isDark
-                        ? "text-[11px] text-[color:var(--color-text)]/95 leading-relaxed"
-                        : "text-[11px] text-[color:var(--color-text)]/90 leading-relaxed"
-                      }>
-                        {items[centerIdx].description}
+                    {/* text content */}
+                    <div className="text-center space-y-3 flex-1 flex flex-col justify-center">
+                      <h3 className="text-xl md:text-2xl font-bold text-[color:var(--color-text)] leading-tight">
+                        {items[centerIdx].achievement_title}
+                      </h3>
+                      <p className="text-xs text-[color:var(--color-muted)] leading-relaxed">
+                        {items[centerIdx].organization}
+                        {items[centerIdx].category &&
+                          ` • ${items[centerIdx].category}`}
+                        {items[centerIdx].achievement_date &&
+                          ` • ${items[centerIdx].achievement_date}`}
                       </p>
-                    )}
-                  </div>
-                </motion.div>
-              </AnimatePresence>
+                      {items[centerIdx].description && (
+                        <p className="text-sm text-[color:var(--color-text)]/80 leading-relaxed pt-2">
+                          {items[centerIdx].description}
+                        </p>
+                      )}
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              {/* right card */}
+              <SideCard
+                item={items[rightIdx]}
+                position="right"
+                onClick={goNext}
+                isDark={isDark}
+              />
             </div>
 
-            {/* right card */}
-            <SideCard
-              item={items[rightIdx]}
-              position="right"
-              onClick={goNext}
-              isDark={isDark}
-            />
-
-            {/* RIGHT BUTTON - SIMPLE ROUND */}
+            {/* RIGHT BUTTON */}
             <motion.button
               onClick={goNext}
-              whileHover={{ scale: 1.15, rotate: 10 }}
-              whileTap={{ scale: 0.9 }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
               className={isDark
-                ? "w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center z-30 bg-[color:var(--color-bg-elevated)] border border-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)]/10 shadow-soft"
-                : "w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center z-30 bg-white border-2 border-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)]/5 shadow-soft hover:shadow-elevated transition-all"
+                ? "w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center z-30 bg-[color:var(--color-card)] border-2 border-[color:var(--color-border)] hover:border-[color:var(--color-primary)] shadow-soft transition-all"
+                : "w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center z-30 bg-white border-2 border-[color:var(--color-border)] hover:border-[color:var(--color-primary)] shadow-soft hover:shadow-elevated transition-all"
               }
             >
-              <span className="text-lg md:text-xl font-bold text-[color:var(--color-primary)]">›</span>
+              <span className="text-xl md:text-2xl font-bold text-[color:var(--color-text)]">›</span>
             </motion.button>
           </div>
         ) : (
@@ -184,37 +184,40 @@ const Achievements = () => {
 const SideCard = ({ item, position, onClick, isDark }) => {
   if (!item) return null;
 
-  const rotate = position === "left" ? -10 : 10;
-  const translateX = position === "left" ? "-16px" : "16px";
+  const rotate = position === "left" ? -8 : 8;
+  const scale = "0.85";
 
   return (
     <motion.button
       type="button"
       onClick={onClick}
-      className="hidden sm:block relative z-10"
-      whileHover={{ y: -4 }}
+      className="hidden lg:block relative z-10"
+      whileHover={{ scale: 0.88, y: -8 }}
+      transition={{ duration: 0.2 }}
     >
       <div
         className={isDark
-          ? "w-52 md:w-60 h-[360px] md:h-[380px] rounded-[32px] bg-gradient-to-br from-black/20 to-slate-900/20 backdrop-blur-[20px] shadow-[0_20px_60px_rgba(0,0,0,0.6)] flex flex-col items-center justify-end pb-10 px-5 overflow-hidden"
-          : "w-52 md:w-60 h-[360px] md:h-[380px] rounded-[32px] bg-gradient-to-br from-slate-50/80 to-gray-100/80 backdrop-blur-[20px] shadow-soft border border-[color:var(--color-border)] flex flex-col items-center justify-end pb-10 px-5 overflow-hidden"
+          ? "w-[280px] h-[440px] rounded-[28px] bg-gradient-to-br from-slate-800/30 via-slate-900/40 to-slate-800/30 backdrop-blur-lg shadow-xl border border-[color:var(--color-border)]/50 flex flex-col items-center justify-center px-6 py-8 overflow-hidden"
+          : "w-[280px] h-[440px] rounded-[28px] bg-white/60 backdrop-blur-lg shadow-lg border border-[color:var(--color-border)] flex flex-col items-center justify-center px-6 py-8 overflow-hidden"
         }
         style={{
-          transform: `rotate(${rotate}deg) translateX(${translateX})`,
+          transform: `rotate(${rotate}deg) scale(${scale})`,
         }}
       >
-        {/* ✅ EVEN BIGGER EMOJI - PERFECTLY CENTERED */}
-        <div className="absolute top-10 inset-x-0 flex justify-center opacity-95">
-          <span className="text-6xl md:text-7xl">🏆</span>
+        {/* emoji */}
+        <div className="mb-6 opacity-80">
+          <span className="text-7xl">🏆</span>
         </div>
 
-        {/* title - TRUE GLASS */}
-        <p className={isDark
-          ? "text-sm md:text-base font-semibold text-[color:var(--color-text)]/95 text-center line-clamp-2 bg-[color:var(--color-bg)]/80 backdrop-blur-[15px] px-5 py-3 rounded-2xl mx-4 shadow-lg"
-          : "text-sm md:text-base font-semibold text-[color:var(--color-text)] text-center line-clamp-2 bg-white/90 backdrop-blur-[15px] px-5 py-3 rounded-2xl mx-4 shadow-soft border border-[color:var(--color-border)]"
+        {/* title */}
+        <div className={isDark
+          ? "bg-[color:var(--color-card)]/80 backdrop-blur-md px-5 py-3 rounded-2xl border border-[color:var(--color-border)]"
+          : "bg-white/90 backdrop-blur-md px-5 py-3 rounded-2xl border border-[color:var(--color-border)]"
         }>
-          {item.achievement_title}
-        </p>
+          <p className="text-sm font-semibold text-[color:var(--color-text)] text-center line-clamp-3">
+            {item.achievement_title}
+          </p>
+        </div>
       </div>
     </motion.button>
   );
