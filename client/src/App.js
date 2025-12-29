@@ -57,7 +57,7 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-[#050006] text-[color:var(--color-text)] relative overflow-x-hidden">
+      <div className="min-h-screen text-[color:var(--color-text)] relative overflow-x-hidden">
         {/* ✅ NAVBAR = ALWAYS FIXED ON TOP */}
         <div className="fixed top-0 left-0 right-0 z-[100]">
           <Navbar />
