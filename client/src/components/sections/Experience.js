@@ -110,7 +110,7 @@ const Experience = () => {
   const getColorClass = (index) => colors[index % colors.length];
 
   return (
-    <section id="experience" className="py-20 px-4 relative overflow-hidden ">
+    <section id="experience" className="py-20 px-4 relative overflow-hidden bg-[color:var(--color-bg)]">
       <div className="max-w-full mx-auto relative z-10 px-6">
         <motion.h2
           initial={{ opacity: 0, y: -20 }}
