@@ -1,7 +1,7 @@
 // client/src/components/sections/Projects.js
 import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { projectsAPI } from "../../services/api";
+import { projectsAPI } from "../../api"; // FIXED: Changed from ../../services/api
 
 export const Projects = () => {
   const [projects, setProjects] = useState([]);
@@ -134,8 +134,6 @@ export const Projects = () => {
     setTimeout(() => setTempActiveIndex(null), 15000);
   }, []);
 
-  // Light theme: use solid hex colors for vibrant gradients
-  // Dark theme: keep original vibrant colors
   const colors = isDark ? [
     "from-orange-400 to-red-500",
     "from-cyan-400 to-blue-500",
