@@ -19,22 +19,50 @@
    HERO BACKGROUND GRADIENTS (THEME-AWARE)
    ======================================== */
 
-/* 🌑 DARK — Vecna World (Black + Red) */
+/* 🌑 DARK — Vecna World (Sangria Edition) */
 :root[data-theme="dark"] {
-  --hero-bg: 
-    /* PRIMARY SPOTLIGHTS - 20% RED INTENSITY */
-                      radial-gradient(ellipse 1100px 800px at 20% 15%, rgba(140,29,24,0.18) 0%, transparent 65%),
-                      radial-gradient(ellipse 950px 700px at 80% 70%, rgba(140,29,24,0.15) 0%, transparent 65%),
-                      radial-gradient(ellipse 850px 600px at 45% 92%, rgba(178,37,30,0.12) 0%, transparent 65%),
-                      
-                      /* SUBTLE ENHANCERS - 5% RED */
-                      radial-gradient(ellipse 1000px 750px at 35% 75%, rgba(140,29,24,0.08) 0%, transparent 75%),
-                      radial-gradient(circle 180px at 70% 30%, rgba(220,38,38,0.10) 0%, transparent 70%),
-                      
-                      /* WHITE HIGHLIGHTS - 2% */
-                      radial-gradient(circle 120px at 55% 8%, rgba(255,255,255,0.06) 0%, transparent 60%)
+  --hero-bg:
+    /* PRIMARY BLOOD SPOTLIGHTS */
+    radial-gradient(
+      ellipse 1100px 800px at 18% 14%,
+      rgba(136, 11, 10, 0.22) 0%,   /* sangria-900 */
+      transparent 65%
+    ),
 
+    radial-gradient(
+      ellipse 950px 700px at 82% 68%,
+      rgba(177, 4, 3, 0.18) 0%,    /* sangria-800 */
+      transparent 65%
+    ),
+
+    radial-gradient(
+      ellipse 850px 600px at 48% 92%,
+      rgba(214, 2, 0, 0.14) 0%,    /* sangria-700 */
+      transparent 70%
+    ),
+
+    /* VEIN-LIKE SUBTLE DEPTH */
+    radial-gradient(
+      ellipse 1000px 750px at 32% 76%,
+      rgba(80, 1, 0, 0.35) 0%,     /* sangria-950 */
+      transparent 75%
+    ),
+
+    /* COLD DEAD HIGHLIGHT */
+    radial-gradient(
+      circle 160px at 56% 8%,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 60%
+    ),
+
+    /* VOID BASE */
+    linear-gradient(
+      180deg,
+      #0B0B0F 0%,
+      #050507 100%
+    );
 }
+
 
 :root[data-theme="light"] {
   --hero-bg:
@@ -92,28 +120,28 @@
 /* 🌑 DARK MODE — Vecna / Upside Down */
 :root[data-theme="dark"] {
   /* Surfaces */
-  --color-bg: #0B0B0F;                  /* Void black */
-  --color-bg-elevated: #1A1A22;         /* Ash charcoal */
-  --color-card: rgba(18, 10, 18, 0.95);
+  --color-bg: #050507;
+  --color-bg-elevated: #0B0B0F;
+  --color-card: rgba(18, 10, 12, 0.92);
 
-  /* Brand */
-  --color-primary: #C1121F;             /* Vecna crimson */
-  --color-primary-soft: rgba(139, 0, 0, 0.15);
-  --color-secondary: #F97362;            /* Vein red */
-  --color-accent: #d6242f9f;               /* Corrupted purple */
+  /* Brand (SANGRIA) */
+  --color-primary: #d60200;      /* sangria-700 */
+  --color-primary-soft: rgba(214, 2, 0, 0.18);
+  --color-secondary: #b10403;    /* sangria-800 */
+  --color-accent: #880b0a;       /* sangria-900 */
 
   /* Text */
-  --color-text: #E5E5E5;                /* Bone white */
+  --color-text: #EDEDED;
   --color-muted: #9CA3AF;
 
   /* UI */
-  --color-border: #ababab;
-  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.55);
-  --shadow-elevated: 0 20px 50px rgba(0, 0, 0, 0.75);
+  --color-border: rgba(214, 2, 0, 0.22);
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.6);
+  --shadow-elevated: 0 20px 50px rgba(0, 0, 0, 0.8);
 
-  /* Hero blob */
-  --hero-blob-from: #F97362;
-  --hero-blob-to: #C1121F;
+  /* Hero blobs */
+  --hero-blob-from: #b10403;
+  --hero-blob-to: #d60200;
 }
 
 /* ========================================

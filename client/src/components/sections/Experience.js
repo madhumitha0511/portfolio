@@ -191,103 +191,100 @@ const Experience = () => {
                     ))}
                   </div>
 
-                  {/* Cards grid */}
-                  <div
-                    className="p-8 md:p-9 min-h-[600px] relative z-10"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-elevated) 100%)",
-                    }}
-                  >
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={selectedYear}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
-                      >
-                        {filteredExperiences.map((exp, idx) => {
-                          const isActive = exp.id === activeId;
-                          const colorClass = getColorClass(idx);
+                 {/* Cards grid - Dark theme match */}
+<div
+  className="p-8 md:p-9 min-h-[600px] relative z-10 bg-gradient-to-br from-[color:var(--color-bg)]/80 via-[color:var(--color-bg-elevated)]/60 to-[color:var(--color-card)]/50 backdrop-blur-md"
+>
+  <AnimatePresence mode="wait">
+    <motion.div
+      key={selectedYear}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+    >
+      {filteredExperiences.map((exp, idx) => {
+        const isActive = exp.id === activeId;
+        const colorClass = getColorClass(idx);
 
-                          return (
-                            <motion.button
-                              key={exp.id}
-                              initial={{ opacity: 0, y: 20 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: -20 }}
-                              transition={{
-                                delay: idx * 0.06,
-                                duration: 0.4,
-                                ease: "easeOut",
-                              }}
-                              whileHover={{ y: -6, scale: 1.01 }}
-                              onClick={() => setActiveId(exp.id)}
-                              className={`relative rounded-2xl p-5 border-2 transition-all overflow-hidden group backdrop-blur-sm h-full text-[color:var(--color-text)] ${
-                                isActive
-                                  ? "bg-[color:var(--color-card)] border-[color:var(--color-primary)] shadow-soft ring-2 ring-[color:var(--color-primary)]/40"
-                                  : "bg-[color:var(--color-bg-elevated)] border-[color:var(--color-border)] hover:border-[color:var(--color-primary)]/70"
-                              }`}
-                              style={{ cursor: cursorUrl }}
-                            >
-                              {isActive && (
-                                <motion.div
-                                  initial={{ opacity: 0 }}
-                                  animate={{ opacity: 1 }}
-                                  className="absolute inset-0 bg-[color:var(--color-primary-soft)] pointer-events-none"
-                                />
-                              )}
+        return (
+          <motion.button
+            key={exp.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{
+              delay: idx * 0.06,
+              duration: 0.4,
+              ease: "easeOut",
+            }}
+            whileHover={{ y: -6, scale: 1.01 }}
+            onClick={() => setActiveId(exp.id)}
+            className={`relative rounded-2xl p-5 border-2 transition-all overflow-hidden group backdrop-blur-sm h-full text-[color:var(--color-text)] shadow-soft ${
+              isActive
+                ? "bg-[color:var(--color-card)]/90 border-[color:var(--color-primary)] ring-2 ring-[color:var(--color-primary)]/50"
+                : "bg-[color:var(--color-bg-elevated)]/70 border-[color:var(--color-border)]/50 hover:border-[color:var(--color-primary)]/70 hover:bg-[color:var(--color-bg-elevated)]/80"
+            }`}
+            style={{ cursor: cursorUrl }}
+          >
+            {isActive && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="absolute inset-0 bg-[color:var(--color-primary)]/10 backdrop-blur-sm pointer-events-none"
+              />
+            )}
 
-                              <div className="relative flex flex-col h-full">
-                                <div
-                                  className={`mb-3 text-4xl font-bold opacity-90 bg-gradient-to-r ${colorClass} bg-clip-text text-transparent`}
-                                >
-                                  {exp.company_name?.[0] || "E"}
-                                </div>
+            <div className="relative flex flex-col h-full">
+              <div
+                className={`mb-3 text-4xl font-bold opacity-90 bg-gradient-to-r ${colorClass} bg-clip-text text-transparent`}
+              >
+                {exp.company_name?.[0] || "E"}
+              </div>
 
-                                <h4 className="text-base font-bold mb-1.5 leading-tight">
-                                  {exp.role}
-                                </h4>
+              <h4 className="text-base font-bold mb-1.5 leading-tight text-[color:var(--color-text)]">
+                {exp.role}
+              </h4>
 
-                                <p
-                                  className={`text-xs md:text-sm opacity-95 mb-2.5 font-semibold bg-gradient-to-r ${colorClass} bg-clip-text text-transparent`}
-                                >
-                                  {exp.company_name}
-                                </p>
+              <p
+                className={`text-xs md:text-sm opacity-95 mb-2.5 font-semibold bg-gradient-to-r ${colorClass} bg-clip-text text-transparent`}
+              >
+                {exp.company_name}
+              </p>
 
-                                <p className="text-xs opacity-75 line-clamp-3 leading-relaxed mb-3 flex-1">
-                                  {exp.description}
-                                </p>
+              <p className="text-xs opacity-75 line-clamp-3 leading-relaxed mb-3 flex-1 text-[color:var(--color-text)]/90">
+                {exp.description}
+              </p>
 
-                                <div className="border-t border-[color:var(--color-border)] my-2" />
+              <div className="border-t border-[color:var(--color-border)]/50 my-2" />
 
-                                <div className="flex justify-between items-center mt-auto">
-                                  <span
-                                    className={`text-xs font-bold uppercase tracking-wider bg-gradient-to-r ${colorClass} bg-clip-text text-transparent`}
-                                  >
-                                    {new Date(exp.start_date).getFullYear()}
-                                  </span>
-                                  <span className="text-[9px] opacity-60 text-[color:var(--color-muted)]">
-                                    {exp.location && `📍 ${exp.location}`}
-                                  </span>
-                                </div>
-                              </div>
-                            </motion.button>
-                          );
-                        })}
-                      </motion.div>
-                    </AnimatePresence>
+              <div className="flex justify-between items-center mt-auto">
+                <span
+                  className={`text-xs font-bold uppercase tracking-wider bg-gradient-to-r ${colorClass} bg-clip-text text-transparent`}
+                >
+                  {new Date(exp.start_date).getFullYear()}
+                </span>
+                <span className="text-[9px] opacity-60 text-[color:var(--color-muted)]">
+                  {exp.location && `📍 ${exp.location}`}
+                </span>
+              </div>
+            </div>
+          </motion.button>
+        );
+      })}
+    </motion.div>
+  </AnimatePresence>
 
-                    {filteredExperiences.length === 0 && (
-                      <div className="flex items-center justify-center h-full min-h-[300px] text-[color:var(--color-muted)]">
-                        <p className="text-base">
-                          No experiences in {selectedYear}
-                        </p>
-                      </div>
-                    )}
-                  </div>
+  {filteredExperiences.length === 0 && (
+    <div className="flex items-center justify-center h-full min-h-[300px] text-[color:var(--color-muted)]">
+      <p className="text-base">
+        No experiences in {selectedYear}
+      </p>
+    </div>
+  )}
+</div>
+
                 </motion.div>
               </div>
 
