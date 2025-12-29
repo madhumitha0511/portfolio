@@ -209,12 +209,13 @@ const SideCard = ({ item, position, onClick, isDark }) => {
         </div>
 
         {/* title - TRUE GLASS */}
-        <p className={isDark
-          ? "text-xs md:text-base font-semibold text-[color:var(--color-text)]/95 text-center line-clamp-2 bg-[color:var(--color-bg)]/80 backdrop-blur-[15px] px-5 py-3 rounded-2xl mx-4 shadow-lg"
-          : "text-xs md:text-base font-semibold text-[color:var(--color-text)] text-center line-clamp-2 bg-white/90 backdrop-blur-[15px] px-5 py-3 rounded-2xl mx-4 shadow-soft border border-[color:var(--color-border)]"
-        }>
-          {item.achievement_title}
-        </p>
+<p className={isDark
+  ? "text-xs md:text-sm font-semibold text-[color:var(--color-text)]/95 text-center line-clamp-2 bg-[color:var(--color-bg)]/80 backdrop-blur-[15px] px-4 py-2.5 rounded-2xl mx-4 shadow-lg"
+  : "text-xs md:text-sm font-semibold text-[color:var(--color-text)] text-center line-clamp-2 bg-white/90 backdrop-blur-[15px] px-4 py-2.5 rounded-2xl mx-4 shadow-soft border border-[color:var(--color-border)]"
+}>
+  {item.achievement_title}
+</p>
+
       </div>
     </motion.button>
   );
