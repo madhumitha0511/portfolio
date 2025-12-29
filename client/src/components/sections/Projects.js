@@ -89,37 +89,37 @@ export const Projects = () => {
   const activeIndex = tempActiveIndex !== null ? tempActiveIndex : orbitActiveIndex;
   const activeProject = projects[activeIndex];
 
-  // Get active card color from orbit card
+  // LIGHT THEME: Professional color palette optimized for recruiters
   const getActiveBorderColor = (index) => {
     const colorMap = {
-      0: "border-orange-500/80",
-      1: "border-cyan-500/80", 
-      2: "border-emerald-500/80",
-      3: "border-violet-500/80",
-      4: "border-yellow-500/80",
-      5: "border-pink-500/80",
-      6: "border-indigo-500/80",
-      7: "border-teal-500/80",
+      0: "border-[#2E7D99]/70",      // Professional teal-blue
+      1: "border-[#6366F1]/70",      // Modern indigo
+      2: "border-[#059669]/70",      // Success green
+      3: "border-[#7C3AED]/70",      // Royal purple
+      4: "border-[#DC2626]/70",      // Confident red
+      5: "border-[#0891B2]/70",      // Cyan professional
+      6: "border-[#4F46E5]/70",      // Deep indigo
+      7: "border-[#0D9488]/70",      // Teal accent
     };
-    return colorMap[index % 8] || "border-orange-500/80";
+    return colorMap[index % 8] || "border-[#2E7D99]/70";
   };
 
   // Click handler for orbit cards - 15 SECONDS ACTIVE
   const handleCardClick = useCallback((index) => {
     setTempActiveIndex(index);
-    setTimeout(() => setTempActiveIndex(null), 15000); // 15 seconds
+    setTimeout(() => setTempActiveIndex(null), 15000);
   }, []);
 
-  // Color palette for orbit cards
+  // LIGHT THEME: Refined gradient palette - subtle yet distinguished
   const colors = [
-    "from-orange-400 to-red-500",
-    "from-cyan-400 to-blue-500",
-    "from-emerald-400 to-green-500",
-    "from-violet-400 to-purple-500",
-    "from-yellow-400 to-orange-500",
-    "from-pink-400 to-rose-500",
-    "from-indigo-400 to-blue-600",
-    "from-teal-400 to-cyan-500",
+    "from-[#2E7D99] to-[#1E5A73]",    // Trustworthy teal-blue
+    "from-[#6366F1] to-[#4F46E5]",    // Professional indigo
+    "from-[#059669] to-[#047857]",    // Achievement green
+    "from-[#7C3AED] to-[#6D28D9]",    // Creative purple
+    "from-[#DC2626] to-[#B91C1C]",    // Bold red
+    "from-[#0891B2] to-[#0E7490]",    // Calm cyan
+    "from-[#4F46E5] to-[#4338CA]",    // Deep indigo
+    "from-[#0D9488] to-[#0F766E]",    // Fresh teal
   ];
   const getColorClass = (index) => colors[index % colors.length];
 
@@ -157,7 +157,7 @@ export const Projects = () => {
 
         {!isMobile ? (
           <div className="relative h-[580px] md:h-[660px] flex items-center justify-center mt-12">
-            {/* Orbit Cards */}
+            {/* Orbit Cards - LIGHT THEME optimized */}
             {projects.map((project, index) => {
               const { x, y, angle } = getOrbitPosition(index, projects.length);
               const colorClass = getColorClass(index);
@@ -170,10 +170,12 @@ export const Projects = () => {
                 <motion.button
                   key={project.id}
                   className="absolute w-52 md:w-64 h-40 md:h-44 rounded-2xl 
-                            border border-[color:var(--color-border)] 
-                            bg-[color:var(--color-card)]/85 backdrop-blur-xl 
-                            shadow-[0_20px_40px_rgba(0,0,0,0.5)] overflow-hidden 
-                            group hover:scale-105 active:scale-[0.98] transition-all"
+                            border border-gray-200/80
+                            bg-white/95 backdrop-blur-xl 
+                            shadow-[0_8px_30px_rgba(0,0,0,0.08)] 
+                            overflow-hidden 
+                            group hover:scale-105 hover:shadow-[0_12px_40px_rgba(0,0,0,0.12)]
+                            active:scale-[0.98] transition-all duration-300"
                   style={{ transformOrigin: "center", zIndex }}
                   animate={{ x, y }}
                   transition={{ type: "tween", ease: "linear", duration: 0.2 }}
@@ -181,10 +183,10 @@ export const Projects = () => {
                 >
                   <div className={`absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r ${colorClass}`} />
                   <div className="h-full w-full px-4 py-3.5 flex flex-col justify-between">
-                    <p className="text-[11px] md:text-[12px] font-semibold text-[color:var(--color-text)] line-clamp-2">
+                    <p className="text-[11px] md:text-[12px] font-semibold text-gray-800 line-clamp-2">
                       {project.title}
                     </p>
-                    <p className="text-[10px] md:text-[11px] text-[color:var(--color-muted)] line-clamp-2">
+                    <p className="text-[10px] md:text-[11px] text-gray-600 line-clamp-2">
                       {project.short_description}
                     </p>
                     <p className={`text-[10px] mt-1 font-semibold bg-gradient-to-r ${colorClass} bg-clip-text text-transparent`}>
@@ -195,7 +197,7 @@ export const Projects = () => {
               );
             })}
 
-            {/* PERFECTLY ALIGNED ACTIVE CARD */}
+            {/* ACTIVE CARD - LIGHT THEME premium styling */}
             {activeProject && (
               <div className="absolute top-1/2 -translate-y-8 flex flex-col items-center justify-center">
                 <motion.div
@@ -206,32 +208,33 @@ export const Projects = () => {
                   className={`relative w-[350px] h-[350px] md:w-[390px] md:h-[390px] 
                             rounded-full border-4 overflow-hidden backdrop-blur-xl 
                             flex flex-col items-center justify-center p-8
-                            bg-[color:var(--color-card)]/90 shadow-[0_40px_80px_rgba(0,0,0,0.6)] 
+                            bg-gradient-to-br from-white/98 to-gray-50/95
+                            shadow-[0_20px_60px_rgba(0,0,0,0.12)] 
                             ${getActiveBorderColor(activeIndex)}`}
                 >
-                  <div className="absolute inset-8 rounded-full bg-gradient-radial from-[color:var(--color-primary)]/10 to-transparent" />
+                  {/* Subtle radial gradient overlay */}
+                  <div className="absolute inset-8 rounded-full bg-gradient-radial from-gray-100/40 via-transparent to-transparent" />
 
                   <div className="relative z-10 w-full h-full flex flex-col items-center justify-center text-center space-y-4 px-4">
-                    {/* Title - Perfectly centered */}
-                    <h3 className="text-xl md:text-2xl font-bold text-[color:var(--color-text)] leading-tight w-full">
+                    {/* Title */}
+                    <h3 className="text-xl md:text-2xl font-bold text-gray-900 leading-tight w-full">
                       {activeProject.title}
                     </h3>
 
-                    {/* Description - Perfectly centered */}
-                    <p className="text-sm md:text-base text-[color:var(--color-muted)] leading-relaxed line-clamp-3 w-full px-2">
+                    {/* Description */}
+                    <p className="text-sm md:text-base text-gray-700 leading-relaxed line-clamp-3 w-full px-2">
                       {activeProject.short_description}
                     </p>
 
-                    {/* Tech stack - Perfectly centered */}
+                    {/* Tech stack - LIGHT THEME refined badges */}
                     {activeProject.tech_stack && activeProject.tech_stack.length > 0 && (
                       <div className="flex flex-wrap justify-center gap-1.5 w-full max-w-xs">
                         {activeProject.tech_stack.map((tech, i) => (
                           <span
                             key={`${tech}-${i}`}
-                            className="px-2.5 py-1 text-xs font-medium rounded-full 
-                                      bg-[color:var(--color-primary)]/15 
-                                      text-[color:var(--color-primary)] 
-                                      border border-[color:var(--color-primary)]/30 whitespace-nowrap"
+                            className={`px-2.5 py-1 text-xs font-medium rounded-full 
+                                      bg-gradient-to-r ${getColorClass(activeIndex)} 
+                                      text-white shadow-sm whitespace-nowrap`}
                           >
                             {tech}
                           </span>
@@ -239,54 +242,68 @@ export const Projects = () => {
                       </div>
                     )}
 
-                    {/* CENTERED BUTTONS - Single row, perfectly centered */}
-                    {/* CENTERED BUTTONS - "Get In Touch" Style */}
-<div className="flex flex-row gap-3 w-full justify-center max-w-xs">
-  {activeProject.github_link && (
-    <motion.a
-      href={activeProject.github_link}
-      target="_blank"
-      rel="noopener noreferrer"
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.98 }}
-      className="group relative px-6 py-3 text-sm font-semibold 
-                bg-transparent border-2 border-[color:var(--color-primary)] 
-                text-[color:var(--color-primary)] rounded-xl overflow-hidden 
-                transition-all hover:bg-[color:var(--color-primary)] hover:text-white"
-    >
-      <div className="absolute inset-0 bg-[color:var(--color-primary)] 
-                      transform translate-y-full group-hover:translate-y-0 
-                      transition-transform duration-300" />
-      <span className="relative z-10">More Details</span>
-    </motion.a>
-  )}
-  {activeProject.demo_link && (
-    <motion.a
-      href={activeProject.demo_link}
-      target="_blank"
-      rel="noopener noreferrer"
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.98 }}
-      className="group relative px-6 py-3 text-sm font-semibold 
-                bg-transparent border-2 border-[color:var(--color-primary)] 
-                text-[color:var(--color-primary)] rounded-xl overflow-hidden 
-                transition-all hover:bg-[color:var(--color-primary)] hover:text-white"
-    >
-      <div className="absolute inset-0 bg-[color:var(--color-primary)] 
-                      transform translate-y-full group-hover:translate-y-0 
-                      transition-transform duration-300" />
-      <span className="relative z-10">Live Demo</span>
-    </motion.a>
-  )}
-</div>
-
+                    {/* LIGHT THEME: Premium CTA buttons */}
+                    <div className="flex flex-row gap-3 w-full justify-center max-w-xs">
+                      {activeProject.github_link && (
+                        <motion.a
+                          href={activeProject.github_link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.98 }}
+                          className={`group relative px-6 py-3 text-sm font-semibold 
+                                    bg-transparent border-2 rounded-xl overflow-hidden 
+                                    transition-all duration-300
+                                    ${activeIndex === 0 ? 'border-[#2E7D99] text-[#2E7D99] hover:bg-[#2E7D99]' : ''}
+                                    ${activeIndex === 1 ? 'border-[#6366F1] text-[#6366F1] hover:bg-[#6366F1]' : ''}
+                                    ${activeIndex === 2 ? 'border-[#059669] text-[#059669] hover:bg-[#059669]' : ''}
+                                    ${activeIndex === 3 ? 'border-[#7C3AED] text-[#7C3AED] hover:bg-[#7C3AED]' : ''}
+                                    ${activeIndex === 4 ? 'border-[#DC2626] text-[#DC2626] hover:bg-[#DC2626]' : ''}
+                                    ${activeIndex === 5 ? 'border-[#0891B2] text-[#0891B2] hover:bg-[#0891B2]' : ''}
+                                    ${activeIndex === 6 ? 'border-[#4F46E5] text-[#4F46E5] hover:bg-[#4F46E5]' : ''}
+                                    ${activeIndex === 7 ? 'border-[#0D9488] text-[#0D9488] hover:bg-[#0D9488]' : ''}
+                                    hover:text-white hover:shadow-lg`}
+                        >
+                          <div className={`absolute inset-0 bg-gradient-to-r ${getColorClass(activeIndex)}
+                                        transform translate-y-full group-hover:translate-y-0 
+                                        transition-transform duration-300`} />
+                          <span className="relative z-10">More Details</span>
+                        </motion.a>
+                      )}
+                      {activeProject.demo_link && (
+                        <motion.a
+                          href={activeProject.demo_link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.98 }}
+                          className={`group relative px-6 py-3 text-sm font-semibold 
+                                    bg-transparent border-2 rounded-xl overflow-hidden 
+                                    transition-all duration-300
+                                    ${activeIndex === 0 ? 'border-[#2E7D99] text-[#2E7D99] hover:bg-[#2E7D99]' : ''}
+                                    ${activeIndex === 1 ? 'border-[#6366F1] text-[#6366F1] hover:bg-[#6366F1]' : ''}
+                                    ${activeIndex === 2 ? 'border-[#059669] text-[#059669] hover:bg-[#059669]' : ''}
+                                    ${activeIndex === 3 ? 'border-[#7C3AED] text-[#7C3AED] hover:bg-[#7C3AED]' : ''}
+                                    ${activeIndex === 4 ? 'border-[#DC2626] text-[#DC2626] hover:bg-[#DC2626]' : ''}
+                                    ${activeIndex === 5 ? 'border-[#0891B2] text-[#0891B2] hover:bg-[#0891B2]' : ''}
+                                    ${activeIndex === 6 ? 'border-[#4F46E5] text-[#4F46E5] hover:bg-[#4F46E5]' : ''}
+                                    ${activeIndex === 7 ? 'border-[#0D9488] text-[#0D9488] hover:bg-[#0D9488]' : ''}
+                                    hover:text-white hover:shadow-lg`}
+                        >
+                          <div className={`absolute inset-0 bg-gradient-to-r ${getColorClass(activeIndex)}
+                                        transform translate-y-full group-hover:translate-y-0 
+                                        transition-transform duration-300`} />
+                          <span className="relative z-10">Live Demo</span>
+                        </motion.a>
+                      )}
+                    </div>
                   </div>
                 </motion.div>
               </div>
             )}
           </div>
         ) : (
-          // Mobile layout unchanged
+          // Mobile layout - LIGHT THEME optimized
           <div className="mt-12 space-y-6 max-w-2xl mx-auto">
             {projects.map((project, index) => (
               <motion.div
@@ -299,19 +316,30 @@ export const Projects = () => {
                 className="group"
                 onClick={() => handleCardClick(index)}
               >
-                <div className="bg-[color:var(--color-card)]/90 backdrop-blur-xl rounded-3xl p-6 
-                               border border-[color:var(--color-border)] 
-                               shadow-2xl hover:shadow-3xl transition-all cursor-pointer">
+                <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-6 
+                               border border-gray-200/80
+                               shadow-[0_8px_30px_rgba(0,0,0,0.08)] 
+                               hover:shadow-[0_12px_40px_rgba(0,0,0,0.12)] 
+                               transition-all cursor-pointer">
                   <div className="flex items-start justify-between mb-3">
-                    <h3 className="text-lg font-bold text-[color:var(--color-text)] flex-1 pr-3">
+                    <h3 className="text-lg font-bold text-gray-900 flex-1 pr-3">
                       {project.title}
                     </h3>
                     {index === activeIndex && (
-                      <div className="w-2 h-2 rounded-full bg-[color:var(--color-primary)] animate-pulse" />
+                      <div className={`w-2 h-2 rounded-full animate-pulse
+                                    ${index === 0 ? 'bg-[#2E7D99]' : ''}
+                                    ${index === 1 ? 'bg-[#6366F1]' : ''}
+                                    ${index === 2 ? 'bg-[#059669]' : ''}
+                                    ${index === 3 ? 'bg-[#7C3AED]' : ''}
+                                    ${index === 4 ? 'bg-[#DC2626]' : ''}
+                                    ${index === 5 ? 'bg-[#0891B2]' : ''}
+                                    ${index === 6 ? 'bg-[#4F46E5]' : ''}
+                                    ${index === 7 ? 'bg-[#0D9488]' : ''}`} 
+                      />
                     )}
                   </div>
                   
-                  <p className="text-sm text-[color:var(--color-muted)] mb-4 leading-relaxed">
+                  <p className="text-sm text-gray-700 mb-4 leading-relaxed">
                     {project.short_description}
                   </p>
 
@@ -319,10 +347,8 @@ export const Projects = () => {
                     {project.tech_stack?.map((tech, i) => (
                       <span
                         key={`${tech}-${i}`}
-                        className="px-2 py-0.5 text-xs font-medium rounded-full 
-                                  bg-[color:var(--color-primary)]/15 
-                                  text-[color:var(--color-primary)] 
-                                  border border-[color:var(--color-primary)]/30"
+                        className={`px-2 py-0.5 text-xs font-medium rounded-full text-white shadow-sm
+                                  bg-gradient-to-r ${getColorClass(index)}`}
                       >
                         {tech}
                       </span>
@@ -335,10 +361,16 @@ export const Projects = () => {
                         href={project.github_link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-3 py-1.5 text-xs font-semibold rounded-lg 
-                                  bg-[color:var(--color-primary-soft)] 
-                                  text-[color:var(--color-primary)] 
-                                  border border-[color:var(--color-primary)]/40"
+                        className={`px-3 py-1.5 text-xs font-semibold rounded-lg 
+                                  border transition-colors
+                                  ${index === 0 ? 'border-[#2E7D99]/40 bg-[#2E7D99]/10 text-[#2E7D99] hover:bg-[#2E7D99]/20' : ''}
+                                  ${index === 1 ? 'border-[#6366F1]/40 bg-[#6366F1]/10 text-[#6366F1] hover:bg-[#6366F1]/20' : ''}
+                                  ${index === 2 ? 'border-[#059669]/40 bg-[#059669]/10 text-[#059669] hover:bg-[#059669]/20' : ''}
+                                  ${index === 3 ? 'border-[#7C3AED]/40 bg-[#7C3AED]/10 text-[#7C3AED] hover:bg-[#7C3AED]/20' : ''}
+                                  ${index === 4 ? 'border-[#DC2626]/40 bg-[#DC2626]/10 text-[#DC2626] hover:bg-[#DC2626]/20' : ''}
+                                  ${index === 5 ? 'border-[#0891B2]/40 bg-[#0891B2]/10 text-[#0891B2] hover:bg-[#0891B2]/20' : ''}
+                                  ${index === 6 ? 'border-[#4F46E5]/40 bg-[#4F46E5]/10 text-[#4F46E5] hover:bg-[#4F46E5]/20' : ''}
+                                  ${index === 7 ? 'border-[#0D9488]/40 bg-[#0D9488]/10 text-[#0D9488] hover:bg-[#0D9488]/20' : ''}`}
                       >
                         GitHub
                       </a>
@@ -348,9 +380,9 @@ export const Projects = () => {
                         href={project.demo_link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-3 py-1.5 text-xs font-semibold rounded-lg 
-                                  bg-gradient-to-r from-[color:var(--color-primary)] 
-                                  text-[color:var(--color-bg)] shadow-md"
+                        className={`px-3 py-1.5 text-xs font-semibold rounded-lg 
+                                  text-white shadow-md hover:shadow-lg transition-all
+                                  bg-gradient-to-r ${getColorClass(index)}`}
                       >
                         Demo
                       </a>
