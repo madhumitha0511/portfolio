@@ -7,6 +7,25 @@ const Extracurricular = () => {
   const [items, setItems] = useState([]);
   const [index, setIndex] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
+  const [isDark, setIsDark] = useState(false);
+
+  // Detect theme
+  useEffect(() => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    setIsDark(currentTheme === 'dark');
+
+    const observer = new MutationObserver(() => {
+      const theme = document.documentElement.getAttribute('data-theme');
+      setIsDark(theme === 'dark');
+    });
+    
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme']
+    });
+    
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const load = async () => {
@@ -64,7 +83,7 @@ const Extracurricular = () => {
     >
       {/* Content - positioned above background */}
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* HEADER SECTION - UNCHANGED */}
+        {/* HEADER SECTION */}
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -76,7 +95,10 @@ const Extracurricular = () => {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="inline-block px-4 py-2 rounded-full bg-[color:var(--color-primary-soft)] border border-[color:var(--color-primary)]/40 text-[11px] font-bold uppercase tracking-[0.18em] text-[color:var(--color-primary)] mb-4 backdrop-blur-sm"
+            className={isDark
+              ? "inline-block px-4 py-2 rounded-full bg-[color:var(--color-primary-soft)] border border-[color:var(--color-primary)]/40 text-[11px] font-bold uppercase tracking-[0.18em] text-[color:var(--color-primary)] mb-4 backdrop-blur-sm"
+              : "inline-block px-4 py-2 rounded-full bg-[color:var(--color-primary)]/10 border border-[color:var(--color-primary)]/30 text-[11px] font-bold uppercase tracking-[0.18em] text-[color:var(--color-primary)] mb-4 backdrop-blur-sm"
+            }
           >
             ✦ Leadership & Impact
           </motion.span>
@@ -95,7 +117,7 @@ const Extracurricular = () => {
           {/* Carousel Container */}
           <div className="w-full flex justify-center items-center relative h-[480px] md:h-[540px]">
             
-            {/* ✅ MOBILE CARD (Hidden on Desktop) */}
+            {/* ✅ MOBILE CARD */}
             <div className="lg:hidden w-full max-w-sm mx-auto relative">
               <AnimatePresence mode="wait">
                 {main && (
@@ -110,15 +132,24 @@ const Extracurricular = () => {
                     onHoverEnd={() => setAutoPlay(true)}
                   >
                     {/* Solid background */}
-                    <div className="absolute inset-0 bg-[color:var(--color-primary-soft)] -z-10" />
+                    <div className={isDark
+                      ? "absolute inset-0 bg-[color:var(--color-primary-soft)] -z-10"
+                      : "absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50 -z-10"
+                    } />
 
                     {/* Premium glow border */}
                     <motion.div
-                      animate={{
+                      animate={isDark ? {
                         boxShadow: [
                           "inset 0 0 40px rgba(140,29,24,0.15), 0 0 0 1px rgba(140,29,24,0.3)",
                           "inset 0 0 60px rgba(140,29,24,0.25), 0 0 0 2px rgba(140,29,24,0.4)",
                           "inset 0 0 40px rgba(140,29,24,0.15), 0 0 0 1px rgba(140,29,24,0.3)",
+                        ],
+                      } : {
+                        boxShadow: [
+                          "inset 0 0 30px rgba(59,130,246,0.1), 0 0 0 1px rgba(59,130,246,0.2)",
+                          "inset 0 0 50px rgba(59,130,246,0.15), 0 0 0 2px rgba(59,130,246,0.3)",
+                          "inset 0 0 30px rgba(59,130,246,0.1), 0 0 0 1px rgba(59,130,246,0.2)",
                         ],
                       }}
                       transition={{ duration: 5, repeat: Infinity }}
@@ -132,7 +163,10 @@ const Extracurricular = () => {
                         initial={{ y: -15, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.25 }}
-                        className="self-center mb-4 px-4 py-1.5 rounded-full bg-[color:var(--color-card)]/90 backdrop-blur-md border border-[color:var(--color-border)] text-[10px] font-extrabold uppercase tracking-[0.18em] text-[color:var(--color-muted)] shadow-soft"
+                        className={isDark
+                          ? "self-center mb-4 px-4 py-1.5 rounded-full bg-[color:var(--color-card)]/90 backdrop-blur-md border border-[color:var(--color-border)] text-[10px] font-extrabold uppercase tracking-[0.18em] text-[color:var(--color-muted)] shadow-soft"
+                          : "self-center mb-4 px-4 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-[color:var(--color-border)] text-[10px] font-extrabold uppercase tracking-[0.18em] text-[color:var(--color-primary)] shadow-soft"
+                        }
                       >
                         {main.start_date?.slice(0, 4) || "Active"}
                       </motion.div>
@@ -158,12 +192,18 @@ const Extracurricular = () => {
                               repeat: Infinity,
                               ease: "linear",
                             }}
-                            className="absolute inset-0 rounded-full border-2 border-transparent border-t-[color:var(--color-primary)]/40 border-r-[color:var(--color-primary)]/20 w-32 h-32" // BIGGER: w-32 h-32
+                            className={isDark
+                              ? "absolute inset-0 rounded-full border-2 border-transparent border-t-[color:var(--color-primary)]/40 border-r-[color:var(--color-primary)]/20 w-32 h-32"
+                              : "absolute inset-0 rounded-full border-2 border-transparent border-t-[color:var(--color-primary)]/50 border-r-[color:var(--color-primary)]/30 w-32 h-32"
+                            }
                           />
 
                           {/* Main circle - BIGGER */}
-                          <div className="w-28 h-28 rounded-full border-[3px] border-[color:var(--color-text)]/15 flex items-center justify-center bg-[color:var(--color-bg)] shadow-soft"> {/* BIGGER: w-28 h-28 */}
-                            <span className="text-center text-base font-bold text-[color:var(--color-primary)] px-2 leading-tight"> {/* BIGGER text */}
+                          <div className={isDark
+                            ? "w-28 h-28 rounded-full border-[3px] border-[color:var(--color-text)]/15 flex items-center justify-center bg-[color:var(--color-bg)] shadow-soft"
+                            : "w-28 h-28 rounded-full border-[3px] border-[color:var(--color-primary)]/20 flex items-center justify-center bg-white shadow-elevated"
+                          }>
+                            <span className="text-center text-base font-bold text-[color:var(--color-primary)] px-2 leading-tight">
                               {main.organization_name
                                 ?.split(" ")
                                 .slice(0, 2)
@@ -197,7 +237,10 @@ const Extracurricular = () => {
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ delay: 0.4 }}
-                          className="text-[9px] font-extrabold uppercase tracking-[0.15em] text-[color:var(--color-text)]"
+                          className={isDark
+                            ? "text-[9px] font-extrabold uppercase tracking-[0.15em] text-[color:var(--color-text)]"
+                            : "text-[9px] font-extrabold uppercase tracking-[0.15em] text-[color:var(--color-primary)]"
+                          }
                         >
                           {main.position || "Contributor"}
                         </motion.p>
@@ -209,7 +252,10 @@ const Extracurricular = () => {
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.95 }}
                           onClick={goPrev}
-                          className="w-10 h-10 rounded-full bg-[color:var(--color-card)]/90 backdrop-blur-md border border-[color:var(--color-border)] text-[color:var(--color-text)] flex items-center justify-center shadow-soft text-lg"
+                          className={isDark
+                            ? "w-10 h-10 rounded-full bg-[color:var(--color-card)]/90 backdrop-blur-md border border-[color:var(--color-border)] text-[color:var(--color-text)] flex items-center justify-center shadow-soft text-lg"
+                            : "w-10 h-10 rounded-full bg-white/90 backdrop-blur-md border border-[color:var(--color-border)] text-[color:var(--color-text)] flex items-center justify-center shadow-soft hover:shadow-elevated transition-all text-lg"
+                          }
                         >
                           ‹
                         </motion.button>
@@ -217,7 +263,10 @@ const Extracurricular = () => {
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.95 }}
                           onClick={goNext}
-                          className="w-10 h-10 rounded-full bg-[color:var(--color-card)]/90 backdrop-blur-md border border-[color:var(--color-border)] text-[color:var(--color-text)] flex items-center justify-center shadow-soft text-lg"
+                          className={isDark
+                            ? "w-10 h-10 rounded-full bg-[color:var(--color-card)]/90 backdrop-blur-md border border-[color:var(--color-border)] text-[color:var(--color-text)] flex items-center justify-center shadow-soft text-lg"
+                            : "w-10 h-10 rounded-full bg-white/90 backdrop-blur-md border border-[color:var(--color-border)] text-[color:var(--color-text)] flex items-center justify-center shadow-soft hover:shadow-elevated transition-all text-lg"
+                          }
                         >
                           ›
                         </motion.button>
@@ -228,8 +277,8 @@ const Extracurricular = () => {
               </AnimatePresence>
             </div>
 
-            {/* ✅ DESKTOP 3-CARD CAROUSEL (100% UNCHANGED) */}
-            {/* Left Card - UNCHANGED */}
+            {/* ✅ DESKTOP 3-CARD CAROUSEL */}
+            {/* Left Card */}
             {left && (
               <motion.div
                 initial={{ opacity: 0, x: -100, scale: 0.65 }}
@@ -240,10 +289,19 @@ const Extracurricular = () => {
                 onClick={goPrev}
                 whileHover={{ scale: 1.05 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-[color:var(--color-primary-soft)]/30 via-[color:var(--color-card)]/50 to-[color:var(--color-bg)]/70 backdrop-blur-xl" />
-                <div className="absolute inset-0 border border-[color:var(--color-primary)]/30 rounded-2xl" />
+                <div className={isDark
+                  ? "absolute inset-0 bg-gradient-to-br from-[color:var(--color-primary-soft)]/30 via-[color:var(--color-card)]/50 to-[color:var(--color-bg)]/70 backdrop-blur-xl"
+                  : "absolute inset-0 bg-gradient-to-br from-blue-50/70 via-white/80 to-purple-50/70 backdrop-blur-xl"
+                } />
+                <div className={isDark
+                  ? "absolute inset-0 border border-[color:var(--color-primary)]/30 rounded-2xl"
+                  : "absolute inset-0 border border-[color:var(--color-primary)]/20 rounded-2xl"
+                } />
                 <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-5 py-8 text-center space-y-4">
-                  <div className="w-12 h-12 rounded-full bg-[color:var(--color-primary)]/20 flex items-center justify-center border border-[color:var(--color-primary)]/40">
+                  <div className={isDark
+                    ? "w-12 h-12 rounded-full bg-[color:var(--color-primary)]/20 flex items-center justify-center border border-[color:var(--color-primary)]/40"
+                    : "w-12 h-12 rounded-full bg-[color:var(--color-primary)]/10 flex items-center justify-center border border-[color:var(--color-primary)]/30"
+                  }>
                     <span className="text-[18px]">←</span>
                   </div>
                   <div className="space-y-2">
@@ -261,7 +319,7 @@ const Extracurricular = () => {
               </motion.div>
             )}
 
-            {/* Desktop Main Card - UNCHANGED */}
+            {/* Desktop Main Card */}
             <AnimatePresence mode="wait">
               {main && (
                 <motion.article
@@ -274,13 +332,22 @@ const Extracurricular = () => {
                   onHoverStart={() => setAutoPlay(false)}
                   onHoverEnd={() => setAutoPlay(true)}
                 >
-                  <div className="absolute inset-0 bg-[color:var(--color-primary-soft)] -z-10" />
+                  <div className={isDark
+                    ? "absolute inset-0 bg-[color:var(--color-primary-soft)] -z-10"
+                    : "absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50 -z-10"
+                  } />
                   <motion.div
-                    animate={{
+                    animate={isDark ? {
                       boxShadow: [
                         "inset 0 0 40px rgba(140,29,24,0.15), 0 0 0 1px rgba(140,29,24,0.3)",
                         "inset 0 0 60px rgba(140,29,24,0.25), 0 0 0 2px rgba(140,29,24,0.4)",
                         "inset 0 0 40px rgba(140,29,24,0.15), 0 0 0 1px rgba(140,29,24,0.3)",
+                      ],
+                    } : {
+                      boxShadow: [
+                        "inset 0 0 30px rgba(59,130,246,0.1), 0 0 0 1px rgba(59,130,246,0.2)",
+                        "inset 0 0 50px rgba(59,130,246,0.15), 0 0 0 2px rgba(59,130,246,0.3)",
+                        "inset 0 0 30px rgba(59,130,246,0.1), 0 0 0 1px rgba(59,130,246,0.2)",
                       ],
                     }}
                     transition={{ duration: 5, repeat: Infinity }}
@@ -291,7 +358,10 @@ const Extracurricular = () => {
                       initial={{ y: -15, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ delay: 0.25 }}
-                      className="self-center mt-5 px-5 py-1.5 rounded-full bg-[color:var(--color-card)]/90 backdrop-blur-md border border-[color:var(--color-border)] text-[9px] font-extrabold uppercase tracking-[0.2em] text-[color:var(--color-muted)] shadow-soft"
+                      className={isDark
+                        ? "self-center mt-5 px-5 py-1.5 rounded-full bg-[color:var(--color-card)]/90 backdrop-blur-md border border-[color:var(--color-border)] text-[9px] font-extrabold uppercase tracking-[0.2em] text-[color:var(--color-muted)] shadow-soft"
+                        : "self-center mt-5 px-5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-[color:var(--color-border)] text-[9px] font-extrabold uppercase tracking-[0.2em] text-[color:var(--color-primary)] shadow-soft"
+                      }
                     >
                       {main.start_date?.slice(0, 4) || "Active"}
                     </motion.div>
@@ -314,9 +384,15 @@ const Extracurricular = () => {
                             repeat: Infinity,
                             ease: "linear",
                           }}
-                          className="absolute inset-0 rounded-full border-2 border-transparent border-t-[color:var(--color-primary)]/40 border-r-[color:var(--color-primary)]/20 w-32 h-32"
+                          className={isDark
+                            ? "absolute inset-0 rounded-full border-2 border-transparent border-t-[color:var(--color-primary)]/40 border-r-[color:var(--color-primary)]/20 w-32 h-32"
+                            : "absolute inset-0 rounded-full border-2 border-transparent border-t-[color:var(--color-primary)]/50 border-r-[color:var(--color-primary)]/30 w-32 h-32"
+                          }
                         />
-                        <div className="w-28 h-28 rounded-full border-[3px] border-[color:var(--color-text)]/15 flex items-center justify-center bg-[color:var(--color-bg)] shadow-soft">
+                        <div className={isDark
+                          ? "w-28 h-28 rounded-full border-[3px] border-[color:var(--color-text)]/15 flex items-center justify-center bg-[color:var(--color-bg)] shadow-soft"
+                          : "w-28 h-28 rounded-full border-[3px] border-[color:var(--color-primary)]/20 flex items-center justify-center bg-white shadow-elevated"
+                        }>
                           <span className="text-center text-[12px] font-bold text-[color:var(--color-primary)] px-3 leading-tight">
                             {main.organization_name
                               ?.split(" ")
@@ -347,7 +423,10 @@ const Extracurricular = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.4 }}
-                        className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[color:var(--color-text)]"
+                        className={isDark
+                          ? "text-[10px] font-extrabold uppercase tracking-[0.2em] text-[color:var(--color-text)]"
+                          : "text-[10px] font-extrabold uppercase tracking-[0.2em] text-[color:var(--color-primary)]"
+                        }
                       >
                         {main.position || "Contributor"}
                       </motion.p>
@@ -357,7 +436,7 @@ const Extracurricular = () => {
               )}
             </AnimatePresence>
 
-            {/* Right Card - UNCHANGED */}
+            {/* Right Card */}
             {right && (
               <motion.div
                 initial={{ opacity: 0, x: 100, scale: 0.65 }}
@@ -368,10 +447,19 @@ const Extracurricular = () => {
                 onClick={goNext}
                 whileHover={{ scale: 1.05 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-[color:var(--color-primary-soft)]/30 via-[color:var(--color-card)]/50 to-[color:var(--color-bg)]/70 backdrop-blur-xl" />
-                <div className="absolute inset-0 border border-[color:var(--color-primary)]/30 rounded-2xl" />
+                <div className={isDark
+                  ? "absolute inset-0 bg-gradient-to-br from-[color:var(--color-primary-soft)]/30 via-[color:var(--color-card)]/50 to-[color:var(--color-bg)]/70 backdrop-blur-xl"
+                  : "absolute inset-0 bg-gradient-to-br from-blue-50/70 via-white/80 to-purple-50/70 backdrop-blur-xl"
+                } />
+                <div className={isDark
+                  ? "absolute inset-0 border border-[color:var(--color-primary)]/30 rounded-2xl"
+                  : "absolute inset-0 border border-[color:var(--color-primary)]/20 rounded-2xl"
+                } />
                 <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-5 py-8 text-center space-y-4">
-                  <div className="w-12 h-12 rounded-full bg-[color:var(--color-primary)]/20 flex items-center justify-center border border-[color:var(--color-primary)]/40">
+                  <div className={isDark
+                    ? "w-12 h-12 rounded-full bg-[color:var(--color-primary)]/20 flex items-center justify-center border border-[color:var(--color-primary)]/40"
+                    : "w-12 h-12 rounded-full bg-[color:var(--color-primary)]/10 flex items-center justify-center border border-[color:var(--color-primary)]/30"
+                  }>
                     <span className="text-[18px]">→</span>
                   </div>
                   <div className="space-y-2">
@@ -391,7 +479,7 @@ const Extracurricular = () => {
           </div>
         </div>
 
-        {/* Progress Dots - UNCHANGED */}
+        {/* Progress Dots */}
         <div className="flex justify-center items-center gap-4 mt-14">
           <div className="flex gap-3">
             {items.map((item, i) => (
