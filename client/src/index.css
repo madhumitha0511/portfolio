@@ -120,6 +120,8 @@
 /* 🌑 DARK MODE — Vecna / Upside Down */
 :root[data-theme="dark"] {
   /* Surfaces */
+
+  
   --color-bg: #050507;
   --color-bg-elevated: #0B0B0F;
   --color-card: rgba(18, 10, 12, 0.92);
