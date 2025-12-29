@@ -57,20 +57,20 @@ const Hero = () => {
         className="hidden lg:block absolute right-0 translate-y-1/2 w-[600px] h-[600px] md:w-[800px] md:h-[800px] rounded-full bg-gradient-to-br from-[color:var(--color-primary)]/20 to-[color:var(--color-primary)]/5 blur-3xl"
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 grid lg:grid-cols-2 gap-12 items-center relative z-10">
         {/* LEFT SIDE - Text Content */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
-          className="space-y-4 md:space-y-6 text-center lg:text-left"
+          className="space-y-6"
         >
           {/* Role/Tag */}
           <motion.span
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="inline-block text-xs md:text-sm font-semibold uppercase tracking-wider text-[color:var(--color-primary)]"
+            className="inline-block text-sm font-semibold uppercase tracking-wider text-[color:var(--color-primary)]"
           >
             {hero.subtitle || "Software Developer"}
           </motion.span>
@@ -80,7 +80,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-[color:var(--color-text)]"
+            className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-[color:var(--color-text)]"
           >
             Hello, my name is <br />
             <span className="text-[color:var(--color-primary)]">{owner.first_name} {owner.last_name}</span>
@@ -91,7 +91,7 @@ const Hero = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="text-base md:text-lg lg:text-xl text-[color:var(--color-muted)] leading-relaxed max-w-lg mx-auto lg:mx-0"
+            className="text-lg md:text-xl text-[color:var(--color-muted)] leading-relaxed max-w-lg"
           >
             {owner.bio || hero.title}
           </motion.p>
@@ -101,8 +101,9 @@ const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="flex flex-wrap gap-4 pt-4 justify-center lg:justify-start"
+            className="flex flex-wrap gap-4 pt-4"
           >
+           
           </motion.div>
 
           {/* Icon Buttons Row */}
@@ -110,7 +111,7 @@ const Hero = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="flex gap-3 md:gap-4 pt-2 justify-center lg:justify-start"
+            className="flex gap-4 pt-2"
           >
             {/* Resume Download */}
             {owner.resume_url && (
@@ -120,8 +121,8 @@ const Hero = () => {
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 whileTap={{ scale: 0.9 }}
                 className={isDark
-                  ? "w-11 h-11 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] transition-all"
-                  : "w-11 h-11 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] hover:shadow-elevated transition-all"
+                  ? "w-12 h-12 flex items-center justify-center rounded-full bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] transition-all"
+                  : "w-12 h-12 flex items-center justify-center rounded-full bg-white border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] hover:shadow-elevated transition-all"
                 }
                 title="Download Resume"
               >
@@ -138,8 +139,8 @@ const Hero = () => {
                 whileHover={{ scale: 1.1, rotate: -5 }}
                 whileTap={{ scale: 0.9 }}
                 className={isDark
-                  ? "w-11 h-11 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] transition-all"
-                  : "w-11 h-11 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] hover:shadow-elevated transition-all"
+                  ? "w-12 h-12 flex items-center justify-center rounded-full bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] transition-all"
+                  : "w-12 h-12 flex items-center justify-center rounded-full bg-white border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] hover:shadow-elevated transition-all"
                 }
                 title="Send Email"
               >
@@ -158,8 +159,8 @@ const Hero = () => {
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 whileTap={{ scale: 0.9 }}
                 className={isDark
-                  ? "w-11 h-11 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] transition-all"
-                  : "w-11 h-11 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] hover:shadow-elevated transition-all"
+                  ? "w-12 h-12 flex items-center justify-center rounded-full bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] transition-all"
+                  : "w-12 h-12 flex items-center justify-center rounded-full bg-white border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] hover:shadow-elevated transition-all"
                 }
                 title="LinkedIn Profile"
               >
@@ -178,8 +179,8 @@ const Hero = () => {
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 whileTap={{ scale: 0.9 }}
                 className={isDark
-                  ? "w-11 h-11 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] transition-all"
-                  : "w-11 h-11 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] hover:shadow-elevated transition-all"
+                  ? "w-12 h-12 flex items-center justify-center rounded-full bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] transition-all"
+                  : "w-12 h-12 flex items-center justify-center rounded-full bg-white border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] hover:shadow-elevated transition-all"
                 }
                 title="GitHub Profile"
               >
@@ -191,19 +192,19 @@ const Hero = () => {
           </motion.div>
         </motion.div>
 
-        {/* RIGHT SIDE - Image with Organic Blob Background */}
+        {/* RIGHT SIDE - Image with Organic Blob Background - HIDDEN ON MOBILE */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative flex justify-center lg:justify-end items-center h-[400px] sm:h-[500px] lg:h-[600px]"
+          className="hidden lg:flex relative justify-center lg:justify-end items-center h-[600px]"
         >
-          {/* Large Organic Blob Background - HIDDEN ON MOBILE */}
+          {/* Large Organic Blob Background - Same Size as Image Container */}
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1.5, ease: "easeOut" }}
-            className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 w-[450px] h-[450px] md:w-[550px] md:h-[550px]"
+            className="absolute right-0 top-1/2 -translate-y-1/2 w-[450px] h-[450px] md:w-[550px] md:h-[550px]"
             style={{
               backgroundImage:
                 "linear-gradient(to bottom right, var(--hero-blob-from), var(--hero-blob-to))",
@@ -214,7 +215,7 @@ const Hero = () => {
           {/* Profile Image - Positioned Inside Blob */}
           <motion.div
             whileHover={{ scale: 1.02 }}
-            className="relative z-10 w-full max-w-[300px] sm:max-w-[400px] md:max-w-[450px] lg:max-w-[550px]"
+            className="relative z-10 w-full max-w-[450px] md:max-w-[550px]"
           >
             <img
               src="/profile-1.png"
