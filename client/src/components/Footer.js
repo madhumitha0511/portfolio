@@ -19,7 +19,7 @@ export const Footer = () => {
   }, []);
 
   return (
-    <footer className="py-5 px-4 relative overflow-hidden">
+    <footer className="py-3 px-4 relative overflow-hidden">
       {/* Subtle divider */}
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color:var(--color-border)] to-transparent" />
 
