@@ -108,9 +108,7 @@ const Education = () => {
           >
             ✦ Academic Records
           </motion.span>
-          <h2 className="text-4xl md:text-5xl font-bold mb-3 text-[color:var(--color-text)]">
-            Education
-          </h2>
+          
           <p className="text-sm md:text-base text-[color:var(--color-muted)] max-w-2xl mx-auto">
             Structured learning experience showcasing academic excellence and specialization in engineering and AI.
           </p>
@@ -278,14 +276,7 @@ const Education = () => {
           )}
         </motion.div>
 
-        {/* FOOTER NOTE - UNCHANGED */}
-        {items.length > 0 && (
-          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center mt-8">
-            <p className="text-xs lg:text-sm text-[color:var(--color-muted)] uppercase tracking-[0.12em] font-semibold">
-              Click any row to view details
-            </p>
-          </motion.div>
-        )}
+      
       </div>
     </section>
   );

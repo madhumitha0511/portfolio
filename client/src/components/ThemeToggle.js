@@ -5,12 +5,17 @@ const ThemeToggle = () => {
   const [theme, setTheme] = useState("dark");
 
   useEffect(() => {
-    const stored =
-      localStorage.getItem("theme") ||
-      document.documentElement.getAttribute("data-theme") ||
-      "light";
-    setTheme(stored);
-    document.documentElement.setAttribute("data-theme", stored);
+    // Check localStorage first, if not found default to "dark"
+    const stored = localStorage.getItem("theme");
+    const defaultTheme = stored || "dark";
+    
+    setTheme(defaultTheme);
+    document.documentElement.setAttribute("data-theme", defaultTheme);
+    
+    // Save to localStorage if it was the first visit
+    if (!stored) {
+      localStorage.setItem("theme", "dark");
+    }
   }, []);
 
   const toggle = () => {
