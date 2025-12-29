@@ -57,6 +57,25 @@ const TypingText = ({ text, className, speed = 18 }) => {
 
 const Education = () => {
   const [items, setItems] = useState([]);
+  const [isDark, setIsDark] = useState(false);
+
+  // Detect theme
+  useEffect(() => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    setIsDark(currentTheme === 'dark');
+
+    const observer = new MutationObserver(() => {
+      const theme = document.documentElement.getAttribute('data-theme');
+      setIsDark(theme === 'dark');
+    });
+    
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme']
+    });
+    
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const load = async () => {
@@ -103,15 +122,25 @@ const Education = () => {
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.7, ease: "easeOut" }}
-          className="relative backdrop-blur-xl rounded-3xl overflow-hidden border border-[color:var(--color-border)] shadow-elevated"
-          style={{
+          className={isDark 
+            ? "relative backdrop-blur-xl rounded-3xl overflow-hidden border border-[color:var(--color-border)] shadow-elevated"
+            : "relative backdrop-blur-xl rounded-3xl overflow-hidden border border-[color:var(--color-border)] shadow-soft hover:shadow-elevated transition-shadow"
+          }
+          style={isDark ? {
             background: "rgba(10, 10, 15, 0.4)",
+            backdropFilter: "blur(25px)",
+            WebkitBackdropFilter: "blur(25px)",
+          } : {
+            background: "rgba(255, 255, 255, 0.7)",
             backdropFilter: "blur(25px)",
             WebkitBackdropFilter: "blur(25px)",
           }}
         >
-          {/* ✅ DESKTOP TABLE HEADER - 100% ORIGINAL */}
-          <div className="relative z-10 grid grid-cols-10 gap-0 px-6 md:px-8 py-6 border-b border-[color:var(--color-border)] bg-[color:var(--color-bg-elevated)]/80 backdrop-blur-sm hidden lg:grid">
+          {/* ✅ DESKTOP TABLE HEADER */}
+          <div className={isDark
+            ? "relative z-10 grid grid-cols-10 gap-0 px-6 md:px-8 py-6 border-b border-[color:var(--color-border)] bg-[color:var(--color-bg-elevated)]/80 backdrop-blur-sm hidden lg:grid"
+            : "relative z-10 grid grid-cols-10 gap-0 px-6 md:px-8 py-6 border-b border-[color:var(--color-border)] bg-[color:var(--color-bg-elevated)]/50 backdrop-blur-sm hidden lg:grid"
+          }>
             <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.1 }} className="col-span-3 text-xs md:text-sm font-extrabold uppercase tracking-[0.15em] text-[color:var(--color-primary)]">
               Degree
             </motion.div>
@@ -139,14 +168,20 @@ const Education = () => {
                 <motion.div
                   key={item.id || idx}
                   variants={rowVariants}
-                  whileHover={{
+                  whileHover={isDark ? {
                     backgroundColor: "rgba(255, 255, 255, 0.05)",
+                    transition: { duration: 0.2 },
+                  } : {
+                    backgroundColor: "rgba(31, 58, 138, 0.04)",
                     transition: { duration: 0.2 },
                   }}
                   className="group/row"
                 >
                   {/* ✅ MOBILE CARD (Hidden on Desktop) */}
-                  <div className="lg:hidden px-6 py-5 border-b border-[color:var(--color-border)]/50 hover:bg-[color:var(--color-bg-elevated)]/30 transition-all duration-300">
+                  <div className={isDark
+                    ? "lg:hidden px-6 py-5 border-b border-[color:var(--color-border)]/50 hover:bg-[color:var(--color-bg-elevated)]/30 transition-all duration-300"
+                    : "lg:hidden px-6 py-5 border-b border-[color:var(--color-border)]/50 hover:bg-[color:var(--color-bg-elevated)]/20 transition-all duration-300"
+                  }>
                     <div className="flex items-start gap-4 mb-3">
                       <div className="w-12 h-12 rounded-xl backdrop-blur-md border border-[color:var(--color-primary)]/40 bg-[color:var(--color-primary)]/10 flex-shrink-0 flex items-center justify-center mt-1">
                         {item.institution_logo_url ? (
@@ -185,9 +220,9 @@ const Education = () => {
                     </div>
                   </div>
 
-                  {/* ✅ DESKTOP TABLE ROW - 100% ORIGINAL */}
+                  {/* ✅ DESKTOP TABLE ROW */}
                   <div className="hidden lg:grid lg:grid-cols-10 lg:gap-0 lg:px-6 lg:px-8 lg:py-5 lg:py-6 lg:items-center lg:transition-colors lg:duration-200 lg:backdrop-blur-sm lg:hover:border-[color:var(--color-primary)]/50 grid-cols-10 gap-0 px-6 py-5 items-center transition-colors duration-200">
-                    {/* Degree Column - ORIGINAL */}
+                    {/* Degree Column */}
                     <motion.div variants={cellVariants} className="col-span-3 flex items-center gap-3">
                       <div className="hidden lg:flex w-10 h-10 rounded-lg backdrop-blur-md border border-[color:var(--color-primary)]/35 bg-[color:var(--color-primary)]/10 overflow-hidden flex-shrink-0">
                         {item.institution_logo_url ? (
@@ -204,7 +239,7 @@ const Education = () => {
                       </div>
                     </motion.div>
 
-                    {/* Institution Column - ORIGINAL */}
+                    {/* Institution Column */}
                     <motion.div variants={cellVariants} className="col-span-4">
                       <TypingText text={item.institution_name} className="text-[10px] lg:text-xs font-semibold text-[color:var(--color-text)] line-clamp-2" speed={14} />
                       {item.location && (
@@ -212,7 +247,7 @@ const Education = () => {
                       )}
                     </motion.div>
 
-                    {/* Year Column - ORIGINAL */}
+                    {/* Year Column */}
                     <motion.div variants={cellVariants} className="col-span-2">
                       <div className="inline-flex items-center gap-1 px-2 py-1.5 rounded-lg backdrop-blur-sm bg-[color:var(--color-primary)]/12 border border-[color:var(--color-primary)]/35">
                         <span className="text-[9px] lg:text-xs font-bold text-[color:var(--color-primary)]">{item.start_date?.slice(0, 4)}</span>
@@ -221,7 +256,7 @@ const Education = () => {
                       </div>
                     </motion.div>
 
-                    {/* CGPA Column - ORIGINAL */}
+                    {/* CGPA Column */}
                     <motion.div variants={cellVariants} className="col-span-1">
                       {item.gpa ? (
                         <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full backdrop-blur-sm bg-gradient-to-r from-[color:var(--color-primary)]/15 to-[color:var(--color-primary)]/5 border border-[color:var(--color-primary)]/45">
