@@ -23,7 +23,7 @@ export const Footer = () => {
       {/* Subtle divider */}
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color:var(--color-border)] to-transparent" />
 
-      <div className="max-w-6xl mx-auto relative z-10">
+      <div className="max-w-4xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -32,21 +32,21 @@ export const Footer = () => {
           className="text-center"
         >
           {/* MOBILE-OPTIMIZED LAYOUT */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 sm:gap-8 text-xs text-[color:var(--color-muted)]">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6 text-xs text-[color:var(--color-muted)]">
             {/* Tech Stack - CENTERED ON MOBILE, RIGHT ON DESKTOP */}
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
-              className="flex items-center justify-center sm:justify-start gap-1.5 px-4 py-2 sm:px-3 sm:py-1.5 rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-card)]/50 backdrop-blur-sm text-[11px] sm:text-[10px] mx-auto sm:mx-0 w-fit order-1"
+              className="flex items-center justify-center sm:justify-start gap-1.5 px-3 py-1.5 rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-card)]/50 backdrop-blur-sm text-[10px] mx-auto sm:mx-0 w-fit order-1"
             >
-              <span className="text-[10px] sm:text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-muted)]">Tech</span>
-              <span className="text-[11px] sm:text-[10px] font-semibold text-[color:var(--color-primary)]">React</span>
-              <span className="text-[10px] sm:text-[9px] text-[color:var(--color-muted)]">•</span>
-              <span className="text-[11px] sm:text-[10px] font-semibold text-[color:var(--color-primary)]">Node</span>
-              <span className="text-[10px] sm:text-[9px] text-[color:var(--color-muted)]">•</span>
-              <span className="text-[11px] sm:text-[10px] font-semibold text-[color:var(--color-primary)]">PGSQL</span>
+              <span className="text-[9px] uppercase tracking-[0.2em] text-[color:var(--color-muted)]">Tech</span>
+              <span className="text-[10px] font-semibold text-[color:var(--color-primary)]">React</span>
+              <span className="text-[9px] text-[color:var(--color-muted)]">•</span>
+              <span className="text-[10px] font-semibold text-[color:var(--color-primary)]">Node</span>
+              <span className="text-[9px] text-[color:var(--color-muted)]">•</span>
+              <span className="text-[10px] font-semibold text-[color:var(--color-primary)]">PGSQL</span>
             </motion.div>
 
             {/* Copyright - FULL WIDTH CENTERED ON MOBILE, LEFT ON DESKTOP */}
@@ -55,7 +55,7 @@ export const Footer = () => {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="text-sm sm:text-xs md:text-sm font-medium text-center sm:text-left order-2 sm:order-1"
+              className="text-xs md:text-sm font-medium text-center sm:text-left order-2 sm:order-1"
             >
               © {new Date().getFullYear()} {owner?.full_name || 'All rights reserved'}.
             </motion.p>
