@@ -19,23 +19,20 @@ export const Footer = () => {
   }, []);
 
   return (
-    <footer 
-      className="py-8 px-4 relative overflow-hidden"
-    >
+    <footer className="py-6 px-4 relative overflow-hidden">
       {/* Optional subtle divider line at top */}
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color:var(--color-border)] to-transparent" />
 
-      <div className="max-w-4xl mx-auto relative z-10">
-        {/* Main content */}
+      <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center space-y-4"
+          className="flex flex-col md:flex-row items-center justify-between gap-4"
         >
-          {/* Social Links */}
-          <div className="flex justify-center gap-6">
+          {/* Left: Social Links */}
+          <div className="flex items-center gap-6">
             {owner?.github_url && (
               <motion.a
                 href={owner.github_url}
@@ -72,18 +69,18 @@ export const Footer = () => {
             )}
           </div>
 
-          {/* Copyright */}
+          {/* Center: Copyright */}
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-xs text-[color:var(--color-muted)]"
+            className="text-xs text-[color:var(--color-muted)] text-center md:text-left"
           >
             © {new Date().getFullYear()} All rights reserved. Built with passion.
           </motion.p>
 
-          {/* Optional Tech Stack Badge */}
+          {/* Right: Tech Stack Badge */}
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
