@@ -191,8 +191,7 @@ const Certifications = () => {
                     >
                       <img
                         src={
-                          center.certificate_image_url ||
-                          "https://via.placeholder.com/96"
+                          center.certificate_image_url 
                         }
                         alt={center.certification_name}
                         className="w-16 h-16 object-cover rounded-full"
@@ -210,31 +209,33 @@ const Certifications = () => {
                     </p>
                   </div>
 
-                  {/* bottom CTA */}
-                  <div className="w-full px-8 pb-8">
-                    <motion.button
-                      whileHover={{ scale: 1.03, y: -2 }}
-                      whileTap={{ scale: 0.97 }}
-                      className={isDark
-                        ? "w-full flex items-center justify-between gap-3 px-4 py-3 rounded-2xl bg-[color:var(--color-bg)] text-[color:var(--color-primary)] text-xs md:text-sm font-semibold shadow-soft"
-                        : "w-full flex items-center justify-between gap-3 px-4 py-3 rounded-2xl bg-white text-[color:var(--color-primary)] text-xs md:text-sm font-semibold shadow-soft"
-                      }
-                      onClick={() => {
-                        if (center.credential_url) {
-                          window.open(center.credential_url, "_blank");
-                        }
-                      }}
-                    >
-                      <span>
-                        {center.credential_url
-                          ? "View Credential"
-                          : "Earned & Verified"}
-                      </span>
-                      <span className="w-7 h-7 rounded-full bg-[color:var(--color-primary-soft)] flex items-center justify-center">
-                        ▶
-                      </span>
-                    </motion.button>
-                  </div>
+              {/* bottom CTA */}
+<div className="w-full px-8 pb-8">
+  <motion.button
+    whileHover={{ scale: 1.03, y: -2 }}
+    whileTap={{ scale: 0.97 }}
+    className={isDark
+      ? "w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-[color:var(--color-bg)] text-[color:var(--color-primary)] text-xs font-semibold shadow-soft"
+      : "w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-white text-[color:var(--color-primary)] text-xs font-semibold shadow-soft"
+    }
+    onClick={() => {
+      if (center.certificate_image_url) {
+        window.open(center.certificate_image_url, "_blank");
+      }
+    }}
+  >
+    <span>
+      {center.certificate_image_url
+        ? "View Certificate"
+        : "Earned & Verified"}
+    </span>
+    <span className="w-6 h-6 rounded-full bg-[color:var(--color-primary-soft)] flex items-center justify-center text-[10px]">
+      ▶
+    </span>
+  </motion.button>
+</div>
+
+
                 </motion.div>
               )}
             </AnimatePresence>
