@@ -185,36 +185,36 @@ const SideCard = ({ item, position, onClick, isDark }) => {
   if (!item) return null;
 
   const rotate = position === "left" ? -8 : 8;
-  const scale = "0.85";
+  const scale = "0.75"; // ✅ Reduced from 0.85 to 0.75
 
   return (
     <motion.button
       type="button"
       onClick={onClick}
       className="hidden lg:block relative z-10"
-      whileHover={{ scale: 0.88, y: -8 }}
+      whileHover={{ scale: 0.78, y: -8 }}
       transition={{ duration: 0.2 }}
     >
       <div
         className={isDark
-          ? "w-[280px] h-[440px] rounded-[28px] bg-gradient-to-br from-slate-800/30 via-slate-900/40 to-slate-800/30 backdrop-blur-lg shadow-xl border border-[color:var(--color-border)]/50 flex flex-col items-center justify-center px-6 py-8 overflow-hidden"
-          : "w-[280px] h-[440px] rounded-[28px] bg-white/60 backdrop-blur-lg shadow-lg border border-[color:var(--color-border)] flex flex-col items-center justify-center px-6 py-8 overflow-hidden"
+          ? "w-[240px] h-[380px] rounded-[28px] bg-gradient-to-br from-slate-800/30 via-slate-900/40 to-slate-800/30 backdrop-blur-lg shadow-xl border border-[color:var(--color-border)]/50 flex flex-col items-center justify-center px-5 py-6 overflow-hidden"
+          : "w-[240px] h-[380px] rounded-[28px] bg-white/60 backdrop-blur-lg shadow-lg border border-[color:var(--color-border)] flex flex-col items-center justify-center px-5 py-6 overflow-hidden"
         }
         style={{
           transform: `rotate(${rotate}deg) scale(${scale})`,
         }}
       >
         {/* emoji */}
-        <div className="mb-6 opacity-80">
-          <span className="text-7xl">🏆</span>
+        <div className="mb-4 opacity-80">
+          <span className="text-6xl">🏆</span>
         </div>
 
         {/* title */}
         <div className={isDark
-          ? "bg-[color:var(--color-card)]/80 backdrop-blur-md px-5 py-3 rounded-2xl border border-[color:var(--color-border)]"
-          : "bg-white/90 backdrop-blur-md px-5 py-3 rounded-2xl border border-[color:var(--color-border)]"
+          ? "bg-[color:var(--color-card)]/80 backdrop-blur-md px-4 py-2.5 rounded-xl border border-[color:var(--color-border)]"
+          : "bg-white/90 backdrop-blur-md px-4 py-2.5 rounded-xl border border-[color:var(--color-border)]"
         }>
-          <p className="text-sm font-semibold text-[color:var(--color-text)] text-center line-clamp-3">
+          <p className="text-xs font-semibold text-[color:var(--color-text)] text-center line-clamp-3">
             {item.achievement_title}
           </p>
         </div>
