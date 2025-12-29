@@ -109,23 +109,19 @@ export const Projects = () => {
   const activeIndex = tempActiveIndex !== null ? tempActiveIndex : orbitActiveIndex;
   const activeProject = projects[activeIndex];
 
-  // Get active card color from orbit card
+  // Get active card color from orbit card - THEME ADAPTIVE
   const getActiveBorderColor = (index) => {
-    if (isDark) {
-      const colorMap = {
-        0: "border-orange-500/80",
-        1: "border-cyan-500/80", 
-        2: "border-emerald-500/80",
-        3: "border-violet-500/80",
-        4: "border-yellow-500/80",
-        5: "border-pink-500/80",
-        6: "border-indigo-500/80",
-        7: "border-teal-500/80",
-      };
-      return colorMap[index % 8] || "border-orange-500/80";
-    } else {
-      return "border-[color:var(--color-primary)]";
-    }
+    const colorMap = {
+      0: "border-orange-500/80",
+      1: "border-cyan-500/80", 
+      2: "border-emerald-500/80",
+      3: "border-violet-500/80",
+      4: "border-yellow-500/80",
+      5: "border-pink-500/80",
+      6: "border-indigo-500/80",
+      7: "border-teal-500/80",
+    };
+    return colorMap[index % 8] || "border-orange-500/80";
   };
 
   // Click handler for orbit cards - 15 SECONDS ACTIVE
@@ -134,7 +130,7 @@ export const Projects = () => {
     setTimeout(() => setTempActiveIndex(null), 15000);
   }, []);
 
-  // Color palette for orbit cards (dark theme)
+  // Color palette for orbit cards - THEME ADAPTIVE
   const colors = [
     "from-orange-400 to-red-500",
     "from-cyan-400 to-blue-500",
@@ -211,11 +207,9 @@ export const Projects = () => {
                   transition={{ type: "tween", ease: "linear", duration: 0.2 }}
                   onClick={() => handleCardClick(index)}
                 >
-                  {isDark ? (
-                    <div className={`absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r ${colorClass}`} />
-                  ) : (
-                    <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-[color:var(--color-primary)] to-[color:var(--color-secondary)]" />
-                  )}
+                  {/* Colorful top border for BOTH themes */}
+                  <div className={`absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r ${colorClass}`} />
+                  
                   <div className="h-full w-full px-5 py-4 flex flex-col justify-between">
                     <p className="text-sm md:text-base font-semibold text-[color:var(--color-text)] line-clamp-2">
                       {project.title}
@@ -223,15 +217,10 @@ export const Projects = () => {
                     <p className="text-xs md:text-sm text-[color:var(--color-muted)] line-clamp-2">
                       {project.short_description}
                     </p>
-                    {isDark ? (
-                      <p className={`text-xs mt-1 font-semibold bg-gradient-to-r ${colorClass} bg-clip-text text-transparent`}>
-                        View details →
-                      </p>
-                    ) : (
-                      <p className="text-xs mt-1 font-semibold text-[color:var(--color-primary)]">
-                        View details →
-                      </p>
-                    )}
+                    {/* Colorful "View details" for BOTH themes */}
+                    <p className={`text-xs mt-1 font-semibold bg-gradient-to-r ${colorClass} bg-clip-text text-transparent`}>
+                      View details →
+                    </p>
                   </div>
                 </motion.button>
               );
@@ -246,12 +235,12 @@ export const Projects = () => {
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   transition={{ duration: 0.5, ease: "easeOut" }}
                   className={isDark
-                    ? `relative w-[350px] h-[350px] md:w-[440px] md:h-[440px]  
+                    ? `relative w-[350px] h-[300px] md:w-[440px] md:h-[440px]  
                        rounded-full border-4 overflow-hidden backdrop-blur-xl 
                        flex flex-col items-center justify-center p-8
                        bg-[color:var(--color-card)]/90 shadow-[0_40px_80px_rgba(0,0,0,0.6)] 
                        ${getActiveBorderColor(activeIndex)}`
-                    : `relative w-[350px] h-[350px] md:w-[440px] md:h-[440px]  
+                    : `relative w-[350px] h-[300px] md:w-[440px] md:h-[440px]  
                        rounded-full border-4 overflow-hidden backdrop-blur-xl 
                        flex flex-col items-center justify-center p-8
                        bg-[color:var(--color-card)] shadow-elevated 
