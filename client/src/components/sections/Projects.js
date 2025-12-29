@@ -73,8 +73,8 @@ export const Projects = () => {
   
   // FIXED: Larger orbit radius to prevent overlap
   const radiusX = 450;
-  const radiusY = 360;
-  const centerYOffset = 160;
+  const radiusY = 420;      // ⬆️ was 360
+const centerYOffset = 230;
 
   const getOrbitPosition = useCallback((i, n) => {
     if (!n || isMobile) return { x: 0, y: 0, angle: 0 };
@@ -151,7 +151,7 @@ export const Projects = () => {
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-bold text-center text-[color:var(--color-text)] mb-3"
+            className="text-4xl md:text-5xl font-bold text-center text-[color:var(--color-text)] mb-1"
           >
             Projects
           </motion.h2>
@@ -176,7 +176,7 @@ export const Projects = () => {
         </motion.h2>
 
         {!isMobile ? (
-          <div className="relative h-[700px] md:h-[780px] flex items-center justify-center mt-12">
+          <div className="relative h-[700px] md:h-[780px] flex items-center justify-center mt-2">
             {/* Orbit Cards */}
             {projects.map((project, index) => {
               const { x, y, angle } = getOrbitPosition(index, projects.length);
@@ -228,7 +228,7 @@ export const Projects = () => {
 
             {/* ACTIVE CARD - FIXED: Higher z-index to stay on top */}
             {activeProject && (
-              <div className="absolute top-1/2 -translate-y-8 flex flex-col items-center justify-center" style={{ zIndex: 50 }}>
+              <div className="absolute top-1/2 translate-y-0 flex flex-col items-center justify-center" style={{ zIndex: 50 }}>
                 <motion.div
                   key={activeProject.id}
                   initial={{ opacity: 0, scale: 0.85, y: 20 }}

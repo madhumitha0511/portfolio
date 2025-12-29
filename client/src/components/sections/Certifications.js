@@ -180,14 +180,14 @@ const Certifications = () => {
                     ? "flex flex-col items-center justify-center flex-1 px-8 pt-10 text-center text-[color:var(--color-bg)]"
                     : "flex flex-col items-center justify-center flex-1 px-8 pt-10 text-center text-white"
                   }>
-                    {/* ✅ FIXED: Better image display */}
+                    {/* ✅ FIXED: Larger visible image */}
                     <motion.div
                       initial={{ scale: 0.8, rotate: -10 }}
                       animate={{ scale: 1, rotate: 0 }}
                       transition={{ duration: 0.5 }}
                       className={isDark
-                        ? "w-24 h-24 mb-6 rounded-2xl border-[3px] border-[color:var(--color-bg)] flex items-center justify-center overflow-hidden bg-white shadow-lg"
-                        : "w-24 h-24 mb-6 rounded-2xl border-[3px] border-white/80 flex items-center justify-center overflow-hidden bg-white shadow-lg"
+                        ? "w-32 h-32 mb-4 rounded-3xl border-[3px] border-[color:var(--color-bg)] flex items-center justify-center overflow-hidden bg-white shadow-xl p-2"
+                        : "w-32 h-32 mb-4 rounded-3xl border-[3px] border-white flex items-center justify-center overflow-hidden bg-white shadow-xl p-2"
                       }
                     >
                       {center.certificate_image_url ? (
@@ -195,13 +195,16 @@ const Certifications = () => {
                           src={center.certificate_image_url}
                           alt={center.certification_name}
                           className="w-full h-full object-contain"
+                          loading="eager"
+                          crossOrigin="anonymous"
                           onError={(e) => {
-                            e.target.onerror = null;
-                            e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Crect width='96' height='96' fill='%23f0f0f0'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='40' fill='%23999'%3E%F0%9F%8F%86%3C/text%3E%3C/svg%3E";
+                            console.error("Image load error:", center.certificate_image_url);
+                            e.target.style.display = 'none';
+                            e.target.parentElement.innerHTML = '<span class="text-5xl">🏆</span>';
                           }}
                         />
                       ) : (
-                        <span className="text-4xl">🏆</span>
+                        <span className="text-5xl">🏆</span>
                       )}
                     </motion.div>
 
@@ -212,19 +215,19 @@ const Certifications = () => {
                       {center.issuer}
                     </p>
                     <p className="text-[11px] opacity-80">
-                      {center.category || "Certification"}
+                      {center.category || "Cyber Security"}
                     </p>
                   </div>
 
-                  {/* ✅ FIXED: Button properly opens image */}
-                  <div className="w-full px-8 pb-8">
+                  {/* ✅ FIXED: Better button design matching screenshot */}
+                  <div className="w-full px-8 pb-6">
                     <motion.button
-                      whileHover={{ scale: 1.03, y: -2 }}
-                      whileTap={{ scale: 0.97 }}
+                      whileHover={{ scale: 1.02, y: -1 }}
+                      whileTap={{ scale: 0.98 }}
                       disabled={!center.certificate_image_url}
                       className={isDark
-                        ? "w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-[color:var(--color-bg)] text-[color:var(--color-primary)] text-xs font-semibold shadow-soft disabled:opacity-50 disabled:cursor-not-allowed"
-                        : "w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-white text-[color:var(--color-primary)] text-xs font-semibold shadow-soft disabled:opacity-50 disabled:cursor-not-allowed"
+                        ? "w-full flex items-center justify-between gap-3 px-4 py-3 rounded-2xl bg-[color:var(--color-bg)] text-[color:var(--color-primary)] text-sm font-semibold shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        : "w-full flex items-center justify-between gap-3 px-4 py-3 rounded-2xl bg-white text-[color:var(--color-primary)] text-sm font-semibold shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                       }
                       onClick={() => {
                         if (center.certificate_image_url) {
@@ -232,16 +235,10 @@ const Certifications = () => {
                         }
                       }}
                     >
-                      <span>
-                        {center.certificate_image_url
-                          ? "View Certificate"
-                          : "No Certificate Available"}
+                      <span>View Certificate</span>
+                      <span className="flex items-center justify-center text-base">
+                        ▶
                       </span>
-                      {center.certificate_image_url && (
-                        <span className="w-6 h-6 rounded-full bg-[color:var(--color-primary-soft)] flex items-center justify-center text-[10px]">
-                          ▶
-                        </span>
-                      )}
                     </motion.button>
                   </div>
                 </motion.div>
