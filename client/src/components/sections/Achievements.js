@@ -6,6 +6,25 @@ import { achievementsAPI } from "../../services/api";
 const Achievements = () => {
   const [items, setItems] = useState([]);
   const [index, setIndex] = useState(0);
+  const [isDark, setIsDark] = useState(false);
+
+  // Detect theme
+  useEffect(() => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    setIsDark(currentTheme === 'dark');
+
+    const observer = new MutationObserver(() => {
+      const theme = document.documentElement.getAttribute('data-theme');
+      setIsDark(theme === 'dark');
+    });
+    
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme']
+    });
+    
+    return () => observer.disconnect();
+  }, []);
 
   // AUTO-SCROLL (15s per achievement)
   useEffect(() => {
@@ -63,7 +82,10 @@ const Achievements = () => {
               onClick={goPrev}
               whileHover={{ scale: 1.15, rotate: -10 }}
               whileTap={{ scale: 0.9 }}
-              className="w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center z-30 bg-[color:var(--color-bg-elevated)] border border-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)]/10 shadow-soft"
+              className={isDark
+                ? "w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center z-30 bg-[color:var(--color-bg-elevated)] border border-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)]/10 shadow-soft"
+                : "w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center z-30 bg-white border-2 border-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)]/5 shadow-soft hover:shadow-elevated transition-all"
+              }
             >
               <span className="text-lg md:text-xl font-bold text-[color:var(--color-primary)]">‹</span>
             </motion.button>
@@ -73,6 +95,7 @@ const Achievements = () => {
               item={items[leftIdx]}
               position="left"
               onClick={goPrev}
+              isDark={isDark}
             />
 
             {/* center card */}
@@ -84,7 +107,10 @@ const Achievements = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.4, ease: "easeOut" }}
-                  className="relative w-[280px] sm:w-[300px] md:w-[340px] h-[400px] sm:h-[420px] md:h-[440px] rounded-[32px] bg-gradient-to-br from-red-900/20 via-red-800/25 to-red-900/20 backdrop-blur-[20px] shadow-[0_26px_70px_rgba(0,0,0,0.7)] flex flex-col items-center justify-between px-6 py-6 overflow-hidden"
+                  className={isDark
+                    ? "relative w-[280px] sm:w-[300px] md:w-[340px] h-[400px] sm:h-[420px] md:h-[440px] rounded-[32px] bg-gradient-to-br from-red-900/20 via-red-800/25 to-red-900/20 backdrop-blur-[20px] shadow-[0_26px_70px_rgba(0,0,0,0.7)] flex flex-col items-center justify-between px-6 py-6 overflow-hidden"
+                    : "relative w-[280px] sm:w-[300px] md:w-[340px] h-[400px] sm:h-[420px] md:h-[440px] rounded-[32px] bg-gradient-to-br from-blue-50/90 via-white/95 to-purple-50/90 backdrop-blur-[20px] shadow-elevated border border-[color:var(--color-border)] flex flex-col items-center justify-between px-6 py-6 overflow-hidden"
+                  }
                 >
                   {/* ✅ EVEN BIGGER EMOJI - PERFECTLY CENTERED */}
                   <div className="flex-1 flex items-center justify-center mb-8">
@@ -92,7 +118,10 @@ const Achievements = () => {
                   </div>
 
                   {/* counter pill - TRUE GLASS */}
-                  <div className="px-3 py-1 rounded-full bg-[color:var(--color-bg)]/80 backdrop-blur-[15px] text-[11px] text-[color:var(--color-text)] mb-2 shadow-xl">
+                  <div className={isDark
+                    ? "px-3 py-1 rounded-full bg-[color:var(--color-bg)]/80 backdrop-blur-[15px] text-[11px] text-[color:var(--color-text)] mb-2 shadow-xl"
+                    : "px-3 py-1 rounded-full bg-white/90 backdrop-blur-[15px] text-[11px] text-[color:var(--color-primary)] font-semibold mb-2 shadow-soft border border-[color:var(--color-border)]"
+                  }>
                     {centerIdx + 1} / {items.length}
                   </div>
 
@@ -109,7 +138,10 @@ const Achievements = () => {
                         ` • ${items[centerIdx].achievement_date}`}
                     </p>
                     {items[centerIdx].description && (
-                      <p className="text-[11px] text-[color:var(--color-text)]/95 leading-relaxed">
+                      <p className={isDark
+                        ? "text-[11px] text-[color:var(--color-text)]/95 leading-relaxed"
+                        : "text-[11px] text-[color:var(--color-text)]/90 leading-relaxed"
+                      }>
                         {items[centerIdx].description}
                       </p>
                     )}
@@ -123,6 +155,7 @@ const Achievements = () => {
               item={items[rightIdx]}
               position="right"
               onClick={goNext}
+              isDark={isDark}
             />
 
             {/* RIGHT BUTTON - SIMPLE ROUND */}
@@ -130,7 +163,10 @@ const Achievements = () => {
               onClick={goNext}
               whileHover={{ scale: 1.15, rotate: 10 }}
               whileTap={{ scale: 0.9 }}
-              className="w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center z-30 bg-[color:var(--color-bg-elevated)] border border-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)]/10 shadow-soft"
+              className={isDark
+                ? "w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center z-30 bg-[color:var(--color-bg-elevated)] border border-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)]/10 shadow-soft"
+                : "w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center z-30 bg-white border-2 border-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)]/5 shadow-soft hover:shadow-elevated transition-all"
+              }
             >
               <span className="text-lg md:text-xl font-bold text-[color:var(--color-primary)]">›</span>
             </motion.button>
@@ -145,7 +181,7 @@ const Achievements = () => {
   );
 };
 
-const SideCard = ({ item, position, onClick }) => {
+const SideCard = ({ item, position, onClick, isDark }) => {
   if (!item) return null;
 
   const rotate = position === "left" ? -10 : 10;
@@ -159,7 +195,10 @@ const SideCard = ({ item, position, onClick }) => {
       whileHover={{ y: -4 }}
     >
       <div
-        className="w-52 md:w-60 h-[360px] md:h-[380px] rounded-[32px] bg-gradient-to-br from-black/20 to-slate-900/20 backdrop-blur-[20px] shadow-[0_20px_60px_rgba(0,0,0,0.6)] flex flex-col items-center justify-end pb-10 px-5 overflow-hidden"
+        className={isDark
+          ? "w-52 md:w-60 h-[360px] md:h-[380px] rounded-[32px] bg-gradient-to-br from-black/20 to-slate-900/20 backdrop-blur-[20px] shadow-[0_20px_60px_rgba(0,0,0,0.6)] flex flex-col items-center justify-end pb-10 px-5 overflow-hidden"
+          : "w-52 md:w-60 h-[360px] md:h-[380px] rounded-[32px] bg-gradient-to-br from-slate-50/80 to-gray-100/80 backdrop-blur-[20px] shadow-soft border border-[color:var(--color-border)] flex flex-col items-center justify-end pb-10 px-5 overflow-hidden"
+        }
         style={{
           transform: `rotate(${rotate}deg) translateX(${translateX})`,
         }}
@@ -170,7 +209,10 @@ const SideCard = ({ item, position, onClick }) => {
         </div>
 
         {/* title - TRUE GLASS */}
-        <p className="text-sm md:text-base font-semibold text-[color:var(--color-text)]/95 text-center line-clamp-2 bg-[color:var(--color-bg)]/80 backdrop-blur-[15px] px-5 py-3 rounded-2xl mx-4 shadow-lg">
+        <p className={isDark
+          ? "text-sm md:text-base font-semibold text-[color:var(--color-text)]/95 text-center line-clamp-2 bg-[color:var(--color-bg)]/80 backdrop-blur-[15px] px-5 py-3 rounded-2xl mx-4 shadow-lg"
+          : "text-sm md:text-base font-semibold text-[color:var(--color-text)] text-center line-clamp-2 bg-white/90 backdrop-blur-[15px] px-5 py-3 rounded-2xl mx-4 shadow-soft border border-[color:var(--color-border)]"
+        }>
           {item.achievement_title}
         </p>
       </div>
