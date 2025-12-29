@@ -70,11 +70,12 @@ export const Projects = () => {
     frameId = requestAnimationFrame(update);
     return () => cancelAnimationFrame(frameId);
   }, [isMobile]);
+  
+// CHANGE: Orbit geometry - TIGHTER and LARGER
+const radiusX = 320;  // was 380
+const radiusY = 280;  // was 350
+const centerYOffset = 140;  // was 170
 
-  // Orbit geometry (desktop/tablet)
-  const radiusX = 380;
-  const radiusY = 350;
-  const centerYOffset = 170;
 
   const getOrbitPosition = useCallback((i, n) => {
     if (!n || isMobile) return { x: 0, y: 0, angle: 0 };
@@ -190,21 +191,24 @@ export const Projects = () => {
               const isTopHalf = normalized > -Math.PI / 2 && normalized < Math.PI / 2;
               const zIndex = isTopHalf ? 40 : 5;
 
+              
               return (
-                <motion.button
-                  key={project.id}
-                  className={isDark 
-                    ? `absolute w-52 md:w-64 h-40 md:h-44 rounded-2xl 
-                       border border-[color:var(--color-border)] 
-                       bg-[color:var(--color-card)]/85 backdrop-blur-xl 
-                       shadow-[0_20px_40px_rgba(0,0,0,0.5)] overflow-hidden 
-                       group hover:scale-105 active:scale-[0.98] transition-all`
-                    : `absolute w-52 md:w-64 h-40 md:h-44 rounded-2xl 
-                       border border-[color:var(--color-border)] 
-                       bg-[color:var(--color-card)] backdrop-blur-xl 
-                       shadow-soft overflow-hidden 
-                       group hover:scale-105 hover:shadow-elevated active:scale-[0.98] transition-all`
-                  }
+                // CHANGE: Orbit card sizes - BIGGER
+<motion.button
+  key={project.id}
+  className={isDark 
+    ? `absolute w-64 md:w-72 h-48 md:h-52 rounded-2xl  // was w-52 md:w-64 h-40 md:h-44
+       border border-[color:var(--color-border)] 
+       bg-[color:var(--color-card)]/85 backdrop-blur-xl 
+       shadow-[0_20px_40px_rgba(0,0,0,0.5)] overflow-hidden 
+       group hover:scale-105 active:scale-[0.98] transition-all`
+    : `absolute w-64 md:w-72 h-48 md:h-52 rounded-2xl  // was w-52 md:w-64 h-40 md:h-44
+       border border-[color:var(--color-border)] 
+       bg-[color:var(--color-card)] backdrop-blur-xl 
+       shadow-soft overflow-hidden 
+       group hover:scale-105 hover:shadow-elevated active:scale-[0.98] transition-all`
+  }
+
                   style={{ transformOrigin: "center", zIndex }}
                   animate={{ x, y }}
                   transition={{ type: "tween", ease: "linear", duration: 0.2 }}
@@ -215,48 +219,48 @@ export const Projects = () => {
                   ) : (
                     <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-[color:var(--color-primary)] to-[color:var(--color-secondary)]" />
                   )}
-                  <div className="h-full w-full px-4 py-3.5 flex flex-col justify-between">
-                    <p className="text-[11px] md:text-[12px] font-semibold text-[color:var(--color-text)] line-clamp-2">
-                      {project.title}
-                    </p>
-                    <p className="text-[10px] md:text-[11px] text-[color:var(--color-muted)] line-clamp-2">
-                      {project.short_description}
-                    </p>
-                    {isDark ? (
-                      <p className={`text-[10px] mt-1 font-semibold bg-gradient-to-r ${colorClass} bg-clip-text text-transparent`}>
-                        View details →
-                      </p>
-                    ) : (
-                      <p className="text-[10px] mt-1 font-semibold text-[color:var(--color-primary)]">
-                        View details →
-                      </p>
-                    )}
-                  </div>
-                </motion.button>
+                 <div className="h-full w-full px-5 py-4 flex flex-col justify-between">  {/* was px-4 py-3.5 */}
+    <p className="text-sm md:text-base font-semibold text-[color:var(--color-text)] line-clamp-2">  {/* was text-[11px] md:text-[12px] */}
+      {project.title}
+    </p>
+    <p className="text-xs md:text-sm text-[color:var(--color-muted)] line-clamp-2">  {/* was text-[10px] md:text-[11px] */}
+      {project.short_description}
+    </p>
+    {isDark ? (
+      <p className={`text-xs mt-1 font-semibold bg-gradient-to-r ${colorClass} bg-clip-text text-transparent`}>  {/* was text-[10px] */}
+        View details →
+      </p>
+    ) : (
+      <p className="text-xs mt-1 font-semibold text-[color:var(--color-primary)]">  {/* was text-[10px] */}
+        View details →
+      </p>
+    )}
+  </div>
+</motion.button>
               );
             })}
 
             {/* ACTIVE CARD */}
             {activeProject && (
               <div className="absolute top-1/2 -translate-y-8 flex flex-col items-center justify-center">
-                <motion.div
-                  key={activeProject.id}
-                  initial={{ opacity: 0, scale: 0.85, y: 20 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  transition={{ duration: 0.5, ease: "easeOut" }}
-                  className={isDark
-                    ? `relative w-[350px] h-[350px] md:w-[390px] md:h-[390px] 
-                       rounded-full border-4 overflow-hidden backdrop-blur-xl 
-                       flex flex-col items-center justify-center p-8
-                       bg-[color:var(--color-card)]/90 shadow-[0_40px_80px_rgba(0,0,0,0.6)] 
-                       ${getActiveBorderColor(activeIndex)}`
-                    : `relative w-[350px] h-[350px] md:w-[390px] md:h-[390px] 
-                       rounded-full border-4 overflow-hidden backdrop-blur-xl 
-                       flex flex-col items-center justify-center p-8
-                       bg-[color:var(--color-card)] shadow-elevated 
-                       ${getActiveBorderColor(activeIndex)}`
-                  }
-                >
+               <motion.div
+  key={activeProject.id}
+  initial={{ opacity: 0, scale: 0.85, y: 20 }}
+  animate={{ opacity: 1, scale: 1, y: 0 }}
+  transition={{ duration: 0.5, ease: "easeOut" }}
+  className={isDark
+    ? `relative w-[420px] h-[420px] md:w-[460px] md:h-[460px]  // was w-[350px] h-[350px] md:w-[390px] md:h-[390px]
+       rounded-full border-4 overflow-hidden backdrop-blur-xl 
+       flex flex-col items-center justify-center p-8
+       bg-[color:var(--color-card)]/90 shadow-[0_40px_80px_rgba(0,0,0,0.6)] 
+       ${getActiveBorderColor(activeIndex)}`
+    : `relative w-[420px] h-[420px] md:w-[460px] md:h-[460px]  // was w-[350px] h-[350px] md:w-[390px] md:h-[390px]
+       rounded-full border-4 overflow-hidden backdrop-blur-xl 
+       flex flex-col items-center justify-center p-8
+       bg-[color:var(--color-card)] shadow-elevated 
+       ${getActiveBorderColor(activeIndex)}`
+  }
+>
                   {isDark && (
                     <div className="absolute inset-8 rounded-full bg-gradient-radial from-[color:var(--color-primary)]/10 to-transparent" />
                   )}
