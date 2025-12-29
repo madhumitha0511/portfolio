@@ -6,6 +6,25 @@ import { portfolioAPI } from "../../services/api";
 const Hero = () => {
   const [owner, setOwner] = useState(null);
   const [hero, setHero] = useState(null);
+  const [isDark, setIsDark] = useState(false);
+
+  // Detect theme
+  useEffect(() => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    setIsDark(currentTheme === 'dark');
+
+    const observer = new MutationObserver(() => {
+      const theme = document.documentElement.getAttribute('data-theme');
+      setIsDark(theme === 'dark');
+    });
+    
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme']
+    });
+    
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,28 +49,28 @@ const Hero = () => {
       id="hero"
       className="min-h-screen flex items-center bg-[color:var(--color-bg)] relative overflow-hidden"
     >
-      {/* Decorative background blob */}
+      {/* Decorative background blob - HIDDEN ON MOBILE */}
       <motion.div
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 1.2 }}
-        className="absolute right-0  translate-y-1/2 w-[600px] h-[600px] md:w-[800px] md:h-[800px] rounded-full bg-gradient-to-br from-[color:var(--color-primary)]/20 to-[color:var(--color-primary)]/5 blur-3xl"
+        className="hidden lg:block absolute right-0 translate-y-1/2 w-[600px] h-[600px] md:w-[800px] md:h-[800px] rounded-full bg-gradient-to-br from-[color:var(--color-primary)]/20 to-[color:var(--color-primary)]/5 blur-3xl"
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 grid lg:grid-cols-2 gap-12 items-center relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10">
         {/* LEFT SIDE - Text Content */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
-          className="space-y-6"
+          className="space-y-4 md:space-y-6 text-center lg:text-left"
         >
           {/* Role/Tag */}
           <motion.span
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="inline-block text-sm font-semibold uppercase tracking-wider text-[color:var(--color-primary)]"
+            className="inline-block text-xs md:text-sm font-semibold uppercase tracking-wider text-[color:var(--color-primary)]"
           >
             {hero.subtitle || "Software Developer"}
           </motion.span>
@@ -61,10 +80,10 @@ const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-[color:var(--color-text)]"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-[color:var(--color-text)]"
           >
             Hello, my name is <br />
-           <span className="text-[color:var(--color-primary)]">{owner.first_name} {owner.last_name}</span>
+            <span className="text-[color:var(--color-primary)]">{owner.first_name} {owner.last_name}</span>
           </motion.h1>
 
           {/* Bio/Description */}
@@ -72,7 +91,7 @@ const Hero = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="text-lg md:text-xl text-[color:var(--color-muted)] leading-relaxed max-w-lg"
+            className="text-base md:text-lg lg:text-xl text-[color:var(--color-muted)] leading-relaxed max-w-lg mx-auto lg:mx-0"
           >
             {owner.bio || hero.title}
           </motion.p>
@@ -82,9 +101,8 @@ const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="flex flex-wrap gap-4 pt-4"
+            className="flex flex-wrap gap-4 pt-4 justify-center lg:justify-start"
           >
-           
           </motion.div>
 
           {/* Icon Buttons Row */}
@@ -92,7 +110,7 @@ const Hero = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="flex gap-4 pt-2"
+            className="flex gap-3 md:gap-4 pt-2 justify-center lg:justify-start"
           >
             {/* Resume Download */}
             {owner.resume_url && (
@@ -101,7 +119,10 @@ const Hero = () => {
                 download
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 whileTap={{ scale: 0.9 }}
-                className="w-12 h-12 flex items-center justify-center rounded-full bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] transition-all"
+                className={isDark
+                  ? "w-11 h-11 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] transition-all"
+                  : "w-11 h-11 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] hover:shadow-elevated transition-all"
+                }
                 title="Download Resume"
               >
                 <svg className="w-5 h-5 text-[color:var(--color-text)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -116,7 +137,10 @@ const Hero = () => {
                 href={`mailto:${owner.email}`}
                 whileHover={{ scale: 1.1, rotate: -5 }}
                 whileTap={{ scale: 0.9 }}
-                className="w-12 h-12 flex items-center justify-center rounded-full bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] transition-all"
+                className={isDark
+                  ? "w-11 h-11 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] transition-all"
+                  : "w-11 h-11 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] hover:shadow-elevated transition-all"
+                }
                 title="Send Email"
               >
                 <svg className="w-5 h-5 text-[color:var(--color-text)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -124,22 +148,26 @@ const Hero = () => {
                 </svg>
               </motion.a>
             )}
-{/* LinkedIn */}
-{owner.linkedin_url && (
-  <motion.a
-    href={owner.linkedin_url}
-    target="_blank"
-    rel="noopener noreferrer"
-    whileHover={{ scale: 1.1, rotate: 5 }}
-    whileTap={{ scale: 0.9 }}
-    className="w-12 h-12 flex items-center justify-center rounded-full bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] transition-all"
-    title="LinkedIn Profile"
-  >
-    <svg className="w-5 h-5 text-[color:var(--color-text)]" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-    </svg>
-  </motion.a>
-)}
+
+            {/* LinkedIn */}
+            {owner.linkedin_url && (
+              <motion.a
+                href={owner.linkedin_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                whileTap={{ scale: 0.9 }}
+                className={isDark
+                  ? "w-11 h-11 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] transition-all"
+                  : "w-11 h-11 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] hover:shadow-elevated transition-all"
+                }
+                title="LinkedIn Profile"
+              >
+                <svg className="w-5 h-5 text-[color:var(--color-text)]" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+              </motion.a>
+            )}
 
             {/* GitHub */}
             {owner.github_url && (
@@ -149,7 +177,10 @@ const Hero = () => {
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 whileTap={{ scale: 0.9 }}
-                className="w-12 h-12 flex items-center justify-center rounded-full bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] transition-all"
+                className={isDark
+                  ? "w-11 h-11 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] transition-all"
+                  : "w-11 h-11 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white border-2 border-[color:var(--color-border)] shadow-soft hover:border-[color:var(--color-primary)] hover:shadow-elevated transition-all"
+                }
                 title="GitHub Profile"
               >
                 <svg className="w-5 h-5 text-[color:var(--color-text)]" fill="currentColor" viewBox="0 0 24 24">
@@ -160,47 +191,41 @@ const Hero = () => {
           </motion.div>
         </motion.div>
 
+        {/* RIGHT SIDE - Image with Organic Blob Background */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="relative flex justify-center lg:justify-end items-center h-[400px] sm:h-[500px] lg:h-[600px]"
+        >
+          {/* Large Organic Blob Background - HIDDEN ON MOBILE */}
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 w-[450px] h-[450px] md:w-[550px] md:h-[550px]"
+            style={{
+              backgroundImage:
+                "linear-gradient(to bottom right, var(--hero-blob-from), var(--hero-blob-to))",
+              borderRadius: "63% 37% 54% 46% / 55% 48% 52% 45%",
+            }}
+          />
 
-{/* RIGHT SIDE - Image with Organic Blob Background */}
-<motion.div
-  initial={{ opacity: 0, scale: 0.8 }}
-  animate={{ opacity: 1, scale: 1 }}
-  transition={{ duration: 0.8, delay: 0.2 }}
-  className="relative flex justify-center lg:justify-end items-center h-[600px]"
->
- {/* Large Organic Blob Background - Same Size as Image Container */}
-<motion.div
-  initial={{ scale: 0.8, opacity: 0 }}
-  animate={{ scale: 1, opacity: 1 }}
-  transition={{ duration: 1.5, ease: "easeOut" }}
-  className="absolute right-0 top-1/2 -translate-y-1/2 w-[450px] h-[450px] md:w-[550px] md:h-[550px]"
-  style={{
-    backgroundImage:
-      "linear-gradient(to bottom right, var(--hero-blob-from), var(--hero-blob-to))",
-    borderRadius: "63% 37% 54% 46% / 55% 48% 52% 45%",
-  }}
-/>
-
-
-  {/* Profile Image - Positioned Inside Blob */}
-  <motion.div
-    whileHover={{ scale: 1.02 }}
-    className="relative z-10 w-full max-w-[450px] md:max-w-[550px]"
-  >
-    <img
-      src="/profile-1.png"
-      alt={`${owner.first_name} ${owner.last_name}`}
-      className="w-full h-auto object-contain relative z-20"
-      loading="eager"  // ← Load immediately (for hero section)
-  decoding="async" // ← Decode in background
-    />
-  </motion.div>
-</motion.div>
-
-
+          {/* Profile Image - Positioned Inside Blob */}
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            className="relative z-10 w-full max-w-[300px] sm:max-w-[400px] md:max-w-[450px] lg:max-w-[550px]"
+          >
+            <img
+              src="/profile-1.png"
+              alt={`${owner.first_name} ${owner.last_name}`}
+              className="w-full h-auto object-contain relative z-20"
+              loading="eager"
+              decoding="async"
+            />
+          </motion.div>
+        </motion.div>
       </div>
-
-     
     </section>
   );
 };

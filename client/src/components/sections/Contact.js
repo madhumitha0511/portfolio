@@ -1,5 +1,5 @@
 // client/src/components/sections/Contact.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { contactAPI } from "../../services/api";
 
@@ -12,6 +12,25 @@ export const Contact = () => {
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [isDark, setIsDark] = useState(false);
+
+  // Detect theme
+  useEffect(() => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    setIsDark(currentTheme === 'dark');
+
+    const observer = new MutationObserver(() => {
+      const theme = document.documentElement.getAttribute('data-theme');
+      setIsDark(theme === 'dark');
+    });
+    
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme']
+    });
+    
+    return () => observer.disconnect();
+  }, []);
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -44,36 +63,35 @@ export const Contact = () => {
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="grid md:grid-cols-2 gap-10 items-start">
          
-<div className="space-y-6">
-  <div>
-    <p className="text-[11px] font-semibold tracking-[0.18em] uppercase text-[color:var(--color-muted)] mb-4">
-      Get In Touch
-    </p>
-    <h2 className="text-3xl md:text-4xl font-bold text-[color:var(--color-text)] mb-4">
-      Building AI solutions that <span className="text-[color:var(--color-primary)]">solve real problems</span>
-    </h2>
-    <p className="text-sm md:text-base text-[color:var(--color-muted)] leading-relaxed">
-      Full-stack AI developer with experience in production ML systems, scalable web apps, 
-      and research-grade algorithms. Let's discuss your next project.
-    </p>
-  </div>
+          <div className="space-y-6">
+            <div>
+              <p className="text-[11px] font-semibold tracking-[0.18em] uppercase text-[color:var(--color-muted)] mb-4">
+                Get In Touch
+              </p>
+              <h2 className="text-3xl md:text-4xl font-bold text-[color:var(--color-text)] mb-4">
+                Building AI solutions that <span className="text-[color:var(--color-primary)]">solve real problems</span>
+              </h2>
+              <p className="text-sm md:text-base text-[color:var(--color-muted)] leading-relaxed">
+                Full-stack AI developer with experience in production ML systems, scalable web apps, 
+                and research-grade algorithms. Let's discuss your next project.
+              </p>
+            </div>
 
-  {/* CV-BASED BULLETS */}
-  <div className="grid gap-3 text-[13px] text-[color:var(--color-text)]">
-    <div className="flex items-start gap-2">
-      <span className="mt-1 h-2 w-2 rounded-full bg-[color:var(--color-primary)]" />
-      <p>ML Engineer: 94% accuracy models deployed at scale</p>
-    </div>
-    <div className="flex items-start gap-2">
-      <span className="mt-1 h-2 w-2 rounded-full bg-[color:var(--color-primary)]" />
-      <p>Full-stack: React + Node.js + PostgreSQL production apps</p>
-    </div>
-    <div className="flex items-start gap-2">
-      <span className="mt-1 h-2 w-2 rounded-full bg-[color:var(--color-primary)]" />
-      <p>Research: 7 papers + Top 3 hackathon finisher</p>
-    </div>
-  </div>
-
+            {/* CV-BASED BULLETS */}
+            <div className="grid gap-3 text-[13px] text-[color:var(--color-text)]">
+              <div className="flex items-start gap-2">
+                <span className="mt-1 h-2 w-2 rounded-full bg-[color:var(--color-primary)]" />
+                <p>ML Engineer: 94% accuracy models deployed at scale</p>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="mt-1 h-2 w-2 rounded-full bg-[color:var(--color-primary)]" />
+                <p>Full-stack: React + Node.js + PostgreSQL production apps</p>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="mt-1 h-2 w-2 rounded-full bg-[color:var(--color-primary)]" />
+                <p>Research: 7 papers + Top 3 hackathon finisher</p>
+              </div>
+            </div>
 
             {/* Call to action */}
             <div className="pt-4 pb-2">
@@ -91,7 +109,10 @@ export const Contact = () => {
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-12 h-12 rounded-full bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-border)] flex items-center justify-center shadow-soft hover:border-[color:var(--color-primary)] transition-all"
+                className={isDark
+                  ? "w-12 h-12 rounded-full bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-border)] flex items-center justify-center shadow-soft hover:border-[color:var(--color-primary)] transition-all"
+                  : "w-12 h-12 rounded-full bg-white border-2 border-[color:var(--color-border)] flex items-center justify-center shadow-soft hover:border-[color:var(--color-primary)] hover:shadow-elevated transition-all"
+                }
                 aria-label="GitHub"
               >
                 <svg className="w-5 h-5 text-[color:var(--color-text)]" fill="currentColor" viewBox="0 0 24 24">
@@ -104,7 +125,10 @@ export const Contact = () => {
                 href="mailto:ramwork31@gmail.com"
                 whileHover={{ scale: 1.1, rotate: -5 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-12 h-12 rounded-full bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-border)] flex items-center justify-center shadow-soft hover:border-[color:var(--color-primary)] transition-all"
+                className={isDark
+                  ? "w-12 h-12 rounded-full bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-border)] flex items-center justify-center shadow-soft hover:border-[color:var(--color-primary)] transition-all"
+                  : "w-12 h-12 rounded-full bg-white border-2 border-[color:var(--color-border)] flex items-center justify-center shadow-soft hover:border-[color:var(--color-primary)] hover:shadow-elevated transition-all"
+                }
                 aria-label="Email"
               >
                 <svg className="w-5 h-5 text-[color:var(--color-text)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -119,7 +143,10 @@ export const Contact = () => {
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-12 h-12 rounded-full bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-border)] flex items-center justify-center shadow-soft hover:border-[color:var(--color-primary)] transition-all"
+                className={isDark
+                  ? "w-12 h-12 rounded-full bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-border)] flex items-center justify-center shadow-soft hover:border-[color:var(--color-primary)] transition-all"
+                  : "w-12 h-12 rounded-full bg-white border-2 border-[color:var(--color-border)] flex items-center justify-center shadow-soft hover:border-[color:var(--color-primary)] hover:shadow-elevated transition-all"
+                }
                 aria-label="LinkedIn"
               >
                 <svg className="w-5 h-5 text-[color:var(--color-text)]" fill="currentColor" viewBox="0 0 24 24">
@@ -134,7 +161,10 @@ export const Contact = () => {
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.1, rotate: -5 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-12 h-12 rounded-full bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-border)] flex items-center justify-center shadow-soft hover:border-[color:var(--color-primary)] transition-all"
+                className={isDark
+                  ? "w-12 h-12 rounded-full bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-border)] flex items-center justify-center shadow-soft hover:border-[color:var(--color-primary)] transition-all"
+                  : "w-12 h-12 rounded-full bg-white border-2 border-[color:var(--color-border)] flex items-center justify-center shadow-soft hover:border-[color:var(--color-primary)] hover:shadow-elevated transition-all"
+                }
                 aria-label="Instagram"
               >
                 <svg className="w-5 h-5 text-[color:var(--color-text)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -145,19 +175,25 @@ export const Contact = () => {
             </div>
           </div>
 
-          {/* RIGHT COLUMN – glass form card (UNCHANGED) */}
+          {/* RIGHT COLUMN – glass form card */}
           <motion.div
             initial={{ opacity: 0, y: 30, scale: 0.97 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="relative rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card)]/92 backdrop-blur-xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] px-6 py-7 md:px-7 md:py-8"
+            className={isDark
+              ? "relative rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card)]/92 backdrop-blur-xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] px-6 py-7 md:px-7 md:py-8"
+              : "relative rounded-3xl border border-[color:var(--color-border)] bg-white/95 backdrop-blur-xl shadow-elevated px-6 py-7 md:px-7 md:py-8"
+            }
           >
             {success && (
               <motion.div
                 initial={{ opacity: 0, y: -6 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mb-4 rounded-xl border border-emerald-400/60 bg-emerald-50/95 text-emerald-900 px-3 py-2.5 text-xs shadow-soft"
+                className={isDark
+                  ? "mb-4 rounded-xl border border-emerald-400/60 bg-emerald-50/95 text-emerald-900 px-3 py-2.5 text-xs shadow-soft"
+                  : "mb-4 rounded-xl border border-emerald-400 bg-emerald-50 text-emerald-900 px-3 py-2.5 text-xs shadow-soft"
+                }
               >
                 ✓ Message sent successfully.
               </motion.div>
@@ -174,6 +210,7 @@ export const Contact = () => {
                 placeholder="Your name"
                 value={formData.sender_name}
                 onChange={handleChange}
+                isDark={isDark}
               />
               <Field
                 label="Email"
@@ -182,6 +219,7 @@ export const Contact = () => {
                 placeholder="Your email"
                 value={formData.sender_email}
                 onChange={handleChange}
+                isDark={isDark}
               />
               <Field
                 label="Subject"
@@ -190,6 +228,7 @@ export const Contact = () => {
                 placeholder="Project, collaboration, or hiring"
                 value={formData.subject}
                 onChange={handleChange}
+                isDark={isDark}
               />
 
               <div className="space-y-1.5">
@@ -203,23 +242,32 @@ export const Contact = () => {
                   value={formData.message}
                   onChange={handleChange}
                   required
-                  className="w-full rounded-2xl border border-white/8 bg-white/5 backdrop-blur-md px-3 py-2.5 text-sm text-[color:var(--color-text)] shadow-[0_1px_0_rgba(255,255,255,0.15)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-primary)]/70 focus:border-[color:var(--color-primary)] resize-none"
+                  className={isDark
+                    ? "w-full rounded-2xl border border-white/8 bg-white/5 backdrop-blur-md px-3 py-2.5 text-sm text-[color:var(--color-text)] shadow-[0_1px_0_rgba(255,255,255,0.15)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-primary)]/70 focus:border-[color:var(--color-primary)] resize-none"
+                    : "w-full rounded-2xl border border-[color:var(--color-border)] bg-white/80 backdrop-blur-md px-3 py-2.5 text-sm text-[color:var(--color-text)] shadow-soft focus:outline-none focus:ring-2 focus:ring-[color:var(--color-primary)]/70 focus:border-[color:var(--color-primary)] resize-none"
+                  }
                 />
               </div>
 
               <div className="flex items-center gap-2 text-[11px] text-[color:var(--color-muted)]">
-                <span className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-[6px] border border-[color:var(--color-border)] bg-[color:var(--color-bg)]/90 text-[color:var(--color-primary)] text-[10px]">
+                <span className={isDark
+                  ? "inline-flex h-3.5 w-3.5 items-center justify-center rounded-[6px] border border-[color:var(--color-border)] bg-[color:var(--color-bg)]/90 text-[color:var(--color-primary)] text-[10px]"
+                  : "inline-flex h-3.5 w-3.5 items-center justify-center rounded-[6px] border border-[color:var(--color-border)] bg-white text-[color:var(--color-primary)] text-[10px]"
+                }>
                   ✓
                 </span>
                 <span>Replies go only to your email. No promotions.</span>
               </div>
 
               <motion.button
-                whileHover={{ y: -1, boxShadow: "0 12px 0 rgba(0,0,0,0.3)" }}
+                whileHover={{ y: -1, boxShadow: isDark ? "0 12px 0 rgba(0,0,0,0.3)" : "0 12px 0 rgba(59,130,246,0.2)" }}
                 whileTap={{ y: 0, scale: 0.98 }}
                 type="submit"
                 disabled={loading}
-                className="mt-2 w-full rounded-2xl border border-[color:var(--color-border)] bg-gradient-to-r from-[color:var(--color-primary-soft)] to-[color:var(--color-bg-elevated)] text-[color:var(--color-text)] font-semibold text-sm py-2.5 shadow-[0_16px_0_rgba(0,0,0,0.35)] transition-all disabled:opacity-60"
+                className={isDark
+                  ? "mt-2 w-full rounded-2xl border border-[color:var(--color-border)] bg-gradient-to-r from-[color:var(--color-primary-soft)] to-[color:var(--color-bg-elevated)] text-[color:var(--color-text)] font-semibold text-sm py-2.5 shadow-[0_16px_0_rgba(0,0,0,0.35)] transition-all disabled:opacity-60"
+                  : "mt-2 w-full rounded-2xl border border-[color:var(--color-primary)] bg-[color:var(--color-primary)] text-white font-semibold text-sm py-2.5 shadow-[0_16px_0_rgba(59,130,246,0.25)] hover:bg-[color:var(--color-primary)]/90 transition-all disabled:opacity-60"
+                }
               >
                 {loading ? "Sending…" : "Send message"}
               </motion.button>
@@ -231,7 +279,7 @@ export const Contact = () => {
   );
 };
 
-const Field = ({ label, name, type, placeholder, value, onChange }) => (
+const Field = ({ label, name, type, placeholder, value, onChange, isDark }) => (
   <div className="space-y-1.5">
     <label className="block text-xs font-medium text-[color:var(--color-muted)]">
       {label}
@@ -243,7 +291,10 @@ const Field = ({ label, name, type, placeholder, value, onChange }) => (
       value={value}
       onChange={onChange}
       required
-      className="w-full rounded-2xl border border-white/8 bg-white/5 backdrop-blur-md px-3 py-2.5 text-sm text-[color:var(--color-text)] shadow-[0_1px_0_rgba(255,255,255,0.15)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-primary)]/70 focus:border-[color:var(--color-primary)]"
+      className={isDark
+        ? "w-full rounded-2xl border border-white/8 bg-white/5 backdrop-blur-md px-3 py-2.5 text-sm text-[color:var(--color-text)] shadow-[0_1px_0_rgba(255,255,255,0.15)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-primary)]/70 focus:border-[color:var(--color-primary)]"
+        : "w-full rounded-2xl border border-[color:var(--color-border)] bg-white/80 backdrop-blur-md px-3 py-2.5 text-sm text-[color:var(--color-text)] shadow-soft focus:outline-none focus:ring-2 focus:ring-[color:var(--color-primary)]/70 focus:border-[color:var(--color-primary)]"
+      }
     />
   </div>
 );
