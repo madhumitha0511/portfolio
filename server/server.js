@@ -1,15 +1,14 @@
 // ============================================
-// BACKEND - server.js (Main Express Server)
+// BACKEND - server.js (BREVO SMTP + Render PERFECT)
 // ============================================
-// Place this in your backend root directory
-
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const compression = require('compression');
+const { query } = require('./config/db');
 require('dotenv').config();
 
-// Import routes
+// Import routes ONLY
 const authRoutes = require('./routes/auth');
 const portfolioRoutes = require('./routes/portfolio');
 const experienceRoutes = require('./routes/experience');
@@ -22,13 +21,13 @@ const hackathonsRoutes = require('./routes/hackathons');
 const researchRoutes = require('./routes/research');
 const extracurricularRoutes = require('./routes/extracurricular');
 const testimonialsRoutes = require('./routes/testimonials');
-const contactRoutes = require('./routes/contact');
+const contactRoutes = require('./routes/contact');  // ✅ BREVO HERE
 
 const app = express();
 
 // ========== MIDDLEWARE ==========
-app.use(helmet()); // Security headers
-app.use(compression()); // Gzip compression
+app.use(helmet());
+app.use(compression());
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:3000',
   credentials: true
@@ -49,17 +48,35 @@ app.use('/api/hackathons', hackathonsRoutes);
 app.use('/api/research', researchRoutes);
 app.use('/api/extracurricular', extracurricularRoutes);
 app.use('/api/testimonials', testimonialsRoutes);
-app.use('/api/contact', contactRoutes);
+app.use('/api/contact', contactRoutes);  // ✅ SINGLE Brevo endpoint
 
-// ========== HEALTH CHECK ==========
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'Backend is running!', timestamp: new Date() });
+// ========== HEALTH CHECK (BREVO VERSION) ==========
+// ✅ MAILGUN Health Check (Replace Brevo check)
+app.get('/api/health', async (req, res) => {
+  try {
+    const dbTest = await query('SELECT 1');
+    res.json({ 
+      status: '✅ Backend running!',
+      timestamp: new Date(),
+      mailgun: process.env.MAILGUN_API_KEY ? '✅ Configured (100/day FREE)' : '⚠️ Missing MAILGUN_API_KEY',
+      database: dbTest.rows.length ? '✅ Connected (Neon)' : '❌ Failed',
+      endpoint: 'POST /api/contact',
+      services: ['auth', 'portfolio', 'experience', 'projects', 'contact']
+    });
+  } catch (err) {
+    res.json({ 
+      status: '❌ Database error', 
+      error: err.message 
+    });
+  }
 });
+
 
 // ========== ERROR HANDLING ==========
 app.use((err, req, res, next) => {
-  console.error('Error:', err);
+  console.error('❌ Server Error:', err);
   res.status(err.status || 500).json({
+    success: false,
     message: err.message || 'Internal Server Error',
     status: err.status || 500
   });
@@ -67,27 +84,18 @@ app.use((err, req, res, next) => {
 
 // ========== 404 HANDLER ==========
 app.use((req, res) => {
-  res.status(404).json({ message: 'Route not found' });
+  res.status(404).json({ 
+    success: false,
+    message: 'Route not found' 
+  });
 });
 
 // ========== START SERVER ==========
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`✅ Backend running on http://localhost:${PORT}`);
-  console.log(`📡 API Ready: /api/health`);
+  console.log(`📡 Health: http://localhost:${PORT}/api/health`);
+  console.log(`📧 Contact: POST /api/contact (Brevo)`);
 });
 
 module.exports = app;
-
-// ============================================
-// EXPLANATION FOR BEGINNERS:
-// ============================================
-// 1. require('dotenv').config() - Loads environment variables from .env file
-// 2. express() - Creates Express app instance
-// 3. helmet() - Adds security headers to protect from vulnerabilities
-// 4. compression() - Compresses responses for faster transfer
-// 5. cors() - Allows frontend to make requests from different domain
-// 6. app.use() - Applies middleware to all routes
-// 7. app.listen() - Starts the server on specified PORT
-// 8. Routes are modular - each feature has its own file (auth, projects, etc.)
-// 9. Error handling middleware catches and sends errors properly

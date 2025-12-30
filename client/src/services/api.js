@@ -133,7 +133,9 @@ export const testimonialsAPI = {
 
 // ========== CONTACT API ==========
 export const contactAPI = {
+  // ✅ CHANGED: Now sends to /send-message (DB + Email)
   sendMessage: (data) => apiClient.post('/contact', data),
+  
   getMessages: () => apiClient.get('/contact'), // Admin only
   markAsRead: (id) => apiClient.put(`/contact/${id}/read`, {}),
 };
