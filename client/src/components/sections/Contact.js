@@ -104,7 +104,7 @@ export const Contact = () => {
             <div className="flex gap-3 pt-2">
               {/* GitHub */}
               <motion.a
-                href="https://github.com/YOUR_USERNAME_HERE"
+                href="http://github.com/madhumitha0511"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.1, rotate: 5 }}
@@ -122,7 +122,7 @@ export const Contact = () => {
 
               {/* Email */}
               <motion.a
-                href="mailto:ramwork31@gmail.com"
+                href="mailto:madhumitha.project@gmail.com"
                 whileHover={{ scale: 1.1, rotate: -5 }}
                 whileTap={{ scale: 0.95 }}
                 className={isDark
@@ -138,7 +138,7 @@ export const Contact = () => {
 
               {/* LinkedIn */}
               <motion.a
-                href="https://linkedin.com/in/ramprabhu-v-19380b223"
+                href="https://www.linkedin.com/in/madhumithavenkatesan"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.1, rotate: 5 }}
@@ -154,24 +154,7 @@ export const Contact = () => {
                 </svg>
               </motion.a>
 
-              {/* Instagram */}
-              <motion.a
-                href="https://instagram.com/YOUR_USERNAME_HERE"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.1, rotate: -5 }}
-                whileTap={{ scale: 0.95 }}
-                className={isDark
-                  ? "w-12 h-12 rounded-full bg-[color:var(--color-bg-elevated)] border-2 border-[color:var(--color-border)] flex items-center justify-center shadow-soft hover:border-[color:var(--color-primary)] transition-all"
-                  : "w-12 h-12 rounded-full bg-white border-2 border-[color:var(--color-border)] flex items-center justify-center shadow-soft hover:border-[color:var(--color-primary)] hover:shadow-elevated transition-all"
-                }
-                aria-label="Instagram"
-              >
-                <svg className="w-5 h-5 text-[color:var(--color-text)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4h16c1.053 0 2 .947 2 2v12c0 1.053-.947 2-2 2H4c-1.053 0-2-.947-2-2V6c0-1.053.947-2 2-2z"/>
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.5 12a3.5 3.5 0 117 0 3.5 3.5 0 01-7 0zM17.5 12a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/>
-                </svg>
-              </motion.a>
+          
             </div>
           </div>
 
