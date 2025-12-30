@@ -9,7 +9,7 @@ const Mailgun = require('mailgun.js');
 const mailgun = new Mailgun(formData);
 const mg = mailgun.client({
   username: 'api',
-  key: process.env.MAILGUN_API_KEY || 'a7e182e5a7db1e3c7883a6ae30d4614f-e61ae8dd-c0ce2c9d',
+  key: process.env.MAILGUN_API_KEY ,
 });
 
 // GET all contact messages (Admin)
