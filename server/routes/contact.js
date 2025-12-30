@@ -54,7 +54,7 @@ router.post('/', async (req, res) => {
     // 2. MAILGUN EMAIL (async)
     const emailData = {
       from: `Portfolio Contact <mailgun@${process.env.MAILGUN_DOMAIN}>`,
-      to: 'ramwork31@gmail.com',
+      to: 'madhumitha.project@gmail.com',
       subject: `Portfolio: ${subject || 'New Message'}`,
       'h:Reply-To': sender_email,
       html: `
