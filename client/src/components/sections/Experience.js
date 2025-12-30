@@ -1,3 +1,5 @@
+// ✅ UPDATED Experience.js - FRONTEND (Use formatted dates from backend)
+
 // client/src/components/sections/Experience.js
 import React, { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -8,16 +10,12 @@ const Experience = () => {
   const [activeId, setActiveId] = useState(null);
   const [selectedYear, setSelectedYear] = useState("ALL");
   const [isHoveringMac, setIsHoveringMac] = useState(false);
-  
-  // Fix: Get theme correctly on mount
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    // Set initial theme immediately
     const currentTheme = document.documentElement.getAttribute('data-theme');
     setIsDark(currentTheme === 'dark');
 
-    // Watch for theme changes
     const observer = new MutationObserver(() => {
       const theme = document.documentElement.getAttribute('data-theme');
       setIsDark(theme === 'dark');
@@ -35,9 +33,8 @@ const Experience = () => {
     const fetchExperiences = async () => {
       try {
         const res = await experienceAPI.getAll();
-        const sorted = res.data.sort(
-          (a, b) => new Date(b.start_date) - new Date(a.start_date)
-        );
+        // ✅ CHANGE: Sort by year field instead of parsing date
+        const sorted = res.data.sort((a, b) => b.year - a.year);
         setExperiences(sorted);
         if (sorted.length > 0) {
           setActiveId(sorted[0].id);
@@ -53,7 +50,8 @@ const Experience = () => {
   const groupedByYear = useMemo(() => {
     const groups = {};
     experiences.forEach((exp) => {
-      const year = new Date(exp.start_date).getFullYear();
+      // ✅ CHANGE: Use year field directly
+      const year = exp.year;
       if (!groups[year]) groups[year] = [];
       groups[year].push(exp);
     });
@@ -72,9 +70,8 @@ const Experience = () => {
 
   const filteredExperiences = useMemo(() => {
     if (selectedYear === "ALL" || !selectedYear) return experiences;
-    return experiences.filter(
-      (exp) => new Date(exp.start_date).getFullYear() === Number(selectedYear)
-    );
+    // ✅ CHANGE: Use year field directly
+    return experiences.filter((exp) => exp.year === Number(selectedYear));
   }, [experiences, selectedYear]);
 
   const activeExp = useMemo(
@@ -133,7 +130,6 @@ const Experience = () => {
           </p>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 w-full">
-            {/* LEFT SIDE: Mac Window - FULL WIDTH ON MOBILE */}
             <div className="lg:col-span-2 w-full relative">
               <motion.div
                 id="mac-experience-window"
@@ -169,7 +165,6 @@ const Experience = () => {
                   zIndex: 1,
                 }}
               >
-                {/* Mac Titlebar */}
                 <div className={isDark 
                   ? "px-4 md:px-5 py-2.5 md:py-3 bg-gradient-to-b from-[#2d3e52] to-[#1f2937] border-b border-[color:var(--color-border)] flex items-center gap-3 relative z-10"
                   : "px-4 md:px-5 py-2.5 md:py-3 bg-[color:var(--color-bg-elevated)] border-b border-[color:var(--color-border)] flex items-center gap-3 relative z-10"
@@ -196,7 +191,6 @@ const Experience = () => {
                   </h3>
                 </div>
 
-                {/* Year Filter Tabs */}
                 <div className={isDark 
                   ? "px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r from-[#1f2937]/60 via-[#111827]/60 to-[#0f1419]/60 border-b border-[color:var(--color-border)]/30 flex gap-2 overflow-x-auto scrollbar-hide relative z-10"
                   : "px-4 md:px-6 py-2 md:py-3 bg-[color:var(--color-bg)] border-b border-[color:var(--color-border)]/30 flex gap-2 overflow-x-auto scrollbar-hide relative z-10"
@@ -237,7 +231,6 @@ const Experience = () => {
                   ))}
                 </div>
 
-                {/* MOBILE-OPTIMIZED CONTENT */}
                 <div
                   className={isDark 
                     ? "p-3 md:p-8 lg:p-9 min-h-[350px] md:min-h-[600px] bg-gradient-to-br from-[#1f2937]/80 via-[#111827]/70 to-[#0f1419]/80 backdrop-blur-md relative z-10"
@@ -304,7 +297,6 @@ const Experience = () => {
                               />
                             )}
 
-                            {/* MOBILE COMPACT LAYOUT */}
                             <div className="relative flex flex-col h-full space-y-2">
                               <div className={`text-xl md:text-4xl font-bold opacity-90 bg-gradient-to-r ${colorClass} bg-clip-text text-transparent`}>
                                 {exp.company_name?.[0] || "E"}
@@ -325,8 +317,9 @@ const Experience = () => {
                               <div className={isDark ? "border-t border-current border-opacity-30 pt-1.5" : "border-t border-[color:var(--color-border)] pt-1.5"} />
                               
                               <div className="flex justify-between items-center text-xs">
+                                {/* ✅ CHANGE: Use year field directly */}
                                 <span className={`font-bold uppercase tracking-wider bg-gradient-to-r ${colorClass} bg-clip-text text-transparent`}>
-                                  {new Date(exp.start_date).getFullYear()}
+                                  {exp.year}
                                 </span>
                                 <span className={isDark ? "opacity-60 text-[10px]" : "text-[10px] text-[color:var(--color-muted)]"}>
                                   {exp.location && `📍 ${exp.location}`}
@@ -348,7 +341,6 @@ const Experience = () => {
               </motion.div>
             </div>
 
-            {/* RIGHT SIDE: Details Panel - FULL WIDTH BELOW MAC ON MOBILE */}
             <div className="lg:col-span-1 w-full mt-4 lg:mt-0 flex items-start lg:items-center relative">
               <AnimatePresence mode="wait">
                 {activeExp && (
@@ -390,7 +382,8 @@ const Experience = () => {
                         transition={{ delay: 0.1 }}
                         className="inline-flex mb-2 px-2 md:px-2.5 py-0.5 md:py-1 rounded-full bg-[color:var(--color-primary-soft)] border border-[color:var(--color-primary)]/40 text-[color:var(--color-primary)] text-[10px] md:text-xs font-bold uppercase tracking-wider"
                       >
-                        {new Date(activeExp.start_date).getFullYear()}
+                        {/* ✅ CHANGE: Use year field directly */}
+                        {activeExp.year}
                       </motion.div>
 
                       <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-[color:var(--color-text)] mb-1 md:mb-1.5">
@@ -404,23 +397,8 @@ const Experience = () => {
                       <div className="flex flex-col gap-1 md:gap-1.5 text-[11px] md:text-xs lg:text-sm text-[color:var(--color-muted)]">
                         <div className="flex items-center gap-1.5">
                           <span>📅</span>
-                          <span>
-                            {activeExp.start_date
-                              ? new Date(activeExp.start_date).toLocaleDateString(
-                                  "en-US",
-                                  { month: "short", year: "numeric" }
-                                )
-                              : ""}{" "}
-                            -{" "}
-                            {activeExp.is_current
-                              ? "Present"
-                              : activeExp.end_date
-                              ? new Date(activeExp.end_date).toLocaleDateString(
-                                  "en-US",
-                                  { month: "short", year: "numeric" }
-                                )
-                              : ""}
-                          </span>
+                          {/* ✅ CHANGE: Use formatted_date_range directly */}
+                          <span>{activeExp.formatted_date_range}</span>
                         </div>
                         {activeExp.location && (
                           <div className="flex items-center gap-1.5">

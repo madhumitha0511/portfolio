@@ -1,3 +1,5 @@
+// ✅ UPDATED Contact.js - Instagram removed
+
 // client/src/components/sections/Contact.js
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
@@ -14,7 +16,6 @@ export const Contact = () => {
   const [success, setSuccess] = useState(false);
   const [isDark, setIsDark] = useState(false);
 
-  // Detect theme
   useEffect(() => {
     const currentTheme = document.documentElement.getAttribute('data-theme');
     setIsDark(currentTheme === 'dark');
@@ -77,7 +78,6 @@ export const Contact = () => {
               </p>
             </div>
 
-            {/* CV-BASED BULLETS */}
             <div className="grid gap-3 text-[13px] text-[color:var(--color-text)]">
               <div className="flex items-start gap-2">
                 <span className="mt-1 h-2 w-2 rounded-full bg-[color:var(--color-primary)]" />
@@ -93,18 +93,17 @@ export const Contact = () => {
               </div>
             </div>
 
-            {/* Call to action */}
             <div className="pt-4 pb-2">
               <p className="text-[12px] text-[color:var(--color-muted)] italic">
                 "Got a problem AI can solve? Let's talk code, not concepts."
               </p>
             </div>
 
-            {/* ✅ SOCIAL BUTTONS */}
+            {/* ✅ SOCIAL BUTTONS - Instagram removed */}
             <div className="flex gap-3 pt-2">
               {/* GitHub */}
               <motion.a
-                href="http://github.com/madhumitha0511"
+                href="https://github.com/YOUR_USERNAME_HERE"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.1, rotate: 5 }}
@@ -122,7 +121,7 @@ export const Contact = () => {
 
               {/* Email */}
               <motion.a
-                href="mailto:madhumitha.project@gmail.com"
+                href="mailto:ramwork31@gmail.com"
                 whileHover={{ scale: 1.1, rotate: -5 }}
                 whileTap={{ scale: 0.95 }}
                 className={isDark
@@ -138,7 +137,7 @@ export const Contact = () => {
 
               {/* LinkedIn */}
               <motion.a
-                href="https://www.linkedin.com/in/madhumithavenkatesan"
+                href="https://linkedin.com/in/ramprabhu-v-19380b223"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.1, rotate: 5 }}
@@ -153,8 +152,6 @@ export const Contact = () => {
                   <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
                 </svg>
               </motion.a>
-
-          
             </div>
           </div>
 

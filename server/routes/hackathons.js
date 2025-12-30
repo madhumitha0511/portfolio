@@ -1,29 +1,51 @@
+// ✅ UPDATED HACKATHONS ROUTES - ./routes/hackathons.js
+
 const express = require('express');
 const router = express.Router();
 const { query } = require('../config/db');
 const { verifyToken } = require('./auth');
 
-// GET all hackathons
+// GET all hackathons - ✅ WITH FORMATTED DATE
 router.get('/', async (req, res) => {
   try {
-    const result = await query('SELECT * FROM hackathons ORDER BY event_date DESC');
+    const result = await query(`
+      SELECT 
+        id, event_name, event_date, location, description,
+        role_or_achievement, team_size, outcome_or_result,
+        image_url, project_link, event_link, category,
+        created_at, updated_at,
+        EXTRACT(YEAR FROM event_date::date) as year,
+        TO_CHAR(event_date::date, 'DD-MM-YYYY') as formatted_date
+      FROM hackathons 
+      ORDER BY event_date DESC
+    `);
     res.json(result.rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// GET single hackathon
+// GET single hackathon - ✅ WITH FORMATTED DATE
 router.get('/:id', async (req, res) => {
   try {
-    const result = await query('SELECT * FROM hackathons WHERE id = $1', [req.params.id]);
+    const result = await query(`
+      SELECT 
+        id, event_name, event_date, location, description,
+        role_or_achievement, team_size, outcome_or_result,
+        image_url, project_link, event_link, category,
+        created_at, updated_at,
+        EXTRACT(YEAR FROM event_date::date) as year,
+        TO_CHAR(event_date::date, 'DD-MM-YYYY') as formatted_date
+      FROM hackathons 
+      WHERE id = $1
+    `, [req.params.id]);
     res.json(result.rows[0] || {});
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// CREATE hackathon (Admin)
+// CREATE hackathon (Admin) - ✅ UNCHANGED (accepts raw ISO dates)
 router.post('/', verifyToken, async (req, res) => {
   try {
     const { event_name, event_date, location, description, role_or_achievement, team_size, outcome_or_result, image_url, project_link, event_link, category } = req.body;
@@ -38,7 +60,7 @@ router.post('/', verifyToken, async (req, res) => {
   }
 });
 
-// UPDATE hackathon (Admin)
+// UPDATE hackathon (Admin) - ✅ UNCHANGED (accepts raw ISO dates)
 router.put('/:id', verifyToken, async (req, res) => {
   try {
     const { event_name, event_date, location, description, role_or_achievement, team_size, outcome_or_result, image_url, project_link, event_link, category } = req.body;
@@ -53,7 +75,7 @@ router.put('/:id', verifyToken, async (req, res) => {
   }
 });
 
-// DELETE hackathon (Admin)
+// DELETE hackathon (Admin) - ✅ UNCHANGED
 router.delete('/:id', verifyToken, async (req, res) => {
   try {
     await query('DELETE FROM hackathons WHERE id = $1', [req.params.id]);

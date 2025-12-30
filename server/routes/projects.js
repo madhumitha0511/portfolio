@@ -1,36 +1,61 @@
-// ============================================
-// 3. PROJECTS ROUTES - ./routes/projects.js
-// ============================================
+// ✅ UPDATED PROJECTS ROUTES - ./routes/projects.js
+
 const express = require('express');
 const router = express.Router();
 const { query } = require('../config/db');
 const { verifyToken } = require('./auth');
 
-// GET all projects
+// GET all projects - ✅ WITH FORMATTED DATES
 router.get('/', async (req, res) => {
   try {
-    const result = await query(
-      'SELECT * FROM projects ORDER BY start_date DESC'
-    );
+    const result = await query(`
+      SELECT 
+        id, title, description, short_description, image_url, 
+        tech_stack, github_link, demo_link, live_link, 
+        start_date, end_date, category, highlight,
+        created_at, updated_at,
+        TO_CHAR(start_date::date, 'DD-MM-YYYY') as formatted_start_date,
+        CASE 
+          WHEN end_date IS NOT NULL THEN 
+            TO_CHAR(end_date::date, 'DD-MM-YYYY')
+          ELSE NULL
+        END as formatted_end_date
+      FROM projects 
+      ORDER BY start_date DESC
+    `);
     res.json(result.rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// GET featured projects
+// GET featured projects - ✅ WITH FORMATTED DATES
 router.get('/featured', async (req, res) => {
   try {
-    const result = await query(
-      'SELECT * FROM projects WHERE highlight = true ORDER BY start_date DESC LIMIT 6'
-    );
+    const result = await query(`
+      SELECT 
+        id, title, description, short_description, image_url, 
+        tech_stack, github_link, demo_link, live_link, 
+        start_date, end_date, category, highlight,
+        created_at, updated_at,
+        TO_CHAR(start_date::date, 'DD-MM-YYYY') as formatted_start_date,
+        CASE 
+          WHEN end_date IS NOT NULL THEN 
+            TO_CHAR(end_date::date, 'DD-MM-YYYY')
+          ELSE NULL
+        END as formatted_end_date
+      FROM projects 
+      WHERE highlight = true 
+      ORDER BY start_date DESC 
+      LIMIT 6
+    `);
     res.json(result.rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// CREATE project (Admin)
+// CREATE project (Admin) - ✅ UNCHANGED (accepts raw ISO dates)
 router.post('/', verifyToken, async (req, res) => {
   try {
     const { title, description, short_description, image_url, tech_stack, github_link, demo_link, live_link, start_date, end_date, category, highlight } = req.body;
@@ -47,7 +72,7 @@ router.post('/', verifyToken, async (req, res) => {
   }
 });
 
-// UPDATE project (Admin)
+// UPDATE project (Admin) - ✅ UNCHANGED (accepts raw ISO dates)
 router.put('/:id', verifyToken, async (req, res) => {
   try {
     const { title, description, short_description, image_url, tech_stack, github_link, demo_link, live_link, start_date, end_date, category, highlight } = req.body;
@@ -64,7 +89,7 @@ router.put('/:id', verifyToken, async (req, res) => {
   }
 });
 
-// DELETE project (Admin)
+// DELETE project (Admin) - ✅ UNCHANGED
 router.delete('/:id', verifyToken, async (req, res) => {
   try {
     await query('DELETE FROM projects WHERE id = $1', [req.params.id]);

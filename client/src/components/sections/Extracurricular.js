@@ -1,6 +1,6 @@
-// client/src/components/sections/Extracurricular.js - NO IMAGE BORDER + MAX PIC + SMALLER TEXT
-// ✅ Clean image, 95% pic size, compact content
+// ✅ UPDATED Extracurricular.js - FRONTEND (Use formatted_date + year from backend)
 
+// client/src/components/sections/Extracurricular.js
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { extracurricularAPI } from "../../services/api";
@@ -11,7 +11,6 @@ const Extracurricular = () => {
   const [autoPlay, setAutoPlay] = useState(true);
   const [isDark, setIsDark] = useState(false);
 
-  // Detect theme
   useEffect(() => {
     const currentTheme = document.documentElement.getAttribute('data-theme');
     setIsDark(currentTheme === 'dark');
@@ -41,7 +40,6 @@ const Extracurricular = () => {
     load();
   }, []);
 
-  // Auto-advance every 3 seconds
   useEffect(() => {
     if (!autoPlay || items.length === 0) return;
     const timer = setInterval(() => {
@@ -83,7 +81,6 @@ const Extracurricular = () => {
       onMouseLeave={() => setAutoPlay(true)}
     >
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* HEADER SECTION */}
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -112,11 +109,10 @@ const Extracurricular = () => {
           </p>
         </motion.div>
 
-        {/* 60/40 CAROUSEL */}
         <div className="relative flex items-center justify-center">
           <div className="w-full flex justify-center items-center relative h-[520px] md:h-[600px]">
             
-            {/* ✅ MOBILE: CLEAN MAX IMAGE + COMPACT CONTENT */}
+            {/* MOBILE */}
             <div className="lg:hidden w-full max-w-md mx-auto relative">
               <AnimatePresence mode="wait">
                 {main && (
@@ -130,13 +126,11 @@ const Extracurricular = () => {
                     onHoverStart={() => setAutoPlay(false)}
                     onHoverEnd={() => setAutoPlay(true)}
                   >
-                    {/* Background - UNCHANGED */}
                     <div className={isDark
                       ? "absolute inset-0 bg-[color:var(--color-primary-soft)] -z-10"
                       : "absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50 -z-10"
                     } />
 
-                    {/* Glow border - UNCHANGED */}
                     <motion.div
                       animate={isDark ? {
                         boxShadow: [
@@ -155,7 +149,6 @@ const Extracurricular = () => {
                       className="absolute inset-0 rounded-[2rem] pointer-events-none"
                     />
 
-                    {/* ✅ 60% MAX IMAGE - NO BORDER */}
                     <div className="relative z-10 h-[60%] w-full">
                       <motion.div
                         initial={{ scale: 0.95, opacity: 0 }}
@@ -163,7 +156,6 @@ const Extracurricular = () => {
                         transition={{ delay: 0.15, duration: 0.8 }}
                         className="absolute inset-0 flex items-center justify-center"
                       >
-                        {/* Rotating frame only */}
                         <motion.div
                           animate={{ rotate: 360 }}
                           transition={{
@@ -177,12 +169,10 @@ const Extracurricular = () => {
                           }
                         />
                         
-                        {/* ✅ NO BORDER - FULL SIZE IMAGE */}
                         <div className={isDark
-  ? "w-[95%] h-[95%] rounded-3xl overflow-hidden shadow-2xl shadow-[color:var(--color-primary)]/20 flex items-center justify-center bg-[color:var(--color-card)]/90 backdrop-blur-md"
-  : "w-[95%] h-[95%] rounded-3xl overflow-hidden shadow-3xl shadow-[color:var(--color-primary)]/30 flex items-center justify-center"
-}>
-
+                          ? "w-[95%] h-[95%] rounded-3xl overflow-hidden shadow-2xl shadow-[color:var(--color-primary)]/20 flex items-center justify-center bg-[color:var(--color-card)]/90 backdrop-blur-md"
+                          : "w-[95%] h-[95%] rounded-3xl overflow-hidden shadow-3xl shadow-[color:var(--color-primary)]/30 flex items-center justify-center"
+                        }>
                           <motion.img
                             src={main.image_url || "/api/placeholder/500/500"}
                             alt={main.organization_name || "Club"}
@@ -194,9 +184,7 @@ const Extracurricular = () => {
                       </motion.div>
                     </div>
 
-                    {/* ✅ 40% COMPACT CONTENT - SMALLER TEXT */}
                     <div className="relative z-20 h-[40%] px-5 pt-2 pb-5 flex flex-col justify-between">
-                      {/* Title & Organization - SMALLER */}
                       <div className="space-y-1 mb-2">
                         <motion.h3
                           initial={{ opacity: 0, y: 10 }}
@@ -217,7 +205,6 @@ const Extracurricular = () => {
                         </motion.p>
                       </div>
 
-                      {/* Description - SMALLER */}
                       <motion.p
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -227,7 +214,6 @@ const Extracurricular = () => {
                         {main.description}
                       </motion.p>
 
-                      {/* Position & Year - SMALLER & TIGHTER */}
                       <div className="flex items-center justify-between pt-1 border-t border-[color:var(--color-border)]/40">
                         <motion.p
                           initial={{ opacity: 0, scale: 0.9 }}
@@ -238,7 +224,8 @@ const Extracurricular = () => {
                             : "px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-md border border-[color:var(--color-border)] text-[9px] font-bold uppercase tracking-[0.15em] text-[color:var(--color-primary)]"
                           }
                         >
-                          {main.start_date?.slice(0, 4) || "Active"}
+                          {/* ✅ CHANGE: Use year field directly */}
+                          {main.year || "Active"}
                         </motion.p>
                         
                         <motion.p
@@ -254,7 +241,6 @@ const Extracurricular = () => {
                         </motion.p>
                       </div>
 
-                      {/* Nav buttons - bottom center */}
                       <div className="flex items-center justify-center gap-3 mt-2 pt-2 border-t border-[color:var(--color-border)]/30">
                         <motion.button
                           whileHover={{ scale: 1.08 }}
@@ -285,7 +271,7 @@ const Extracurricular = () => {
               </AnimatePresence>
             </div>
 
-            {/* DESKTOP - SAME CHANGES */}
+            {/* DESKTOP */}
             <AnimatePresence mode="wait">
               {main && (
                 <motion.article
@@ -298,7 +284,6 @@ const Extracurricular = () => {
                   onHoverStart={() => setAutoPlay(false)}
                   onHoverEnd={() => setAutoPlay(true)}
                 >
-                  {/* Background - UNCHANGED */}
                   <div className={isDark
                     ? "absolute inset-0 bg-[color:var(--color-primary-soft)] -z-10"
                     : "absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50 -z-10"
@@ -322,7 +307,6 @@ const Extracurricular = () => {
                     className="absolute inset-0 rounded-[3rem] pointer-events-none"
                   />
 
-                  {/* Desktop 60% MAX IMAGE - NO BORDER */}
                   <div className="relative z-10 h-[60%] w-full">
                     <motion.div
                       initial={{ scale: 0.95, opacity: 0 }}
@@ -339,10 +323,9 @@ const Extracurricular = () => {
                         }
                       />
                       <div className={isDark
-  ? "w-[95%] h-[95%] rounded-[2rem] overflow-hidden shadow-3xl shadow-[color:var(--color-primary)]/25 flex items-center justify-center bg-[color:var(--color-card)]/90 backdrop-blur-md"
-  : "w-[95%] h-[95%] rounded-[2rem] overflow-hidden shadow-3xl shadow-[color:var(--color-primary)]/40 flex items-center justify-center"
-}>
-
+                        ? "w-[95%] h-[95%] rounded-[2rem] overflow-hidden shadow-3xl shadow-[color:var(--color-primary)]/25 flex items-center justify-center bg-[color:var(--color-card)]/90 backdrop-blur-md"
+                        : "w-[95%] h-[95%] rounded-[2rem] overflow-hidden shadow-3xl shadow-[color:var(--color-primary)]/40 flex items-center justify-center"
+                      }>
                         <motion.img
                           src={main.image_url || "/api/placeholder/600/600"}
                           alt={main.organization_name || "Club"}
@@ -354,7 +337,6 @@ const Extracurricular = () => {
                     </motion.div>
                   </div>
 
-                  {/* Desktop 40% COMPACT CONTENT - SMALLER TEXT */}
                   <div className="relative z-20 h-[40%] px-8 pt-4 pb-8 flex flex-col justify-between">
                     <div className="space-y-2 mb-3">
                       <motion.h3
@@ -395,7 +377,8 @@ const Extracurricular = () => {
                           : "px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-[color:var(--color-border)] text-sm font-bold uppercase tracking-wider text-[color:var(--color-primary)]"
                         }
                       >
-                        {main.start_date?.slice(0, 4) || "Active"}
+                        {/* ✅ CHANGE: Use year field directly */}
+                        {main.year || "Active"}
                       </motion.p>
                       
                       <motion.p
@@ -415,7 +398,6 @@ const Extracurricular = () => {
               )}
             </AnimatePresence>
 
-            {/* Left & Right cards unchanged */}
             {left && (
               <motion.div
                 initial={{ opacity: 0, x: -100, scale: 0.65 }}
@@ -478,7 +460,6 @@ const Extracurricular = () => {
           </div>
         </div>
 
-        {/* Progress Dots */}
         <div className="flex justify-center items-center gap-4 mt-16">
           <div className="flex gap-3">
             {items.map((item, i) => (

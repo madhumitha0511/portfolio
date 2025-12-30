@@ -1,3 +1,5 @@
+// ✅ UPDATED Achievements.js - FRONTEND (Use formatted_date from backend)
+
 // client/src/components/sections/Achievements.js
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -8,7 +10,6 @@ const Achievements = () => {
   const [index, setIndex] = useState(0);
   const [isDark, setIsDark] = useState(false);
 
-  // Detect theme
   useEffect(() => {
     const currentTheme = document.documentElement.getAttribute('data-theme');
     setIsDark(currentTheme === 'dark');
@@ -26,7 +27,6 @@ const Achievements = () => {
     return () => observer.disconnect();
   }, []);
 
-  // AUTO-SCROLL (15s per achievement)
   useEffect(() => {
     const interval = setInterval(() => {
       if (items.length > 0) {
@@ -65,7 +65,6 @@ const Achievements = () => {
       className="relative py-24 px-4 overflow-hidden"
     >
       <div className="max-w-5xl mx-auto relative z-10">
-        {/* header */}
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-bold text-[color:var(--color-text)]">
             Achievements
@@ -77,7 +76,6 @@ const Achievements = () => {
 
         {hasItems ? (
           <div className="relative flex items-center justify-center py-6 gap-4 md:gap-6">
-            {/* LEFT BUTTON - SIMPLE ROUND */}
             <motion.button
               onClick={goPrev}
               whileHover={{ scale: 1.15, rotate: -10 }}
@@ -90,7 +88,6 @@ const Achievements = () => {
               <span className="text-lg md:text-xl font-bold text-[color:var(--color-primary)]">‹</span>
             </motion.button>
 
-            {/* left card */}
             <SideCard
               item={items[leftIdx]}
               position="left"
@@ -98,7 +95,6 @@ const Achievements = () => {
               isDark={isDark}
             />
 
-            {/* center card */}
             <div className="relative z-20 mx-3 md:mx-6">
               <AnimatePresence mode="wait">
                 <motion.div
@@ -112,12 +108,10 @@ const Achievements = () => {
                     : "relative w-[280px] sm:w-[300px] md:w-[340px] h-[400px] sm:h-[420px] md:h-[440px] rounded-[32px] bg-gradient-to-br from-blue-50/90 via-white/95 to-purple-50/90 backdrop-blur-[20px] shadow-elevated border border-[color:var(--color-border)] flex flex-col items-center justify-between px-6 py-6 overflow-hidden"
                   }
                 >
-                  {/* ✅ EVEN BIGGER EMOJI - PERFECTLY CENTERED */}
                   <div className="flex-1 flex items-center justify-center mb-8">
                     <span className="text-7xl md:text-8xl">🏆</span>
                   </div>
 
-                  {/* counter pill - TRUE GLASS */}
                   <div className={isDark
                     ? "px-3 py-1 rounded-full bg-[color:var(--color-bg)]/80 backdrop-blur-[15px] text-[11px] text-[color:var(--color-text)] mb-2 shadow-xl"
                     : "px-3 py-1 rounded-full bg-white/90 backdrop-blur-[15px] text-[11px] text-[color:var(--color-primary)] font-semibold mb-2 shadow-soft border border-[color:var(--color-border)]"
@@ -125,17 +119,15 @@ const Achievements = () => {
                     {centerIdx + 1} / {items.length}
                   </div>
 
-                  {/* text content */}
                   <div className="text-center px-2 space-y-2 mb-4">
                     <h3 className="text-lg md:text-xl font-bold text-[color:var(--color-text)]">
                       {items[centerIdx].achievement_title}
                     </h3>
                     <p className="text-[11px] text-[color:var(--color-muted)]">
                       {items[centerIdx].organization}
-                      {items[centerIdx].category &&
-                        ` • ${items[centerIdx].category}`}
-                      {items[centerIdx].achievement_date &&
-                        ` • ${items[centerIdx].achievement_date}`}
+                      {items[centerIdx].category && ` • ${items[centerIdx].category}`}
+                      {/* ✅ CHANGE: Use formatted_date instead of achievement_date */}
+                      {items[centerIdx].formatted_date && ` • ${items[centerIdx].formatted_date}`}
                     </p>
                     {items[centerIdx].description && (
                       <p className={isDark
@@ -150,7 +142,6 @@ const Achievements = () => {
               </AnimatePresence>
             </div>
 
-            {/* right card */}
             <SideCard
               item={items[rightIdx]}
               position="right"
@@ -158,7 +149,6 @@ const Achievements = () => {
               isDark={isDark}
             />
 
-            {/* RIGHT BUTTON - SIMPLE ROUND */}
             <motion.button
               onClick={goNext}
               whileHover={{ scale: 1.15, rotate: 10 }}
@@ -203,15 +193,13 @@ const SideCard = ({ item, position, onClick, isDark }) => {
           transform: `rotate(${rotate}deg) translateX(${translateX})`,
         }}
       >
-        {/* ✅ EVEN BIGGER EMOJI - PERFECTLY CENTERED */}
         <div className="absolute top-10 inset-x-0 flex justify-center opacity-95">
           <span className="text-6xl md:text-7xl">🏆</span>
         </div>
 
-        {/* title - TRUE GLASS */}
         <p className="text-sm md:text-base font-semibold text-[color:var(--color-text)]/95 text-center line-clamp-2 bg-[color:var(--color-bg)]/80 backdrop-blur-[15px] px-5 py-6 rounded-2xl mx-4 shadow-lg h-28 flex items-center justify-center">
-  {item.achievement_title}
-</p>
+          {item.achievement_title}
+        </p>
       </div>
     </motion.button>
   );

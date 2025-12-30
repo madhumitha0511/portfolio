@@ -1,3 +1,5 @@
+// ✅ UPDATED Projects.js - FRONTEND (Projects typically don't show dates in UI, but ready if needed)
+
 // client/src/components/sections/Projects.js
 import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
@@ -8,8 +10,6 @@ export const Projects = () => {
   const [time, setTime] = useState(0);
   const [tempActiveIndex, setTempActiveIndex] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
-  
-  // Detect theme
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
@@ -29,7 +29,6 @@ export const Projects = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Responsive detection
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
@@ -39,7 +38,6 @@ export const Projects = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Fetch projects + auto-refetch every 30s
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -55,7 +53,6 @@ export const Projects = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // 60fps RAF loop (only desktop/tablet)
   useEffect(() => {
     if (isMobile) return;
 
@@ -71,10 +68,9 @@ export const Projects = () => {
     return () => cancelAnimationFrame(frameId);
   }, [isMobile]);
   
-  // FIXED: Larger orbit radius to prevent overlap
   const radiusX = 450;
-  const radiusY = 420;      // ⬆️ was 360
-const centerYOffset = 230;
+  const radiusY = 420;
+  const centerYOffset = 230;
 
   const getOrbitPosition = useCallback((i, n) => {
     if (!n || isMobile) return { x: 0, y: 0, angle: 0 };
@@ -85,7 +81,6 @@ const centerYOffset = 230;
     return { x, y, angle };
   }, [time, isMobile]);
 
-  // Memoized orbit active project (position-based)
   const orbitActiveIndex = useMemo(() => {
     if (!projects.length || isMobile) return 0;
     let bestIdx = 0;
@@ -105,11 +100,9 @@ const centerYOffset = 230;
     return bestIdx;
   }, [projects, getOrbitPosition]);
 
-  // Final active index (manual override > orbit position)
   const activeIndex = tempActiveIndex !== null ? tempActiveIndex : orbitActiveIndex;
   const activeProject = projects[activeIndex];
 
-  // Get active card color from orbit card - THEME ADAPTIVE
   const getActiveBorderColor = (index) => {
     const colorMap = {
       0: "border-orange-500/80",
@@ -124,13 +117,11 @@ const centerYOffset = 230;
     return colorMap[index % 8] || "border-orange-500/80";
   };
 
-  // Click handler for orbit cards - 15 SECONDS ACTIVE
   const handleCardClick = useCallback((index) => {
     setTempActiveIndex(index);
     setTimeout(() => setTempActiveIndex(null), 15000);
   }, []);
 
-  // Color palette for orbit cards - THEME ADAPTIVE
   const colors = [
     "from-orange-400 to-red-500",
     "from-cyan-400 to-blue-500",
@@ -177,14 +168,12 @@ const centerYOffset = 230;
 
         {!isMobile ? (
           <div className="relative h-[700px] md:h-[780px] flex items-center justify-center mt-2">
-            {/* Orbit Cards */}
             {projects.map((project, index) => {
               const { x, y, angle } = getOrbitPosition(index, projects.length);
               const colorClass = getColorClass(index);
 
               const normalized = ((angle + Math.PI) % (2 * Math.PI)) - Math.PI;
               const isTopHalf = normalized > -Math.PI / 2 && normalized < Math.PI / 2;
-              // FIXED: Lower z-index for orbit cards to stay behind center
               const zIndex = isTopHalf ? 30 : 5;
 
               return (
@@ -207,7 +196,6 @@ const centerYOffset = 230;
                   transition={{ type: "tween", ease: "linear", duration: 0.2 }}
                   onClick={() => handleCardClick(index)}
                 >
-                  {/* Colorful top border for BOTH themes */}
                   <div className={`absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r ${colorClass}`} />
                   
                   <div className="h-full w-full px-5 py-4 flex flex-col justify-between">
@@ -217,7 +205,12 @@ const centerYOffset = 230;
                     <p className="text-xs md:text-sm text-[color:var(--color-muted)] line-clamp-2">
                       {project.short_description}
                     </p>
-                    {/* Colorful "View details" for BOTH themes */}
+                    {/* ✅ OPTIONAL: Add formatted date if you want to display it */}
+                    {project.formatted_start_date && (
+                      <p className="text-[10px] text-[color:var(--color-muted)] mt-1">
+                        {project.formatted_start_date}
+                      </p>
+                    )}
                     <p className={`text-xs mt-1 font-semibold bg-gradient-to-r ${colorClass} bg-clip-text text-transparent`}>
                       View details →
                     </p>
@@ -226,7 +219,6 @@ const centerYOffset = 230;
               );
             })}
 
-            {/* ACTIVE CARD - FIXED: Higher z-index to stay on top */}
             {activeProject && (
               <div className="absolute top-1/2 translate-y-0 flex flex-col items-center justify-center" style={{ zIndex: 50 }}>
                 <motion.div
@@ -259,6 +251,13 @@ const centerYOffset = 230;
                     <p className="text-sm md:text-base text-[color:var(--color-muted)] leading-relaxed line-clamp-3 w-full px-2">
                       {activeProject.short_description}
                     </p>
+
+                    {/* ✅ OPTIONAL: Display formatted date in center card */}
+                    {activeProject.formatted_start_date && (
+                      <p className="text-xs text-[color:var(--color-muted)]">
+                        Started: {activeProject.formatted_start_date}
+                      </p>
+                    )}
 
                     {activeProject.tech_stack && activeProject.tech_stack.length > 0 && (
                       <div className="flex flex-wrap justify-center gap-1.5 w-full max-w-xs">
@@ -320,7 +319,6 @@ const centerYOffset = 230;
             )}
           </div>
         ) : (
-          // Mobile layout
           <div className="mt-12 space-y-6 max-w-2xl mx-auto">
             {projects.map((project, index) => (
               <motion.div
@@ -353,6 +351,13 @@ const centerYOffset = 230;
                   <p className="text-sm text-[color:var(--color-muted)] mb-4 leading-relaxed">
                     {project.short_description}
                   </p>
+
+                  {/* ✅ OPTIONAL: Display formatted date in mobile cards */}
+                  {project.formatted_start_date && (
+                    <p className="text-xs text-[color:var(--color-muted)] mb-3">
+                      Started: {project.formatted_start_date}
+                    </p>
+                  )}
 
                   <div className="flex flex-wrap gap-1.5 mb-4">
                     {project.tech_stack?.map((tech, i) => (

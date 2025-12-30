@@ -1,3 +1,5 @@
+// ✅ UPDATED Research.js - FRONTEND (Use formatted dates from backend)
+
 // client/src/components/sections/Research.js
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
@@ -22,10 +24,8 @@ const Research = () => {
     <section
       id="research"
       className="py-20 px-4 relative overflow-hidden"
-      // REMOVED: bg-[color:var(--color-bg)] and animated background - using global now!
     >
       <div className="max-w-5xl mx-auto relative z-10">
-        {/* header */}
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-bold text-[color:var(--color-text)]">
             Research
@@ -36,7 +36,6 @@ const Research = () => {
           </p>
         </div>
 
-        {/* rectangular cards */}
         <div className="space-y-6">
           {items.map((r, i) => (
             <motion.article
@@ -47,10 +46,8 @@ const Research = () => {
               transition={{ delay: i * 0.05, duration: 0.4 }}
               className="relative rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-card)]/88 backdrop-blur-xl shadow-[0_18px_60px_rgba(0,0,0,0.65)] overflow-hidden"
             >
-              {/* left accent rail */}
               <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-[color:var(--color-primary)] via-[color:var(--color-primary)]/60 to-transparent" />
 
-              {/* subtle grid overlay */}
               <div
                 className="pointer-events-none absolute inset-0 opacity-[0.12]"
                 style={{
@@ -62,12 +59,11 @@ const Research = () => {
                 }}
               />
 
-              {/* content */}
               <div className="relative z-10 px-6 py-5 md:px-7 md:py-6 flex flex-col md:flex-row md:items-start md:gap-6">
-                {/* meta column */}
+                {/* ✅ CHANGE: Use formatted dates */}
                 <div className="mb-3 md:mb-0 md:w-40 flex-shrink-0">
                   <p className="text-[11px] font-medium text-[color:var(--color-muted)]">
-                    {r.start_date} – {r.end_date || "Ongoing"}
+                    {r.formatted_start_date || r.start_date} – {r.formatted_end_date || r.end_date || "Ongoing"}
                   </p>
                   {r.research_type && (
                     <span className="mt-2 inline-flex items-center rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-bg)]/85 backdrop-blur-sm px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--color-primary)]">
@@ -76,7 +72,6 @@ const Research = () => {
                   )}
                 </div>
 
-                {/* main column */}
                 <div className="flex-1 space-y-2">
                   <h3 className="text-sm md:text-base font-semibold text-[color:var(--color-text)]">
                     {r.research_title}
@@ -94,7 +89,6 @@ const Research = () => {
                     </p>
                   )}
 
-                  {/* tags row */}
                   {(r.domain || r.keywords) && (
                     <div className="flex flex-wrap gap-1.5 mt-2">
                       {(r.domain ? [r.domain] : [])
@@ -115,7 +109,6 @@ const Research = () => {
                   )}
                 </div>
 
-                {/* small CTA badge */}
                 <div className="mt-3 md:mt-0 md:self-center">
                   <span className="inline-flex items-center rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-bg)]/80 backdrop-blur-sm px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-[color:var(--color-muted)]">
                     Research project
