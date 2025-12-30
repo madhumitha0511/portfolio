@@ -229,16 +229,7 @@ export const Contact = () => {
                 />
               </div>
 
-              <div className="flex items-center gap-2 text-[11px] text-[color:var(--color-muted)]">
-                <span className={isDark
-                  ? "inline-flex h-3.5 w-3.5 items-center justify-center rounded-[6px] border border-[color:var(--color-border)] bg-[color:var(--color-bg)]/90 text-[color:var(--color-primary)] text-[10px]"
-                  : "inline-flex h-3.5 w-3.5 items-center justify-center rounded-[6px] border border-[color:var(--color-border)] bg-white text-[color:var(--color-primary)] text-[10px]"
-                }>
-                  ✓
-                </span>
-                <span>Replies go only to your email. No promotions.</span>
-              </div>
-
+             
               <motion.button
                 whileHover={{ y: -1, boxShadow: isDark ? "0 12px 0 rgba(0,0,0,0.3)" : "0 12px 0 rgba(59,130,246,0.2)" }}
                 whileTap={{ y: 0, scale: 0.98 }}
