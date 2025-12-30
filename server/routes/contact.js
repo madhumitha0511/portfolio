@@ -77,7 +77,7 @@ router.post('/', async (req, res) => {
       `,
     };
 
-    mg.messages.create(process.env.MAILGUN_DOMAIN || 'sandbox792de93e370a4c94a682a64e8fb02425.mailgun.org', emailData)
+    mg.messages.create(process.env.MAILGUN_DOMAIN , emailData)
       .then(() => console.log('✅ MAILGUN SENT:', dbResult.rows[0].id))
       .catch(err => console.error('⚠️ MAILGUN FAILED:', err.message));
 
