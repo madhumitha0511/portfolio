@@ -396,7 +396,7 @@ const Hero = () => {
             className="relative z-10 w-full max-w-[450px] md:max-w-[550px]"
           >
             <img
-              src="/profile-4.png"
+              src="/profile-1.png"
               alt={`${owner.first_name} ${owner.last_name}`}
               className="w-full h-auto object-contain relative z-20"
               loading="eager"
