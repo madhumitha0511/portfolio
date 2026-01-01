@@ -70,32 +70,31 @@ export const Contact = () => {
                 Get In Touch
               </p>
               <h2 className="text-3xl md:text-4xl font-bold text-[color:var(--color-text)] mb-4">
-                Building AI solutions that <span className="text-[color:var(--color-primary)]">solve real problems</span>
+               Building intelligent systems that <span className="text-[color:var(--color-primary)]">solve real problems</span>
               </h2>
               <p className="text-sm md:text-base text-[color:var(--color-muted)] leading-relaxed">
-                Full-stack AI developer with experience in production ML systems, scalable web apps, 
-                and research-grade algorithms. Let's discuss your next project.
+                AI-focused developer and full-stack engineer with hands-on experience in production-ready applications, applied ML, and scalable web platforms. I focus on clean implementation, on-time delivery, and turning ideas into usable systems, not just proof-of-concepts.
               </p>
             </div>
 
             <div className="grid gap-3 text-[13px] text-[color:var(--color-text)]">
               <div className="flex items-start gap-2">
                 <span className="mt-1 h-2 w-2 rounded-full bg-[color:var(--color-primary)]" />
-                <p>ML Engineer: 94% accuracy models deployed at scale</p>
+                <p>Full-stack: React, Flutter, Flask, Firebase, WordPress, scalable APIs</p>
               </div>
               <div className="flex items-start gap-2">
                 <span className="mt-1 h-2 w-2 rounded-full bg-[color:var(--color-primary)]" />
-                <p>Full-stack: React + Node.js + PostgreSQL production apps</p>
+                <p>AI / ML: Applied ML in health monitoring, sensor-based systems, and data-driven workflows</p>
               </div>
               <div className="flex items-start gap-2">
                 <span className="mt-1 h-2 w-2 rounded-full bg-[color:var(--color-primary)]" />
-                <p>Research: 7 papers + Top 3 hackathon finisher</p>
+                <p>Execution & Leadership: 15+ real-world projects delivered, 100% on-time, team leadership experience</p>
               </div>
             </div>
 
             <div className="pt-4 pb-2">
               <p className="text-[12px] text-[color:var(--color-muted)] italic">
-                "Got a problem AI can solve? Let's talk code, not concepts."
+                "Got a problem ? Let's talk code, not concepts."
               </p>
             </div>
 
