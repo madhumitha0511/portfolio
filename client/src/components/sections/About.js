@@ -23,7 +23,7 @@ const About = () => {
   return (
     <section
       id="about"
-      className="relative py-20 px-4 overflow-hidden" // ✅ BG REMOVED
+      className="relative py-20 px-4 overflow-hidden"
     >
       {/* Subtle background mesh using theme variables */}
       <div className="absolute inset-0 opacity-25 pointer-events-none">
@@ -45,11 +45,12 @@ const About = () => {
 
       <div className="relative max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* LEFT SIDE - Premium Image Card (UNCHANGED) */}
+          
+          {/* ✅ LEFT SIDE - Photo with bidirectional slide from left */}
           <motion.div
-            initial={{ scale: 0.9, opacity: 0, rotateY: -10 }}
-            whileInView={{ scale: 1, opacity: 1, rotateY: 0 }}
-            viewport={{ once: true }}
+            initial={{ x: -100, opacity: 0, scale: 0.9, rotateY: -10 }}
+            whileInView={{ x: 0, opacity: 1, scale: 1, rotateY: 0 }}
+            viewport={{ once: false, amount: 0.3 }}
             transition={{ duration: 0.7, type: "spring", bounce: 0.25 }}
             className="relative w-full max-w-md mx-auto lg:mx-0"
           >
@@ -76,36 +77,39 @@ const About = () => {
             </motion.div>
           </motion.div>
 
-          {/* RIGHT SIDE - Content (UNCHANGED) */}
+          {/* ✅ RIGHT SIDE - Content with bidirectional animations */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false, amount: 0.3 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="space-y-8"
           >
             <motion.h2
               initial={{ opacity: 0, y: -20 }}
               whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.3 }}
               transition={{ delay: 0.3 }}
               className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[color:var(--color-primary)] to-[color:var(--color-accent)] bg-clip-text text-transparent"
             >
-              A Little Bit About Me...
+              Who I am What I Build...
             </motion.h2>
 
             <motion.p
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
+              viewport={{ once: false, amount: 0.3 }}
               transition={{ delay: 0.4 }}
               className="text-lg md:text-xl leading-relaxed text-[color:var(--color-text)] opacity-90"
             >
               {about.description}
             </motion.p>
 
-            {/* Stats Grid (UNCHANGED) */}
+            {/* ✅ Stats Grid - bidirectional */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.3 }}
               transition={{ delay: 0.5 }}
               className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4"
             >
@@ -119,6 +123,7 @@ const About = () => {
                   key={idx}
                   initial={{ opacity: 0, scale: 0.9 }}
                   whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: false, amount: 0.3 }}
                   transition={{ delay: 0.5 + idx * 0.1 }}
                   className="relative"
                 >
@@ -134,10 +139,11 @@ const About = () => {
               ))}
             </motion.div>
 
-            {/* CTA Buttons (UNCHANGED) */}
+            {/* ✅ CTA Buttons - bidirectional */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.3 }}
               transition={{ delay: 0.6 }}
               className="flex flex-wrap gap-4 pt-4"
             >
@@ -163,7 +169,7 @@ const About = () => {
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.97 }}
                 href="/resume.pdf"
-                download="Madhumitha_Resume.pdf"
+                download="RamPrabhu_Resume.pdf"
                 className="relative px-8 py-3 rounded-xl border-2 border-[color:var(--color-primary)] text-[color:var(--color-primary)] font-semibold transition-colors bg-transparent hover:bg-[color:var(--color-primary)] hover:text-[color:var(--color-bg)]"
               >
                 <span className="flex items-center gap-2">

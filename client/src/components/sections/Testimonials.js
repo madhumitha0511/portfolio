@@ -1,10 +1,11 @@
 // client/src/components/sections/Testimonials.js
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { testimonialsAPI } from "../../services/api";
 
 const Testimonials = () => {
   const [items, setItems] = useState([]);
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     const load = async () => {
@@ -24,30 +25,92 @@ const Testimonials = () => {
     <section
       id="testimonials"
       className="relative py-24 px-4 overflow-hidden"
-      // REMOVED: bg-[color:var(--color-bg)] and animated background - using global now!
+      style={{
+        perspective: "1500px",
+        transformStyle: "preserve-3d"
+      }}
     >
-      <div className="max-w-6xl mx-auto relative z-10">
+      {/* ✅ Container with 3D depth */}
+      <motion.div 
+        className="max-w-6xl mx-auto relative z-10"
+        initial={{ 
+          y: prefersReducedMotion ? 0 : 50,
+          scale: prefersReducedMotion ? 1 : 0.95
+        }}
+        whileInView={{ 
+          y: 0,
+          scale: 1
+        }}
+        viewport={{ 
+          once: false,
+          amount: 0.1
+        }}
+        transition={{ 
+          duration: prefersReducedMotion ? 0 : 0.8,
+          ease: [0.22, 1, 0.36, 1]
+        }}
+      >
+        
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-[color:var(--color-text)]">
             Testimonials
           </h2>
-          <p className="mt-3 text-sm md:text-base text-[color:var(--color-muted)]">
-            Feedback from mentors, clients, and collaborators.
-          </p>
         </div>
 
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {items.map((t, i) => (
             <motion.article
               key={t.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ delay: i * 0.05, duration: 0.4 }}
+              initial={{ 
+                scale: 0,
+                rotateY: prefersReducedMotion ? 0 : -180,
+                z: prefersReducedMotion ? 0 : -200
+              }}
+              whileInView={{ 
+                scale: 1,
+                rotateY: 0,
+                z: 0
+              }}
+              viewport={{ 
+                once: false,
+                amount: 0.3
+              }}
+              transition={{
+                delay: prefersReducedMotion ? 0 : i * 0.1,
+                type: "spring",
+                stiffness: prefersReducedMotion ? 400 : 260,
+                damping: prefersReducedMotion ? 40 : 20,
+                mass: 1
+              }}
+              whileHover={!prefersReducedMotion ? {
+                scale: 1.05,
+                rotateY: 5,
+                z: 50,
+                transition: { 
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 15
+                }
+              } : {}}
               className="relative flex flex-col items-center"
+              style={{
+                transformStyle: "preserve-3d",
+                willChange: "transform"
+              }}
             >
-              {/* avatar circle */}
-              <div className="relative z-20 mb-[-32px]">
+              {/* ✅ Avatar with pop animation */}
+              <motion.div 
+                className="relative z-20 mb-[-32px]"
+                initial={{ scale: 0, rotate: -180 }}
+                whileInView={{ scale: 1, rotate: 0 }}
+                viewport={{ once: false }}
+                transition={{
+                  delay: prefersReducedMotion ? 0 : i * 0.1 + 0.2,
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 15
+                }}
+              >
                 <div className="w-16 h-16 rounded-full border-2 border-[color:var(--color-bg)] bg-[color:var(--color-card)] overflow-hidden shadow-[0_8px_18px_rgba(0,0,0,0.6)]">
                   <img
                     src={
@@ -59,11 +122,10 @@ const Testimonials = () => {
                     className="w-full h-full object-cover"
                   />
                 </div>
-              </div>
+              </motion.div>
 
-              {/* card */}
+              {/* ✅ Card - 100% UNCHANGED CONTENT */}
               <div className="relative w-full rounded-3xl bg-[color:var(--color-card)]/95 backdrop-blur-xl border border-[color:var(--color-border)] px-5 pt-10 pb-6 text-center shadow-[0_18px_40px_rgba(0,0,0,0.7)]">
-                {/* light overlay like reference */}
                 <div
                   className="pointer-events-none absolute inset-0 rounded-3xl opacity-60"
                   style={{
@@ -85,12 +147,21 @@ const Testimonials = () => {
                     "{t.message}"
                   </p>
 
-                  {/* rating dots (static 5 or from t.rating if exists) */}
+                  {/* ✅ Rating dots with sequential pop */}
                   <div className="mt-3 flex gap-1.5">
                     {(t.rating ? Array.from({ length: t.rating }) : [1, 2, 3, 4, 5]).map(
                       (_, idx) => (
-                        <span
+                        <motion.span
                           key={idx}
+                          initial={{ scale: 0 }}
+                          whileInView={{ scale: 1 }}
+                          viewport={{ once: false }}
+                          transition={{
+                            delay: prefersReducedMotion ? 0 : i * 0.1 + 0.4 + idx * 0.05,
+                            type: "spring",
+                            stiffness: 500,
+                            damping: 15
+                          }}
                           className={`w-1.5 h-1.5 rounded-full ${
                             idx < (t.rating || 4)
                               ? "bg-[color:var(--color-primary)]"
@@ -105,7 +176,7 @@ const Testimonials = () => {
             </motion.article>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

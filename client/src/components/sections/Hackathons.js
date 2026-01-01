@@ -1,19 +1,38 @@
-// ✅ FIXED Hackathons.js - Line 138 corrected
-
 // client/src/components/sections/Hackathons.js
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { hackathonsAPI } from "../../services/api";
 
 const Hackathons = () => {
   const [items, setItems] = useState([]);
   const [activeId, setActiveId] = useState(null);
+  const [isDark, setIsDark] = useState(false);
+  
+  // ✅ PERFORMANCE: Respect user's motion preferences
+  const prefersReducedMotion = useReducedMotion();
+
+  // Detect theme
+  useEffect(() => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    setIsDark(currentTheme === 'dark');
+
+    const observer = new MutationObserver(() => {
+      const theme = document.documentElement.getAttribute('data-theme');
+      setIsDark(theme === 'dark');
+    });
+    
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme']
+    });
+    
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const load = async () => {
       try {
         const res = await hackathonsAPI.getAll();
-        // ✅ CHANGE: Sort by year field
         const sorted = res.data.sort((a, b) => b.year - a.year);
         setItems(sorted);
         if (sorted[0]) setActiveId(sorted[0].id);
@@ -37,71 +56,313 @@ const Hackathons = () => {
 
   const getTitleColor = (index) => titleColors[index % titleColors.length];
 
+  // ✅ PERFORMANCE: Optimized animation variants
+  const titleVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: prefersReducedMotion ? 0 : -30,
+      scale: prefersReducedMotion ? 1 : 0.95
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: prefersReducedMotion ? 0 : 0.7,
+        ease: [0.25, 0.46, 0.45, 0.94]
+      }
+    }
+  };
+
+  const tableContainerVariants = {
+    hidden: { 
+      opacity: 0,
+      y: prefersReducedMotion ? 0 : 50,
+      scale: prefersReducedMotion ? 1 : 0.96
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: prefersReducedMotion ? 0 : 0.8,
+        ease: [0.22, 1, 0.36, 1]
+      }
+    }
+  };
+
+  const headerVariants = {
+    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : -10 },
+    visible: (custom) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: prefersReducedMotion ? 0 : 0.4,
+        delay: prefersReducedMotion ? 0 : custom * 0.08,
+        ease: "easeOut"
+      }
+    })
+  };
+
+  const rowVariants = {
+    hidden: { 
+      opacity: 0,
+      x: prefersReducedMotion ? 0 : -30,
+      scale: prefersReducedMotion ? 1 : 0.98
+    },
+    visible: (custom) => ({
+      opacity: 1,
+      x: 0,
+      scale: 1,
+      transition: {
+        duration: prefersReducedMotion ? 0 : 0.5,
+        delay: prefersReducedMotion ? 0 : custom * 0.08,
+        ease: [0.25, 0.46, 0.45, 0.94]
+      }
+    })
+  };
+
+  const detailsVariants = {
+    hidden: { 
+      opacity: 0, 
+      height: 0,
+      y: prefersReducedMotion ? 0 : -20
+    },
+    visible: {
+      opacity: 1,
+      height: "auto",
+      y: 0,
+      transition: {
+        duration: prefersReducedMotion ? 0.2 : 0.4,
+        ease: [0.22, 1, 0.36, 1]
+      }
+    },
+    exit: {
+      opacity: 0,
+      height: 0,
+      y: prefersReducedMotion ? 0 : -20,
+      transition: {
+        duration: prefersReducedMotion ? 0.15 : 0.3,
+        ease: "easeInOut"
+      }
+    }
+  };
+
+  const contentStaggerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: prefersReducedMotion ? 0 : 0.06,
+        delayChildren: prefersReducedMotion ? 0 : 0.1
+      }
+    }
+  };
+
+  const contentItemVariants = {
+    hidden: { 
+      opacity: 0,
+      y: prefersReducedMotion ? 0 : 10,
+      scale: prefersReducedMotion ? 1 : 0.95
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: prefersReducedMotion ? 0 : 0.3,
+        ease: "easeOut"
+      }
+    }
+  };
+
   return (
     <section
       id="hackathons"
       className="py-20 px-4 relative overflow-hidden"
+      style={{
+        perspective: "1500px",
+        transformStyle: "preserve-3d"
+      }}
     >
       <div className="max-w-7xl mx-auto relative z-10">
+        
+        {/* ✅ SCROLL ANIMATION: Title - Works on both scroll directions */}
         <motion.h2
-          initial={{ opacity: 0, y: -18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          variants={titleVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ 
+            once: false,  // Re-animates on scroll up
+            amount: 0.3,
+            margin: "-50px"
+          }}
           className="text-4xl md:text-5xl font-bold text-center text-[color:var(--color-text)] mb-10"
         >
           Hackathons & Events
         </motion.h2>
 
-        <div className="mt-4 rounded-3xl shadow-soft border border-[color:var(--color-border)] overflow-hidden relative backdrop-blur-2xl bg-[color:var(--color-card)]/40">
+        {/* ✅ SCROLL ANIMATION: Table Container */}
+        <motion.div 
+          variants={tableContainerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ 
+            once: false,  // Re-animates on scroll
+            amount: 0.15,
+            margin: "-80px"
+          }}
+          whileHover={!prefersReducedMotion ? {
+            scale: 1.005,
+            transition: { duration: 0.3 }
+          } : {}}
+          className="mt-4 rounded-3xl shadow-soft border border-[color:var(--color-border)] overflow-hidden relative backdrop-blur-2xl bg-[color:var(--color-card)]/40"
+          style={{
+            willChange: "transform, opacity",
+            transform: "translateZ(0)"
+          }}
+        >
           <div className="absolute inset-0 bg-blue-500/3 pointer-events-none" />
 
           <div className="relative z-10">
+            
+            {/* ✅ SCROLL ANIMATION: Table Header with Stagger */}
             <div className="hidden md:grid grid-cols-[70px,1.8fr,1.3fr,1.3fr,40px] px-8 py-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:var(--color-muted)] bg-[color:var(--color-primary-soft)]/40 backdrop-blur-xl border-b border-[color:var(--color-border)]/30">
-              <span>Year</span>
-              <span>Event</span>
-              <span>Location</span>
-              <span>Category</span>
-              <span />
+              <motion.span
+                custom={0}
+                variants={headerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: false, amount: 0.5 }}
+              >
+                Year
+              </motion.span>
+              <motion.span
+                custom={1}
+                variants={headerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: false, amount: 0.5 }}
+              >
+                Event
+              </motion.span>
+              <motion.span
+                custom={2}
+                variants={headerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: false, amount: 0.5 }}
+              >
+                Location
+              </motion.span>
+              <motion.span
+                custom={3}
+                variants={headerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: false, amount: 0.5 }}
+              >
+                Category
+              </motion.span>
+              <motion.span
+                custom={4}
+                variants={headerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: false, amount: 0.5 }}
+              />
             </div>
 
+            {/* ✅ SCROLL ANIMATION: Table Rows with Stagger */}
             {items.map((h, index) => {
               const isActive = h.id === activeId;
-              // ✅ CHANGE: Use year field directly
               const year = h.year || "";
               const titleColorClass = getTitleColor(index);
 
               return (
-                <div
+                <motion.div
                   key={h.id}
+                  custom={index}
+                  variants={rowVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ 
+                    once: false,  // ✅ Re-animates on scroll up
+                    amount: 0.3,
+                    margin: "-30px"
+                  }}
                   className="border-t border-[color:var(--color-border)]/30"
+                  style={{
+                    willChange: "transform, opacity",
+                    transform: "translateZ(0)"
+                  }}
                 >
-                  <button
+                  <motion.button
                     type="button"
                     onClick={() =>
                       setActiveId((prev) => (prev === h.id ? null : h.id))
                     }
+                    whileHover={!prefersReducedMotion ? {
+                      x: 4,
+                      backgroundColor: isDark 
+                        ? "rgba(255, 255, 255, 0.03)"
+                        : "rgba(31, 58, 138, 0.03)",
+                      transition: { duration: 0.2 }
+                    } : {}}
+                    whileTap={{ scale: prefersReducedMotion ? 1 : 0.995 }}
                     className={`w-full text-left relative overflow-hidden transition-all backdrop-blur-xl ${
                       isActive
                         ? "bg-[color:var(--color-bg-elevated)]/50"
                         : "bg-transparent hover:bg-[color:var(--color-bg-elevated)]/20"
                     }`}
+                    style={{
+                      willChange: "transform"
+                    }}
                   >
                     {isActive && (
                       <motion.div
                         layoutId="hack-active-row"
                         className="absolute inset-0 bg-[color:var(--color-bg-elevated)]/40 backdrop-blur-xl"
+                        transition={{
+                          type: "spring",
+                          stiffness: prefersReducedMotion ? 400 : 300,
+                          damping: prefersReducedMotion ? 40 : 30
+                        }}
                       />
                     )}
 
                     <div className="relative grid grid-cols-1 md:grid-cols-[70px,1.8fr,1.3fr,1.3fr,40px] gap-3 px-5 md:px-8 py-5 items-center">
-                      <div className="text-[11px] font-semibold text-[color:var(--color-muted)]">
+                      
+                      {/* Year Badge */}
+                      <motion.div 
+                        className="text-[11px] font-semibold text-[color:var(--color-muted)]"
+                        animate={isActive && !prefersReducedMotion ? {
+                          scale: [1, 1.1, 1],
+                          color: ["var(--color-muted)", "var(--color-primary)", "var(--color-muted)"]
+                        } : {}}
+                        transition={{
+                          duration: 0.5,
+                          ease: "easeInOut"
+                        }}
+                      >
                         {year}
-                      </div>
+                      </motion.div>
 
+                      {/* Event Name & Description */}
                       <div className="flex items-center gap-4">
-                        <div className="hidden sm:flex w-10 h-10 rounded-xl bg-[color:var(--color-primary-soft)]/60 backdrop-blur-md items-center justify-center text-[color:var(--color-primary)] text-xs font-bold shadow-soft border border-[color:var(--color-border)]/20">
+                        <motion.div 
+                          initial={{ scale: 0, rotate: -180 }}
+                          whileInView={{ scale: 1, rotate: 0 }}
+                          viewport={{ once: false }}
+                          transition={{ 
+                            delay: prefersReducedMotion ? 0 : index * 0.05,
+                            type: "spring",
+                            stiffness: 200
+                          }}
+                          className="hidden sm:flex w-10 h-10 rounded-xl bg-[color:var(--color-primary-soft)]/60 backdrop-blur-md items-center justify-center text-[color:var(--color-primary)] text-xs font-bold shadow-soft border border-[color:var(--color-border)]/20"
+                        >
                           {h.event_name?.[0]}
-                        </div>
+                        </motion.div>
                         <div>
                           <p className={`text-sm md:text-base font-semibold ${titleColorClass}`}>
                             {h.event_name}
@@ -112,55 +373,109 @@ const Hackathons = () => {
                         </div>
                       </div>
 
+                      {/* Location */}
                       <div className="text-[11px] md:text-xs text-[color:var(--color-muted)]">
                         {h.location}
                       </div>
 
+                      {/* Category */}
                       <div className="text-[11px] md:text-xs font-medium text-[color:var(--color-primary)]">
                         {h.category ||
                           (h.role_or_achievement &&
                             h.role_or_achievement.slice(0, 40))}
                       </div>
 
+                      {/* Expand Arrow */}
                       <div className="flex justify-end">
                         <motion.span
-                          animate={{ x: isActive ? 4 : 0 }}
+                          animate={{ 
+                            x: isActive ? (prefersReducedMotion ? 0 : 4) : 0,
+                            rotate: isActive ? (prefersReducedMotion ? 0 : 90) : 0
+                          }}
+                          transition={{
+                            duration: prefersReducedMotion ? 0.15 : 0.3,
+                            ease: "easeOut"
+                          }}
                           className="text-[color:var(--color-primary)] text-lg"
                         >
                           ▸
                         </motion.span>
                       </div>
                     </div>
-                  </button>
+                  </motion.button>
 
+                  {/* ✅ SCROLL ANIMATION: Expandable Details with Stagger */}
                   {isActive && (
                     <motion.div
-                      initial={{ opacity: 0, y: -6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="px-5 md:px-8 pb-6 bg-[color:var(--color-bg-elevated)]/40 backdrop-blur-2xl"
+                      variants={detailsVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      className="px-5 md:px-8 pb-6 bg-[color:var(--color-bg-elevated)]/40 backdrop-blur-2xl overflow-hidden"
                     >
-                      <div className="rounded-2xl border border-[color:var(--color-border)]/40 bg-[color:var(--color-card)]/30 backdrop-blur-2xl p-4 md:p-5 shadow-soft">
-                        <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
-                          {/* ✅ FIXED: Use formatted_date instead of event_date */}
+                      <motion.div
+                        variants={contentStaggerVariants}
+                        initial="hidden"
+                        animate="visible"
+                        className="rounded-2xl border border-[color:var(--color-border)]/40 bg-[color:var(--color-card)]/30 backdrop-blur-2xl p-4 md:p-5 shadow-soft"
+                      >
+                        
+                        {/* Header Info */}
+                        <motion.div 
+                          variants={contentItemVariants}
+                          className="flex flex-wrap items-center justify-between gap-3 mb-3"
+                        >
                           <span className="inline-flex items-center gap-2 text-[11px] md:text-xs text-[color:var(--color-muted)]">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--color-primary)]" />
+                            <motion.span 
+                              className="w-1.5 h-1.5 rounded-full bg-[color:var(--color-primary)]"
+                              animate={!prefersReducedMotion ? {
+                                scale: [1, 1.3, 1],
+                                opacity: [1, 0.7, 1]
+                              } : {}}
+                              transition={{
+                                duration: 2,
+                                repeat: Infinity,
+                                ease: "easeInOut"
+                              }}
+                            />
                             {h.formatted_date} · {h.location}
                           </span>
 
                           {h.category && (
-                            <span className="px-3 py-1 text-[11px] font-semibold rounded-full bg-[color:var(--color-primary-soft)]/50 backdrop-blur-md text-[color:var(--color-primary)] uppercase tracking-wide border border-[color:var(--color-primary)]/20">
+                            <motion.span 
+                              whileHover={!prefersReducedMotion ? { 
+                                scale: 1.05,
+                                transition: { duration: 0.2 }
+                              } : {}}
+                              className="px-3 py-1 text-[11px] font-semibold rounded-full bg-[color:var(--color-primary-soft)]/50 backdrop-blur-md text-[color:var(--color-primary)] uppercase tracking-wide border border-[color:var(--color-primary)]/20"
+                            >
                               {h.category}
-                            </span>
+                            </motion.span>
                           )}
-                        </div>
+                        </motion.div>
 
-                        <p className="text-[13px] md:text-sm text-[color:var(--color-text)] leading-relaxed mb-4">
+                        {/* Description */}
+                        <motion.p 
+                          variants={contentItemVariants}
+                          className="text-[13px] md:text-sm text-[color:var(--color-text)] leading-relaxed mb-4"
+                        >
                           {h.description}
-                        </p>
+                        </motion.p>
 
-                        <div className="grid md:grid-cols-2 gap-3 mb-3">
+                        {/* Role & Outcome Cards */}
+                        <motion.div 
+                          variants={contentItemVariants}
+                          className="grid md:grid-cols-2 gap-3 mb-3"
+                        >
                           {h.role_or_achievement && (
-                            <div className="flex items-start gap-2 p-3 rounded-xl bg-[color:var(--color-bg-elevated)]/40 backdrop-blur-xl border border-[color:var(--color-border)]/30">
+                            <motion.div 
+                              whileHover={!prefersReducedMotion ? {
+                                y: -2,
+                                boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+                                transition: { duration: 0.2 }
+                              } : {}}
+                              className="flex items-start gap-2 p-3 rounded-xl bg-[color:var(--color-bg-elevated)]/40 backdrop-blur-xl border border-[color:var(--color-border)]/30"
+                            >
                               <span className="mt-[3px] w-5 h-5 rounded-full bg-[color:var(--color-primary-soft)]/60 backdrop-blur-md text-[color:var(--color-primary)] flex items-center justify-center text-[10px] font-bold">
                                 R
                               </span>
@@ -172,14 +487,32 @@ const Hackathons = () => {
                                   {h.role_or_achievement}
                                 </p>
                               </div>
-                            </div>
+                            </motion.div>
                           )}
 
                           {h.outcome_or_result && (
-                            <div className="flex items-start gap-2 p-3 rounded-xl bg-[color:var(--color-bg-elevated)]/40 backdrop-blur-xl border border-[color:var(--color-border)]/30">
-                              <span className="mt-[3px] w-5 h-5 rounded-full bg-[color:var(--color-primary-soft)]/60 backdrop-blur-md text-[color:var(--color-primary)] flex items-center justify-center text-[10px] font-bold">
+                            <motion.div 
+                              whileHover={!prefersReducedMotion ? {
+                                y: -2,
+                                boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+                                transition: { duration: 0.2 }
+                              } : {}}
+                              className="flex items-start gap-2 p-3 rounded-xl bg-[color:var(--color-bg-elevated)]/40 backdrop-blur-xl border border-[color:var(--color-border)]/30"
+                            >
+                              <motion.span 
+                                className="mt-[3px] w-5 h-5 rounded-full bg-[color:var(--color-primary-soft)]/60 backdrop-blur-md text-[color:var(--color-primary)] flex items-center justify-center text-[10px] font-bold"
+                                animate={!prefersReducedMotion ? {
+                                  rotate: [0, 15, -15, 0],
+                                  scale: [1, 1.1, 1]
+                                } : {}}
+                                transition={{
+                                  duration: 2,
+                                  repeat: Infinity,
+                                  ease: "easeInOut"
+                                }}
+                              >
                                 ★
-                              </span>
+                              </motion.span>
                               <div>
                                 <p className="text-[11px] font-semibold text-[color:var(--color-muted)] uppercase tracking-[0.18em] mb-1">
                                   Outcome
@@ -188,40 +521,56 @@ const Hackathons = () => {
                                   {h.outcome_or_result}
                                 </p>
                               </div>
-                            </div>
+                            </motion.div>
                           )}
-                        </div>
+                        </motion.div>
 
-                        <div className="flex flex-wrap gap-2 pt-1">
+                        {/* Action Buttons */}
+                        <motion.div 
+                          variants={contentItemVariants}
+                          className="flex flex-wrap gap-2 pt-1"
+                        >
                           {h.project_link && (
-                            <a
+                            <motion.a
                               href={h.project_link}
                               target="_blank"
                               rel="noreferrer"
+                              whileHover={!prefersReducedMotion ? { 
+                                scale: 1.05,
+                                y: -2,
+                                transition: { duration: 0.2 }
+                              } : {}}
+                              whileTap={{ scale: 0.98 }}
                               className="text-[11px] md:text-xs px-3 py-1.5 rounded-full border border-[color:var(--color-primary)] text-[color:var(--color-primary)] bg-[color:var(--color-primary-soft)]/20 backdrop-blur-md hover:bg-[color:var(--color-primary)] hover:text-white transition-colors"
                             >
                               View project
-                            </a>
+                            </motion.a>
                           )}
                           {h.event_link && (
-                            <a
+                            <motion.a
                               href={h.event_link}
                               target="_blank"
                               rel="noreferrer"
+                              whileHover={!prefersReducedMotion ? { 
+                                scale: 1.05,
+                                y: -2,
+                                transition: { duration: 0.2 }
+                              } : {}}
+                              whileTap={{ scale: 0.98 }}
                               className="text-[11px] md:text-xs px-3 py-1.5 rounded-full border border-[color:var(--color-border)] text-[color:var(--color-muted)] bg-[color:var(--color-bg-elevated)]/30 backdrop-blur-md hover:border-[color:var(--color-primary)] hover:text-[color:var(--color-primary)] transition-colors"
                             >
                               Event page
-                            </a>
+                            </motion.a>
                           )}
-                        </div>
-                      </div>
+                        </motion.div>
+                      </motion.div>
                     </motion.div>
                   )}
-                </div>
+                </motion.div>
               );
             })}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,8 +1,6 @@
-// ✅ UPDATED Projects.js - FRONTEND (Projects typically don't show dates in UI, but ready if needed)
-
 // client/src/components/sections/Projects.js
 import React, { useEffect, useState, useMemo, useCallback } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion, useInView } from "framer-motion";
 import { projectsAPI } from "../../services/api";
 
 export const Projects = () => {
@@ -11,6 +9,9 @@ export const Projects = () => {
   const [tempActiveIndex, setTempActiveIndex] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isDark, setIsDark] = useState(false);
+  
+  // ✅ PERFORMANCE: Respect user's motion preferences
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     const currentTheme = document.documentElement.getAttribute('data-theme');
@@ -54,7 +55,7 @@ export const Projects = () => {
   }, []);
 
   useEffect(() => {
-    if (isMobile) return;
+    if (isMobile || prefersReducedMotion) return;
 
     const speed = 0.002;
     let frameId;
@@ -66,7 +67,7 @@ export const Projects = () => {
 
     frameId = requestAnimationFrame(update);
     return () => cancelAnimationFrame(frameId);
-  }, [isMobile]);
+  }, [isMobile, prefersReducedMotion]);
   
   const radiusX = 450;
   const radiusY = 420;
@@ -134,14 +135,85 @@ export const Projects = () => {
   ];
   const getColorClass = (index) => colors[index % colors.length];
 
+  // ✅ PERFORMANCE: Optimized animation variants
+  const titleVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: prefersReducedMotion ? 0 : -40,
+      scale: prefersReducedMotion ? 1 : 0.9
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: prefersReducedMotion ? 0 : 0.7,
+        ease: [0.25, 0.46, 0.45, 0.94]
+      }
+    }
+  };
+
+  const orbitContainerVariants = {
+    hidden: { 
+      opacity: 0,
+      scale: prefersReducedMotion ? 1 : 0.85
+    },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: prefersReducedMotion ? 0 : 1,
+        ease: [0.22, 1, 0.36, 1],
+        delay: 0.2
+      }
+    }
+  };
+
+  const centerCardVariants = {
+    hidden: { 
+      opacity: 0,
+      scale: prefersReducedMotion ? 1 : 0.7,
+      rotateY: prefersReducedMotion ? 0 : -30
+    },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      rotateY: 0,
+      transition: {
+        duration: prefersReducedMotion ? 0 : 0.8,
+        ease: [0.22, 1, 0.36, 1],
+        delay: 0.4
+      }
+    }
+  };
+
+  const mobileCardVariants = {
+    hidden: { 
+      opacity: 0,
+      y: prefersReducedMotion ? 0 : 50,
+      scale: prefersReducedMotion ? 1 : 0.9
+    },
+    visible: (custom) => ({
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: prefersReducedMotion ? 0 : 0.6,
+        delay: prefersReducedMotion ? 0 : custom * 0.1,
+        ease: [0.25, 0.46, 0.45, 0.94]
+      }
+    })
+  };
+
   if (projects.length === 0) {
     return (
       <section id="projects" className="py-20 px-4 relative overflow-hidden">
         <div className="max-w-6xl mx-auto relative z-10">
           <motion.h2
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            variants={titleVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3, margin: "-50px" }}
             className="text-4xl md:text-5xl font-bold text-center text-[color:var(--color-text)] mb-1"
           >
             Projects
@@ -157,17 +229,39 @@ export const Projects = () => {
   return (
     <section id="projects" className="py-20 px-4 relative overflow-hidden">
       <div className="max-w-6xl mx-auto relative z-10">
+        
+        {/* ✅ SCROLL ANIMATION: Title - Works on both scroll directions */}
         <motion.h2
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          variants={titleVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ 
+            once: false,  // Re-animates on scroll up
+            amount: 0.3,
+            margin: "-50px"
+          }}
           className="text-4xl md:text-5xl font-bold text-center text-[color:var(--color-text)] mb-3"
         >
           Projects
         </motion.h2>
 
         {!isMobile ? (
-          <div className="relative h-[700px] md:h-[780px] flex items-center justify-center mt-2">
+          /* ✅ DESKTOP: Orbital Animation with Scroll Trigger */
+          <motion.div
+            variants={orbitContainerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ 
+              once: false,  // Re-animates on scroll
+              amount: 0.2,
+              margin: "-100px"
+            }}
+            className="relative h-[700px] md:h-[780px] flex items-center justify-center mt-2"
+            style={{
+              perspective: "2000px", // 3D depth effect
+              transformStyle: "preserve-3d"
+            }}
+          >
             {projects.map((project, index) => {
               const { x, y, angle } = getOrbitPosition(index, projects.length);
               const colorClass = getColorClass(index);
@@ -175,6 +269,9 @@ export const Projects = () => {
               const normalized = ((angle + Math.PI) % (2 * Math.PI)) - Math.PI;
               const isTopHalf = normalized > -Math.PI / 2 && normalized < Math.PI / 2;
               const zIndex = isTopHalf ? 30 : 5;
+
+              // ✅ PERFORMANCE: Calculate opacity based on position (fade back cards)
+              const opacity = isTopHalf ? 1 : 0.6;
 
               return (
                 <motion.button
@@ -191,10 +288,25 @@ export const Projects = () => {
                        shadow-soft overflow-hidden 
                        group hover:scale-105 hover:shadow-elevated active:scale-[0.98] transition-all`
                   }
-                  style={{ transformOrigin: "center", zIndex }}
+                  style={{ 
+                    transformOrigin: "center", 
+                    zIndex,
+                    opacity,
+                    willChange: "transform, opacity", // GPU optimization
+                    transform: "translateZ(0)" // Force GPU layer
+                  }}
                   animate={{ x, y }}
-                  transition={{ type: "tween", ease: "linear", duration: 0.2 }}
+                  transition={{ 
+                    type: "tween", 
+                    ease: "linear", 
+                    duration: 0.2 
+                  }}
                   onClick={() => handleCardClick(index)}
+                  whileHover={!prefersReducedMotion ? {
+                    scale: 1.08,
+                    rotateY: 5,
+                    transition: { duration: 0.2 }
+                  } : {}}
                 >
                   <div className={`absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r ${colorClass}`} />
                   
@@ -205,7 +317,6 @@ export const Projects = () => {
                     <p className="text-xs md:text-sm text-[color:var(--color-muted)] line-clamp-2">
                       {project.short_description}
                     </p>
-                    {/* ✅ OPTIONAL: Add formatted date if you want to display it */}
                     {project.formatted_start_date && (
                       <p className="text-[10px] text-[color:var(--color-muted)] mt-1">
                         {project.formatted_start_date}
@@ -219,13 +330,17 @@ export const Projects = () => {
               );
             })}
 
+            {/* ✅ SCROLL ANIMATION: Center Active Card */}
             {activeProject && (
-              <div className="absolute top-1/2 translate-y-0 flex flex-col items-center justify-center" style={{ zIndex: 50 }}>
+              <div 
+                className="absolute top-1/2 translate-y-0 flex flex-col items-center justify-center" 
+                style={{ zIndex: 50, perspective: "1500px" }}
+              >
                 <motion.div
                   key={activeProject.id}
-                  initial={{ opacity: 0, scale: 0.85, y: 20 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  variants={centerCardVariants}
+                  initial="hidden"
+                  animate="visible"
                   className={isDark
                     ? `relative w-[350px] h-[200px] md:w-[440px] md:h-[440px]  
                        rounded-full border-4 overflow-hidden backdrop-blur-xl 
@@ -238,51 +353,98 @@ export const Projects = () => {
                        bg-[color:var(--color-card)] shadow-elevated 
                        ${getActiveBorderColor(activeIndex)}`
                   }
+                  style={{
+                    willChange: "transform, opacity",
+                    transform: "translateZ(0)"
+                  }}
+                  whileHover={!prefersReducedMotion ? {
+                    scale: 1.05,
+                    rotateZ: 2,
+                    transition: { duration: 0.3 }
+                  } : {}}
                 >
                   {isDark && (
-                    <div className="absolute inset-8 rounded-full bg-gradient-radial from-[color:var(--color-primary)]/10 to-transparent" />
+                    <motion.div 
+                      className="absolute inset-8 rounded-full bg-gradient-radial from-[color:var(--color-primary)]/10 to-transparent"
+                      animate={!prefersReducedMotion ? {
+                        scale: [1, 1.1, 1],
+                        opacity: [0.5, 0.8, 0.5]
+                      } : {}}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                    />
                   )}
 
                   <div className="relative z-10 w-full h-full flex flex-col items-center justify-center text-center space-y-3 px-4">
-                    <h3 className="text-xl md:text-2xl font-bold text-[color:var(--color-text)] leading-tight w-full">
+                    <motion.h3 
+                      className="text-xl md:text-2xl font-bold text-[color:var(--color-text)] leading-tight w-full"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 }}
+                    >
                       {activeProject.title}
-                    </h3>
+                    </motion.h3>
 
-                    <p className="text-sm md:text-base text-[color:var(--color-muted)] leading-relaxed line-clamp-3 w-full px-2">
+                    <motion.p 
+                      className="text-sm md:text-base text-[color:var(--color-muted)] leading-relaxed line-clamp-3 w-full px-2"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.3 }}
+                    >
                       {activeProject.short_description}
-                    </p>
+                    </motion.p>
 
-                    {/* ✅ OPTIONAL: Display formatted date in center card */}
                     {activeProject.formatted_start_date && (
-                      <p className="text-xs text-[color:var(--color-muted)]">
+                      <motion.p 
+                        className="text-xs text-[color:var(--color-muted)]"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.4 }}
+                      >
                         Started: {activeProject.formatted_start_date}
-                      </p>
+                      </motion.p>
                     )}
 
                     {activeProject.tech_stack && activeProject.tech_stack.length > 0 && (
-                      <div className="flex flex-wrap justify-center gap-1.5 w-full max-w-xs">
+                      <motion.div 
+                        className="flex flex-wrap justify-center gap-1.5 w-full max-w-xs"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.5 }}
+                      >
                         {activeProject.tech_stack.slice(0, 4).map((tech, i) => (
-                          <span
+                          <motion.span
                             key={`${tech}-${i}`}
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.6 + (i * 0.05) }}
                             className="px-2.5 py-1 text-xs font-medium rounded-full 
                                       bg-[color:var(--color-primary)]/15 
                                       text-[color:var(--color-primary)] 
                                       border border-[color:var(--color-primary)]/30 whitespace-nowrap"
                           >
                             {tech}
-                          </span>
+                          </motion.span>
                         ))}
-                      </div>
+                      </motion.div>
                     )}
 
-                    <div className="flex flex-row gap-3 w-full justify-center max-w-xs pt-2">
+                    <motion.div 
+                      className="flex flex-row gap-3 w-full justify-center max-w-xs pt-2"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.7 }}
+                    >
                       {activeProject.github_link && (
                         <motion.a
                           href={activeProject.github_link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.98 }}
+                          whileHover={{ scale: prefersReducedMotion ? 1 : 1.05 }}
+                          whileTap={{ scale: prefersReducedMotion ? 1 : 0.98 }}
                           className="group relative px-5 py-2.5 text-sm font-semibold 
                                     bg-transparent border-2 border-[color:var(--color-primary)] 
                                     text-[color:var(--color-primary)] rounded-xl overflow-hidden 
@@ -299,8 +461,8 @@ export const Projects = () => {
                           href={activeProject.demo_link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.98 }}
+                          whileHover={{ scale: prefersReducedMotion ? 1 : 1.05 }}
+                          whileTap={{ scale: prefersReducedMotion ? 1 : 0.98 }}
                           className="group relative px-5 py-2.5 text-sm font-semibold 
                                     bg-transparent border-2 border-[color:var(--color-primary)] 
                                     text-[color:var(--color-primary)] rounded-xl overflow-hidden 
@@ -312,24 +474,37 @@ export const Projects = () => {
                           <span className="relative z-10">Live Demo</span>
                         </motion.a>
                       )}
-                    </div>
+                    </motion.div>
                   </div>
                 </motion.div>
               </div>
             )}
-          </div>
+          </motion.div>
         ) : (
+          /* ✅ MOBILE: Staggered Card Stack with Scroll Animation */
           <div className="mt-12 space-y-6 max-w-2xl mx-auto">
             {projects.map((project, index) => (
               <motion.div
                 key={project.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.02, y: -4 }}
+                custom={index}
+                variants={mobileCardVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ 
+                  once: false,  // ✅ Re-animates on scroll up
+                  amount: 0.3,
+                  margin: "-50px"
+                }}
+                whileHover={!prefersReducedMotion ? { 
+                  scale: 1.02, 
+                  y: -4,
+                  transition: { duration: 0.2 }
+                } : {}}
                 className="group"
                 onClick={() => handleCardClick(index)}
+                style={{
+                  willChange: "transform, opacity"
+                }}
               >
                 <div className={isDark
                   ? `bg-[color:var(--color-card)]/90 backdrop-blur-xl rounded-3xl p-6 
@@ -344,7 +519,18 @@ export const Projects = () => {
                       {project.title}
                     </h3>
                     {index === activeIndex && (
-                      <div className="w-2 h-2 rounded-full bg-[color:var(--color-primary)] animate-pulse" />
+                      <motion.div 
+                        className="w-2 h-2 rounded-full bg-[color:var(--color-primary)]"
+                        animate={!prefersReducedMotion ? {
+                          scale: [1, 1.3, 1],
+                          opacity: [1, 0.5, 1]
+                        } : {}}
+                        transition={{
+                          duration: 1.5,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }}
+                      />
                     )}
                   </div>
                   
@@ -352,7 +538,6 @@ export const Projects = () => {
                     {project.short_description}
                   </p>
 
-                  {/* ✅ OPTIONAL: Display formatted date in mobile cards */}
                   {project.formatted_start_date && (
                     <p className="text-xs text-[color:var(--color-muted)] mb-3">
                       Started: {project.formatted_start_date}
@@ -361,15 +546,22 @@ export const Projects = () => {
 
                   <div className="flex flex-wrap gap-1.5 mb-4">
                     {project.tech_stack?.map((tech, i) => (
-                      <span
+                      <motion.span
                         key={`${tech}-${i}`}
+                        initial={{ scale: 0, opacity: 0 }}
+                        whileInView={{ scale: 1, opacity: 1 }}
+                        viewport={{ once: false }}
+                        transition={{ 
+                          delay: i * 0.05,
+                          duration: 0.2 
+                        }}
                         className="px-2 py-0.5 text-xs font-medium rounded-full 
                                   bg-[color:var(--color-primary)]/15 
                                   text-[color:var(--color-primary)] 
                                   border border-[color:var(--color-primary)]/30"
                       >
                         {tech}
-                      </span>
+                      </motion.span>
                     ))}
                   </div>
 
@@ -382,7 +574,8 @@ export const Projects = () => {
                         className="px-3 py-1.5 text-xs font-semibold rounded-lg 
                                   bg-[color:var(--color-primary-soft)] 
                                   text-[color:var(--color-primary)] 
-                                  border border-[color:var(--color-primary)]/40"
+                                  border border-[color:var(--color-primary)]/40
+                                  hover:bg-[color:var(--color-primary)]/20 transition-colors"
                       >
                         GitHub
                       </a>
@@ -395,10 +588,12 @@ export const Projects = () => {
                         className={isDark
                           ? `px-3 py-1.5 text-xs font-semibold rounded-lg 
                              bg-gradient-to-r from-[color:var(--color-primary)] 
-                             text-[color:var(--color-bg)] shadow-md`
+                             text-[color:var(--color-bg)] shadow-md
+                             hover:shadow-lg transition-shadow`
                           : `px-3 py-1.5 text-xs font-semibold rounded-lg 
                              bg-[color:var(--color-primary)] 
-                             text-white shadow-soft`
+                             text-white shadow-soft
+                             hover:shadow-elevated transition-shadow`
                         }
                       >
                         Demo

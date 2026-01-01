@@ -1,8 +1,6 @@
-// ✅ UPDATED Extracurricular.js - FRONTEND (Use formatted_date + year from backend)
-
 // client/src/components/sections/Extracurricular.js
 import React, { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { extracurricularAPI } from "../../services/api";
 
 const Extracurricular = () => {
@@ -10,6 +8,12 @@ const Extracurricular = () => {
   const [index, setIndex] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
   const [isDark, setIsDark] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+
+  // ✅ 3D Parallax scroll effect
+  const { scrollYProgress } = useScroll();
+  const y = useTransform(scrollYProgress, [0, 1], [0, -50]);
+  const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], [5, 0, -5]);
 
   useEffect(() => {
     const currentTheme = document.documentElement.getAttribute('data-theme');
@@ -76,43 +80,67 @@ const Extracurricular = () => {
   return (
     <section
       id="extracurricular"
-      className="py-40 px-4 relative overflow-hidden"
+      className="pt-20 pb-16 px-4 relative overflow-hidden"
       onMouseEnter={() => setAutoPlay(false)}
       onMouseLeave={() => setAutoPlay(true)}
+      style={{
+        perspective: "2000px",
+        transformStyle: "preserve-3d"
+      }}
     >
-      <div className="max-w-7xl mx-auto relative z-10">
+      {/* ✅ 3D Parallax wrapper with depth layers */}
+      <motion.div 
+        className="max-w-7xl mx-auto relative z-10"
+        style={prefersReducedMotion ? {} : {
+          y,
+          rotateX,
+          transformStyle: "preserve-3d"
+        }}
+        initial={{ 
+          scale: prefersReducedMotion ? 1 : 0.9,
+          rotateY: prefersReducedMotion ? 0 : -15
+        }}
+        whileInView={{ 
+          scale: 1,
+          rotateY: 0
+        }}
+        viewport={{ 
+          once: false,
+          amount: 0.2
+        }}
+        transition={{ 
+          duration: prefersReducedMotion ? 0 : 1,
+          ease: [0.22, 1, 0.36, 1]
+        }}
+      >
+        
+        {/* ✅ Title with depth separation */}
         <motion.div
-          initial={{ opacity: 0, y: -30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-20"
+          initial={{ opacity: 0, z: prefersReducedMotion ? 0 : -100 }}
+          whileInView={{ opacity: 1, z: 0 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: prefersReducedMotion ? 0.3 : 0.8 }}
+          className="text-center mb-16"
+          style={{
+            transformStyle: "preserve-3d",
+            transform: prefersReducedMotion ? "none" : "translateZ(50px)"
+          }}
         >
-          <motion.span
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className={isDark
-              ? "inline-block px-4 py-2 rounded-full bg-[color:var(--color-primary-soft)] border border-[color:var(--color-primary)]/40 text-[11px] font-bold uppercase tracking-[0.18em] text-[color:var(--color-primary)] mb-4 backdrop-blur-sm"
-              : "inline-block px-4 py-2 rounded-full bg-[color:var(--color-primary)]/10 border border-[color:var(--color-primary)]/30 text-[11px] font-bold uppercase tracking-[0.18em] text-[color:var(--color-primary)] mb-4 backdrop-blur-sm"
-            }
-          >
-            ✦ Leadership & Impact
-          </motion.span>
-
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-center text-[color:var(--color-text)]">
             Extracurricular & Clubs
           </h2>
-          <p className="text-center text-[color:var(--color-muted)] text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
-            Leadership, cultural coordination, technical communities, and impact
-            beyond the classroom.
-          </p>
         </motion.div>
 
-        <div className="relative flex items-center justify-center">
+        {/* ✅ Cards container with 3D depth */}
+        <motion.div 
+          className="relative flex items-center justify-center"
+          style={{
+            transformStyle: "preserve-3d"
+          }}
+        >
           <div className="w-full flex justify-center items-center relative h-[520px] md:h-[600px]">
             
-            {/* MOBILE */}
+            {/* ✅ MOBILE - UNCHANGED CONTENT */}
             <div className="lg:hidden w-full max-w-md mx-auto relative">
               <AnimatePresence mode="wait">
                 {main && (
@@ -224,7 +252,6 @@ const Extracurricular = () => {
                             : "px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-md border border-[color:var(--color-border)] text-[9px] font-bold uppercase tracking-[0.15em] text-[color:var(--color-primary)]"
                           }
                         >
-                          {/* ✅ CHANGE: Use year field directly */}
                           {main.year || "Active"}
                         </motion.p>
                         
@@ -271,7 +298,7 @@ const Extracurricular = () => {
               </AnimatePresence>
             </div>
 
-            {/* DESKTOP */}
+            {/* ✅ DESKTOP - UNCHANGED CONTENT, just wrapped in 3D layer */}
             <AnimatePresence mode="wait">
               {main && (
                 <motion.article
@@ -283,6 +310,10 @@ const Extracurricular = () => {
                   className="hidden lg:block relative w-full max-w-xl h-[520px] rounded-[3rem] overflow-hidden z-20"
                   onHoverStart={() => setAutoPlay(false)}
                   onHoverEnd={() => setAutoPlay(true)}
+                  style={prefersReducedMotion ? {} : {
+                    transformStyle: "preserve-3d",
+                    transform: "translateZ(100px)"
+                  }}
                 >
                   <div className={isDark
                     ? "absolute inset-0 bg-[color:var(--color-primary-soft)] -z-10"
@@ -377,7 +408,6 @@ const Extracurricular = () => {
                           : "px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-[color:var(--color-border)] text-sm font-bold uppercase tracking-wider text-[color:var(--color-primary)]"
                         }
                       >
-                        {/* ✅ CHANGE: Use year field directly */}
                         {main.year || "Active"}
                       </motion.p>
                       
@@ -398,6 +428,7 @@ const Extracurricular = () => {
               )}
             </AnimatePresence>
 
+            {/* ✅ Side cards with different depth layers */}
             {left && (
               <motion.div
                 initial={{ opacity: 0, x: -100, scale: 0.65 }}
@@ -407,6 +438,10 @@ const Extracurricular = () => {
                 className="hidden lg:flex absolute left-1/2 top-1/2 -translate-y-1/2 w-64 rounded-2xl overflow-hidden z-15 cursor-pointer hover:opacity-70 transition-opacity"
                 onClick={goPrev}
                 whileHover={{ scale: 1.05 }}
+                style={prefersReducedMotion ? {} : {
+                  transformStyle: "preserve-3d",
+                  transform: "translateZ(-50px)"
+                }}
               >
                 <div className={isDark
                   ? "absolute inset-0 bg-gradient-to-br from-[color:var(--color-primary-soft)]/30 via-[color:var(--color-card)]/50 to-[color:var(--color-bg)]/70 backdrop-blur-xl"
@@ -437,6 +472,10 @@ const Extracurricular = () => {
                 className="hidden lg:flex absolute right-1/2 top-1/2 -translate-y-1/2 w-64 rounded-2xl overflow-hidden z-15 cursor-pointer hover:opacity-70 transition-opacity"
                 onClick={goNext}
                 whileHover={{ scale: 1.05 }}
+                style={prefersReducedMotion ? {} : {
+                  transformStyle: "preserve-3d",
+                  transform: "translateZ(-50px)"
+                }}
               >
                 <div className={isDark
                   ? "absolute inset-0 bg-gradient-to-br from-[color:var(--color-primary-soft)]/30 via-[color:var(--color-card)]/50 to-[color:var(--color-bg)]/70 backdrop-blur-xl"
@@ -458,9 +497,16 @@ const Extracurricular = () => {
               </motion.div>
             )}
           </div>
-        </div>
+        </motion.div>
 
-        <div className="flex justify-center items-center gap-4 mt-16">
+        {/* ✅ Pagination with depth */}
+        <motion.div 
+          className="flex justify-center items-center gap-4 mt-12"
+          style={prefersReducedMotion ? {} : {
+            transformStyle: "preserve-3d",
+            transform: "translateZ(30px)"
+          }}
+        >
           <div className="flex gap-3">
             {items.map((item, i) => (
               <motion.button
@@ -484,8 +530,8 @@ const Extracurricular = () => {
           <span className="text-[11px] font-semibold text-[color:var(--color-muted)] tracking-[0.12em] uppercase ml-4">
             {String(index + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
           </span>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 };

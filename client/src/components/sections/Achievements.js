@@ -1,14 +1,14 @@
-// ✅ UPDATED Achievements.js - FRONTEND (Use formatted_date from backend)
-
 // client/src/components/sections/Achievements.js
 import React, { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { achievementsAPI } from "../../services/api";
 
 const Achievements = () => {
   const [items, setItems] = useState([]);
   const [index, setIndex] = useState(0);
   const [isDark, setIsDark] = useState(false);
+  
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     const currentTheme = document.documentElement.getAttribute('data-theme');
@@ -28,6 +28,8 @@ const Achievements = () => {
   }, []);
 
   useEffect(() => {
+    if (prefersReducedMotion) return;
+    
     const interval = setInterval(() => {
       if (items.length > 0) {
         setIndex((prev) => (prev + 1) % items.length);
@@ -35,7 +37,7 @@ const Achievements = () => {
     }, 15000);
 
     return () => clearInterval(interval);
-  }, [items.length]);
+  }, [items.length, prefersReducedMotion]);
 
   useEffect(() => {
     const load = async () => {
@@ -63,21 +65,64 @@ const Achievements = () => {
     <section
       id="achievements"
       className="relative py-24 px-4 overflow-hidden"
+      style={{
+        perspective: "2000px"
+      }}
     >
-      <div className="max-w-5xl mx-auto relative z-10">
-        <div className="text-center mb-10">
+      <motion.div 
+        className="max-w-5xl mx-auto relative z-10"
+        initial={{ 
+          y: prefersReducedMotion ? 0 : 50,
+          scale: prefersReducedMotion ? 1 : 0.95
+        }}
+        whileInView={{ 
+          y: 0,
+          scale: 1
+        }}
+        viewport={{ 
+          once: false,
+          amount: 0.15
+        }}
+        transition={{ 
+          duration: prefersReducedMotion ? 0 : 0.8,
+          ease: [0.22, 1, 0.36, 1]
+        }}
+      >
+        
+        {/* ✅ ONLY TITLE - Simple fade in/out */}
+        <motion.div 
+          className="text-center mb-10"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.6 }}
+        >
           <h2 className="text-3xl md:text-4xl font-bold text-[color:var(--color-text)]">
             Achievements
           </h2>
-          <p className="mt-3 text-sm md:text-base text-[color:var(--color-muted)]">
-            Badges, awards, and milestones earned along the journey.
-          </p>
-        </div>
+        </motion.div>
 
         {hasItems ? (
           <div className="relative flex items-center justify-center py-6 gap-4 md:gap-6">
+            
+            {/* ✅ LEFT BUTTON - Slides from left */}
             <motion.button
               onClick={goPrev}
+              initial={{ 
+                x: prefersReducedMotion ? 0 : -100,
+                opacity: 0,
+                scale: prefersReducedMotion ? 1 : 0.5
+              }}
+              whileInView={{ 
+                x: 0,
+                opacity: 1,
+                scale: 1
+              }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ 
+                duration: prefersReducedMotion ? 0.3 : 0.6,
+                ease: [0.22, 1, 0.36, 1]
+              }}
               whileHover={{ scale: 1.15, rotate: -10 }}
               whileTap={{ scale: 0.9 }}
               className={isDark
@@ -88,69 +133,154 @@ const Achievements = () => {
               <span className="text-lg md:text-xl font-bold text-[color:var(--color-primary)]">‹</span>
             </motion.button>
 
+            {/* ✅ LEFT CARD - Slides from left with rotation */}
             <SideCard
               item={items[leftIdx]}
               position="left"
               onClick={goPrev}
               isDark={isDark}
+              prefersReducedMotion={prefersReducedMotion}
             />
 
+            {/* ✅ CENTER CARD - Pop/scale animation */}
             <div className="relative z-20 mx-3 md:mx-6">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={items[centerIdx].id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  initial={{ 
+                    opacity: 0,
+                    scale: 0,
+                    rotateY: prefersReducedMotion ? 0 : 180,
+                    z: prefersReducedMotion ? 0 : -200
+                  }}
+                  animate={{ 
+                    opacity: 1,
+                    scale: 1,
+                    rotateY: 0,
+                    z: 0
+                  }}
+                  exit={{ 
+                    opacity: 0,
+                    scale: 0,
+                    rotateY: prefersReducedMotion ? 0 : -180,
+                    z: prefersReducedMotion ? 0 : -200
+                  }}
+                  transition={{ 
+                    duration: prefersReducedMotion ? 0.3 : 0.6,
+                    type: "spring",
+                    stiffness: 200,
+                    damping: 20
+                  }}
+                  whileHover={!prefersReducedMotion ? {
+                    scale: 1.05,
+                    rotateY: 5,
+                    transition: { duration: 0.3 }
+                  } : {}}
                   className={isDark
                     ? "relative w-[280px] sm:w-[300px] md:w-[340px] h-[400px] sm:h-[420px] md:h-[440px] rounded-[32px] bg-gradient-to-br from-red-900/20 via-red-800/25 to-red-900/20 backdrop-blur-[20px] shadow-[0_26px_70px_rgba(0,0,0,0.7)] flex flex-col items-center justify-between px-6 py-6 overflow-hidden"
                     : "relative w-[280px] sm:w-[300px] md:w-[340px] h-[400px] sm:h-[420px] md:h-[440px] rounded-[32px] bg-gradient-to-br from-blue-50/90 via-white/95 to-purple-50/90 backdrop-blur-[20px] shadow-elevated border border-[color:var(--color-border)] flex flex-col items-center justify-between px-6 py-6 overflow-hidden"
                   }
+                  style={{
+                    transformStyle: "preserve-3d",
+                    backfaceVisibility: "hidden"
+                  }}
                 >
-                  <div className="flex-1 flex items-center justify-center mb-8">
+                  {/* ✅ Trophy with delayed pop */}
+                  <motion.div 
+                    className="flex-1 flex items-center justify-center mb-8"
+                    initial={{ scale: 0, rotate: -180 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ 
+                      delay: prefersReducedMotion ? 0 : 0.3,
+                      type: "spring",
+                      stiffness: 300
+                    }}
+                  >
                     <span className="text-7xl md:text-8xl">🏆</span>
-                  </div>
+                  </motion.div>
 
-                  <div className={isDark
-                    ? "px-3 py-1 rounded-full bg-[color:var(--color-bg)]/80 backdrop-blur-[15px] text-[11px] text-[color:var(--color-text)] mb-2 shadow-xl"
-                    : "px-3 py-1 rounded-full bg-white/90 backdrop-blur-[15px] text-[11px] text-[color:var(--color-primary)] font-semibold mb-2 shadow-soft border border-[color:var(--color-border)]"
-                  }>
+                  {/* ✅ Counter badge */}
+                  <motion.div 
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ 
+                      delay: prefersReducedMotion ? 0 : 0.4,
+                      type: "spring",
+                      stiffness: 400
+                    }}
+                    className={isDark
+                      ? "px-3 py-1 rounded-full bg-[color:var(--color-bg)]/80 backdrop-blur-[15px] text-[11px] text-[color:var(--color-text)] mb-2 shadow-xl"
+                      : "px-3 py-1 rounded-full bg-white/90 backdrop-blur-[15px] text-[11px] text-[color:var(--color-primary)] font-semibold mb-2 shadow-soft border border-[color:var(--color-border)]"
+                    }
+                  >
                     {centerIdx + 1} / {items.length}
-                  </div>
+                  </motion.div>
 
+                  {/* ✅ Text content with stagger */}
                   <div className="text-center px-2 space-y-2 mb-4">
-                    <h3 className="text-lg md:text-xl font-bold text-[color:var(--color-text)]">
+                    <motion.h3 
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: prefersReducedMotion ? 0 : 0.5 }}
+                      className="text-lg md:text-xl font-bold text-[color:var(--color-text)]"
+                    >
                       {items[centerIdx].achievement_title}
-                    </h3>
-                    <p className="text-[11px] text-[color:var(--color-muted)]">
+                    </motion.h3>
+                    <motion.p 
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: prefersReducedMotion ? 0 : 0.6 }}
+                      className="text-[11px] text-[color:var(--color-muted)]"
+                    >
                       {items[centerIdx].organization}
                       {items[centerIdx].category && ` • ${items[centerIdx].category}`}
-                      {/* ✅ CHANGE: Use formatted_date instead of achievement_date */}
                       {items[centerIdx].formatted_date && ` • ${items[centerIdx].formatted_date}`}
-                    </p>
+                    </motion.p>
                     {items[centerIdx].description && (
-                      <p className={isDark
-                        ? "text-[11px] text-[color:var(--color-text)]/95 leading-relaxed"
-                        : "text-[11px] text-[color:var(--color-text)]/90 leading-relaxed"
-                      }>
+                      <motion.p 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: prefersReducedMotion ? 0 : 0.7 }}
+                        className={isDark
+                          ? "text-[11px] text-[color:var(--color-text)]/95 leading-relaxed"
+                          : "text-[11px] text-[color:var(--color-text)]/90 leading-relaxed"
+                        }
+                      >
                         {items[centerIdx].description}
-                      </p>
+                      </motion.p>
                     )}
                   </div>
                 </motion.div>
               </AnimatePresence>
             </div>
 
+            {/* ✅ RIGHT CARD - Slides from right with rotation */}
             <SideCard
               item={items[rightIdx]}
               position="right"
               onClick={goNext}
               isDark={isDark}
+              prefersReducedMotion={prefersReducedMotion}
             />
 
+            {/* ✅ RIGHT BUTTON - Slides from right */}
             <motion.button
               onClick={goNext}
+              initial={{ 
+                x: prefersReducedMotion ? 0 : 100,
+                opacity: 0,
+                scale: prefersReducedMotion ? 1 : 0.5
+              }}
+              whileInView={{ 
+                x: 0,
+                opacity: 1,
+                scale: 1
+              }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ 
+                duration: prefersReducedMotion ? 0.3 : 0.6,
+                ease: [0.22, 1, 0.36, 1]
+              }}
               whileHover={{ scale: 1.15, rotate: 10 }}
               whileTap={{ scale: 0.9 }}
               className={isDark
@@ -166,12 +296,12 @@ const Achievements = () => {
             Achievements will appear here soon.
           </p>
         )}
-      </div>
+      </motion.div>
     </section>
   );
 };
 
-const SideCard = ({ item, position, onClick, isDark }) => {
+const SideCard = ({ item, position, onClick, isDark, prefersReducedMotion }) => {
   if (!item) return null;
 
   const rotate = position === "left" ? -10 : 10;
@@ -182,7 +312,25 @@ const SideCard = ({ item, position, onClick, isDark }) => {
       type="button"
       onClick={onClick}
       className="hidden sm:block relative z-10"
-      whileHover={{ y: -4 }}
+      initial={{ 
+        x: position === "left" ? (prefersReducedMotion ? 0 : -150) : (prefersReducedMotion ? 0 : 150),
+        opacity: 0,
+        rotate: position === "left" ? (prefersReducedMotion ? 0 : -45) : (prefersReducedMotion ? 0 : 45),
+        scale: prefersReducedMotion ? 1 : 0.5
+      }}
+      whileInView={{ 
+        x: 0,
+        opacity: 1,
+        rotate: 0,
+        scale: 1
+      }}
+      viewport={{ once: false, amount: 0.3 }}
+      transition={{ 
+        duration: prefersReducedMotion ? 0.3 : 0.7,
+        ease: [0.22, 1, 0.36, 1],
+        delay: prefersReducedMotion ? 0 : 0.1
+      }}
+      whileHover={{ y: -4, scale: 1.02 }}
     >
       <div
         className={isDark

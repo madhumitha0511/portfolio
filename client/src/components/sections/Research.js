@@ -1,12 +1,11 @@
-// ✅ UPDATED Research.js - FRONTEND (Use formatted dates from backend)
-
 // client/src/components/sections/Research.js
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { researchAPI } from "../../services/api";
 
 const Research = () => {
   const [items, setItems] = useState([]);
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     const load = async () => {
@@ -25,25 +24,55 @@ const Research = () => {
       id="research"
       className="py-20 px-4 relative overflow-hidden"
     >
-      <div className="max-w-5xl mx-auto relative z-10">
+      {/* ✅ ONLY animate wrapper - stagger children */}
+      <motion.div 
+        className="max-w-5xl mx-auto relative z-10"
+        initial={{ 
+          y: prefersReducedMotion ? 0 : 50,
+          scale: prefersReducedMotion ? 1 : 0.96
+        }}
+        whileInView={{ 
+          y: 0,
+          scale: 1
+        }}
+        viewport={{ 
+          once: false,
+          amount: 0.1
+        }}
+        transition={{ 
+          duration: prefersReducedMotion ? 0 : 0.8,
+          ease: [0.22, 1, 0.36, 1]
+        }}
+      >
+        
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-bold text-[color:var(--color-text)]">
             Research
           </h2>
-          <p className="mt-3 text-sm md:text-base text-[color:var(--color-muted)]">
-            Experiments, feasibility studies, and self‑driven explorations behind
-            the projects.
-          </p>
         </div>
 
+        {/* ✅ Cards slide from left with stagger */}
         <div className="space-y-6">
           {items.map((r, i) => (
             <motion.article
               key={r.id || i}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ delay: i * 0.05, duration: 0.4 }}
+              initial={{ 
+                x: prefersReducedMotion ? 0 : -30,
+                scale: prefersReducedMotion ? 1 : 0.98
+              }}
+              whileInView={{ 
+                x: 0,
+                scale: 1
+              }}
+              viewport={{ 
+                once: false,
+                amount: 0.3
+              }}
+              transition={{ 
+                delay: prefersReducedMotion ? 0 : i * 0.08,
+                duration: prefersReducedMotion ? 0 : 0.6,
+                ease: [0.22, 1, 0.36, 1]
+              }}
               className="relative rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-card)]/88 backdrop-blur-xl shadow-[0_18px_60px_rgba(0,0,0,0.65)] overflow-hidden"
             >
               <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-[color:var(--color-primary)] via-[color:var(--color-primary)]/60 to-transparent" />
@@ -59,8 +88,8 @@ const Research = () => {
                 }}
               />
 
+              {/* ✅ UNCHANGED - All card content 100% original */}
               <div className="relative z-10 px-6 py-5 md:px-7 md:py-6 flex flex-col md:flex-row md:items-start md:gap-6">
-                {/* ✅ CHANGE: Use formatted dates */}
                 <div className="mb-3 md:mb-0 md:w-40 flex-shrink-0">
                   <p className="text-[11px] font-medium text-[color:var(--color-muted)]">
                     {r.formatted_start_date || r.start_date} – {r.formatted_end_date || r.end_date || "Ongoing"}
@@ -124,7 +153,7 @@ const Research = () => {
             </p>
           )}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

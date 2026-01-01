@@ -1,12 +1,13 @@
 // client/src/components/sections/Hero.js
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { portfolioAPI } from "../../services/api";
 
 const Hero = () => {
   const [owner, setOwner] = useState(null);
   const [hero, setHero] = useState(null);
   const [isDark, setIsDark] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
 
   // Detect theme
   useEffect(() => {
@@ -48,69 +49,139 @@ const Hero = () => {
     <section
       id="hero"
       className="min-h-screen flex items-center bg-[color:var(--color-bg)] relative overflow-hidden"
+      style={{
+        perspective: "2000px"
+      }}
     >
-      {/* Decorative background blob - HIDDEN ON MOBILE */}
+      {/* ✅ Decorative blob - Scale + fade entrance */}
       <motion.div
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 1.2 }}
+        initial={{ scale: 0, opacity: 0, rotate: prefersReducedMotion ? 0 : -45 }}
+        whileInView={{ scale: 1, opacity: 1, rotate: 0 }}
+        viewport={{ once: false, amount: 0.1 }}
+        transition={{ duration: prefersReducedMotion ? 0.3 : 1.5, ease: "easeOut" }}
         className="hidden lg:block absolute right-0 translate-y-1/2 w-[600px] h-[600px] md:w-[800px] md:h-[800px] rounded-full bg-gradient-to-br from-[color:var(--color-primary)]/20 to-[color:var(--color-primary)]/5 blur-3xl"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 grid lg:grid-cols-2 gap-12 items-center relative z-10">
-        {/* LEFT SIDE - Text Content */}
+        
+        {/* ✅ LEFT SIDE - Staggered text elements from left */}
         <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.5 }}
           className="space-y-6"
         >
-          {/* Role/Tag */}
+          {/* ✅ Role/Tag - Slide from left + fade */}
           <motion.span
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+            initial={{ 
+              opacity: 0,
+              x: prefersReducedMotion ? 0 : -100,
+              scale: prefersReducedMotion ? 1 : 0.8
+            }}
+            whileInView={{ 
+              opacity: 1,
+              x: 0,
+              scale: 1
+            }}
+            viewport={{ once: false, amount: 0.3 }}
+            transition={{ 
+              duration: prefersReducedMotion ? 0.3 : 0.8,
+              delay: prefersReducedMotion ? 0 : 0.1,
+              ease: [0.22, 1, 0.36, 1]
+            }}
             className="inline-block text-sm font-semibold uppercase tracking-wider text-[color:var(--color-primary)]"
           >
             {hero.subtitle || "Software Developer"}
           </motion.span>
 
-          {/* Name */}
+          {/* ✅ Name - Slide from left with bounce */}
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+            initial={{ 
+              opacity: 0,
+              x: prefersReducedMotion ? 0 : -120,
+              y: prefersReducedMotion ? 0 : 20
+            }}
+            whileInView={{ 
+              opacity: 1,
+              x: 0,
+              y: 0
+            }}
+            viewport={{ once: false, amount: 0.3 }}
+            transition={{ 
+              duration: prefersReducedMotion ? 0.3 : 0.9,
+              delay: prefersReducedMotion ? 0 : 0.2,
+              type: "spring",
+              stiffness: 100,
+              damping: 15
+            }}
             className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-[color:var(--color-text)]"
           >
             Hello, my name is <br />
-            <span className="text-[color:var(--color-primary)]">{owner.first_name} {owner.last_name}</span>
+            <motion.span 
+              initial={{ 
+                opacity: 0,
+                scale: prefersReducedMotion ? 1 : 0.5
+              }}
+              whileInView={{ 
+                opacity: 1,
+                scale: 1
+              }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ 
+                duration: prefersReducedMotion ? 0.3 : 0.6,
+                delay: prefersReducedMotion ? 0 : 0.5,
+                type: "spring",
+                stiffness: 200
+              }}
+              className="text-[color:var(--color-primary)]"
+            >
+              {owner.first_name} {owner.last_name}
+            </motion.span>
           </motion.h1>
 
-          {/* Bio/Description */}
+          {/* ✅ Bio - Slide from left + fade */}
           <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
+            initial={{ 
+              opacity: 0,
+              x: prefersReducedMotion ? 0 : -100,
+              y: prefersReducedMotion ? 0 : 10
+            }}
+            whileInView={{ 
+              opacity: 1,
+              x: 0,
+              y: 0
+            }}
+            viewport={{ once: false, amount: 0.3 }}
+            transition={{ 
+              duration: prefersReducedMotion ? 0.3 : 0.8,
+              delay: prefersReducedMotion ? 0 : 0.6,
+              ease: [0.22, 1, 0.36, 1]
+            }}
             className="text-lg md:text-xl text-[color:var(--color-muted)] leading-relaxed max-w-lg"
           >
             {owner.bio || hero.title}
           </motion.p>
 
-          {/* Action Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="flex flex-wrap gap-4 pt-4"
-          >
-           
-          </motion.div>
-
-          {/* Icon Buttons Row */}
+          {/* ✅ Action Buttons - Removed (empty div kept for spacing) */}
           <motion.div
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: false, amount: 0.3 }}
+            transition={{ delay: prefersReducedMotion ? 0 : 0.7 }}
+            className="flex flex-wrap gap-4 pt-4"
+          >
+          </motion.div>
+
+          {/* ✅ Social Icons - Sequential pop from bottom */}
+          <motion.div
+            initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.3 }}
+            transition={{ 
+              duration: prefersReducedMotion ? 0.3 : 0.6,
+              delay: prefersReducedMotion ? 0 : 0.8
+            }}
             className="flex gap-4 pt-2"
           >
             {/* Resume Download */}
@@ -118,6 +189,21 @@ const Hero = () => {
               <motion.a
                 href={owner.resume_url}
                 download
+                initial={{ 
+                  scale: 0,
+                  rotate: prefersReducedMotion ? 0 : -180
+                }}
+                whileInView={{ 
+                  scale: 1,
+                  rotate: 0
+                }}
+                viewport={{ once: false, amount: 0.3 }}
+                transition={{ 
+                  delay: prefersReducedMotion ? 0 : 0.9,
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 20
+                }}
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 whileTap={{ scale: 0.9 }}
                 className={isDark
@@ -136,6 +222,21 @@ const Hero = () => {
             {owner.email && (
               <motion.a
                 href={`mailto:${owner.email}`}
+                initial={{ 
+                  scale: 0,
+                  rotate: prefersReducedMotion ? 0 : -180
+                }}
+                whileInView={{ 
+                  scale: 1,
+                  rotate: 0
+                }}
+                viewport={{ once: false, amount: 0.3 }}
+                transition={{ 
+                  delay: prefersReducedMotion ? 0 : 1.0,
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 20
+                }}
                 whileHover={{ scale: 1.1, rotate: -5 }}
                 whileTap={{ scale: 0.9 }}
                 className={isDark
@@ -156,6 +257,21 @@ const Hero = () => {
                 href={owner.linkedin_url}
                 target="_blank"
                 rel="noopener noreferrer"
+                initial={{ 
+                  scale: 0,
+                  rotate: prefersReducedMotion ? 0 : -180
+                }}
+                whileInView={{ 
+                  scale: 1,
+                  rotate: 0
+                }}
+                viewport={{ once: false, amount: 0.3 }}
+                transition={{ 
+                  delay: prefersReducedMotion ? 0 : 1.1,
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 20
+                }}
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 whileTap={{ scale: 0.9 }}
                 className={isDark
@@ -176,6 +292,21 @@ const Hero = () => {
                 href={owner.github_url}
                 target="_blank"
                 rel="noopener noreferrer"
+                initial={{ 
+                  scale: 0,
+                  rotate: prefersReducedMotion ? 0 : -180
+                }}
+                whileInView={{ 
+                  scale: 1,
+                  rotate: 0
+                }}
+                viewport={{ once: false, amount: 0.3 }}
+                transition={{ 
+                  delay: prefersReducedMotion ? 0 : 1.2,
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 20
+                }}
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 whileTap={{ scale: 0.9 }}
                 className={isDark
@@ -192,18 +323,49 @@ const Hero = () => {
           </motion.div>
         </motion.div>
 
-        {/* RIGHT SIDE - Image with Organic Blob Background - HIDDEN ON MOBILE */}
+        {/* ✅ RIGHT SIDE - Image with 3D rotation + blob morph */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          initial={{ 
+            opacity: 0,
+            scale: prefersReducedMotion ? 1 : 0.8,
+            x: prefersReducedMotion ? 0 : 150,
+            rotateY: prefersReducedMotion ? 0 : 30
+          }}
+          whileInView={{ 
+            opacity: 1,
+            scale: 1,
+            x: 0,
+            rotateY: 0
+          }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ 
+            duration: prefersReducedMotion ? 0.3 : 1,
+            delay: prefersReducedMotion ? 0 : 0.3,
+            ease: [0.22, 1, 0.36, 1]
+          }}
           className="hidden lg:flex relative justify-center lg:justify-end items-center h-[600px]"
+          style={{
+            transformStyle: "preserve-3d"
+          }}
         >
-          {/* Large Organic Blob Background - Same Size as Image Container */}
+          {/* ✅ Organic Blob - Morph animation */}
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
+            initial={{ 
+              scale: prefersReducedMotion ? 1 : 0.5,
+              opacity: 0,
+              rotate: prefersReducedMotion ? 0 : -90
+            }}
+            whileInView={{ 
+              scale: 1,
+              opacity: 1,
+              rotate: 0
+            }}
+            viewport={{ once: false, amount: 0.3 }}
+            transition={{ 
+              duration: prefersReducedMotion ? 0.3 : 1.5,
+              ease: "easeOut",
+              delay: prefersReducedMotion ? 0 : 0.5
+            }}
             className="absolute right-0 top-1/2 -translate-y-1/2 w-[450px] h-[450px] md:w-[550px] md:h-[550px]"
             style={{
               backgroundImage:
@@ -212,13 +374,29 @@ const Hero = () => {
             }}
           />
 
-          {/* Profile Image - Positioned Inside Blob */}
+          {/* ✅ Profile Image - Fade + float */}
           <motion.div
-            whileHover={{ scale: 1.02 }}
+            initial={{ 
+              opacity: 0,
+              y: prefersReducedMotion ? 0 : 50,
+              scale: prefersReducedMotion ? 1 : 0.9
+            }}
+            whileInView={{ 
+              opacity: 1,
+              y: 0,
+              scale: 1
+            }}
+            viewport={{ once: false, amount: 0.3 }}
+            transition={{ 
+              duration: prefersReducedMotion ? 0.3 : 1,
+              delay: prefersReducedMotion ? 0 : 0.8,
+              ease: [0.22, 1, 0.36, 1]
+            }}
+            whileHover={{ scale: 1.02, y: -10 }}
             className="relative z-10 w-full max-w-[450px] md:max-w-[550px]"
           >
             <img
-              src="/profile-1.png"
+              src="/profile-4.png"
               alt={`${owner.first_name} ${owner.last_name}`}
               className="w-full h-auto object-contain relative z-20"
               loading="eager"
