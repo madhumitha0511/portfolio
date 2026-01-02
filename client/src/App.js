@@ -1,7 +1,6 @@
-// src/App.js - COMPLETE WORKING VERSION
+// src/App.js - Progress Bar Animates Independently (No API Tracking)
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
 
 // ✅ Import API services
 import {
@@ -18,6 +17,7 @@ import {
   testimonialsAPI,
 } from "./services/api";
 
+import GlobalLoader from "./components/GlobalLoader";
 import Navbar from "./components/Navbar";
 import Hero from "./components/sections/Hero";
 import About from "./components/sections/About";
@@ -56,6 +56,7 @@ const NavbarWrapper = ({ children }) => {
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
   
   // ✅ Add all data states
   const [ownerData, setOwnerData] = useState(null);
@@ -73,14 +74,27 @@ function App() {
   const [testimonialsData, setTestimonialsData] = useState([]);
 
   useEffect(() => {
+    // ✅ Fake progress bar animation (independent of API)
+    const progressInterval = setInterval(() => {
+      setLoadingProgress(prev => {
+        if (prev >= 90) {
+          clearInterval(progressInterval);
+          return 90; // Stop at 90%, wait for data
+        }
+        return prev + 10;
+      });
+    }, 200); // Updates every 200ms
+
     loadPortfolioData();
+
+    return () => clearInterval(progressInterval);
   }, []);
 
   const loadPortfolioData = async () => {
     try {
       console.log('🚀 Loading portfolio data...');
 
-      // ✅ Actually fetch data from API
+      // ✅ Simple Promise.all - NO progress tracking
       const [
         ownerRes,
         heroRes,
@@ -126,24 +140,25 @@ function App() {
       setExtracurricularData(extracurricularRes.data || []);
       setTestimonialsData(testimonialsRes.data || []);
 
+      // ✅ Jump to 100% when data is ready
+      setLoadingProgress(100);
       console.log('✅ All data loaded successfully!');
-      setIsLoading(false);
+      
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
+
     } catch (error) {
       console.error("❌ Error loading portfolio:", error);
-      setIsLoading(false); // Still show page even if data fails
+      setLoadingProgress(100);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 300);
     }
   };
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-[#050006]">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-          className="w-16 h-16 border-4 border-[color:var(--color-primary)] border-t-transparent rounded-full"
-        />
-      </div>
-    );
+    return <GlobalLoader progress={loadingProgress} />;
   }
 
   // ✅ Add error screen if critical data missing
