@@ -1,10 +1,11 @@
 // client/src/components/sections/Projects.js
 import React, { useEffect, useState, useMemo, useCallback } from "react";
-import { motion, useReducedMotion, useInView } from "framer-motion";
-import { projectsAPI } from "../../services/api";
+import { motion, useReducedMotion } from "framer-motion";
 
-export const Projects = () => {
-  const [projects, setProjects] = useState([]);
+export const Projects = ({ data }) => {
+  // No API call! Data comes from App.js
+  const projects = data || [];
+  
   const [time, setTime] = useState(0);
   const [tempActiveIndex, setTempActiveIndex] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -37,21 +38,6 @@ export const Projects = () => {
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const res = await projectsAPI.getAll();
-        setProjects(res.data || []);
-      } catch (err) {
-        console.error("Error fetching projects:", err);
-      }
-    };
-
-    fetchProjects();
-    const interval = setInterval(fetchProjects, 30000);
-    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {

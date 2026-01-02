@@ -1,7 +1,6 @@
 // client/src/components/sections/Education.js
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { educationAPI } from "../../services/api";
 
 // ✅ PERFORMANCE: Optimized typing effect with memoization
 const TypingText = ({ text, className, speed = 18 }) => {
@@ -30,8 +29,9 @@ const TypingText = ({ text, className, speed = 18 }) => {
   return <span className={className}>{display}</span>;
 };
 
-const Education = () => {
-  const [items, setItems] = useState([]);
+const Education = ({ data }) => {
+  // No API call! Data comes from App.js
+  const items = data || [];
   const [isDark, setIsDark] = useState(false);
   const prefersReducedMotion = useReducedMotion();
 
@@ -51,18 +51,6 @@ const Education = () => {
     });
     
     return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await educationAPI.getAll();
-        setItems(res.data || []);
-      } catch (e) {
-        console.error("Education load error", e);
-      }
-    };
-    load();
   }, []);
 
   // ✅ PERFORMANCE: Optimized animation variants
@@ -529,7 +517,7 @@ const Education = () => {
                 transition={{ duration: 0.5 }}
                 className="text-sm lg:text-base text-[color:var(--color-muted)]"
               >
-                Loading education data...
+                No education data available.
               </motion.p>
             </div>
           )}

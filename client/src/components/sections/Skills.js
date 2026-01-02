@@ -1,10 +1,20 @@
 // client/src/components/sections/Skills.js
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { skillsAPI } from "../../services/api";
 
-export const Skills = () => {
-  const [skills, setSkills] = useState({});
+export const Skills = ({ data }) => {
+  // No API call! Data comes from App.js
+  const skills = useMemo(() => {
+    if (!data || !Array.isArray(data)) return {};
+    
+    return data.reduce((acc, skill) => {
+      const key = skill.category || "Other";
+      if (!acc[key]) acc[key] = [];
+      acc[key].push(skill);
+      return acc;
+    }, {});
+  }, [data]);
+
   const [isDark, setIsDark] = useState(false);
   const prefersReducedMotion = useReducedMotion();
 
@@ -23,24 +33,6 @@ export const Skills = () => {
     });
     
     return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const fetchSkills = async () => {
-      try {
-        const res = await skillsAPI.getAll();
-        const grouped = res.data.reduce((acc, skill) => {
-          const key = skill.category || "Other";
-          if (!acc[key]) acc[key] = [];
-          acc[key].push(skill);
-          return acc;
-        }, {});
-        setSkills(grouped);
-      } catch (err) {
-        console.error("Error fetching skills:", err);
-      }
-    };
-    fetchSkills();
   }, []);
 
   const darkPillClasses = [

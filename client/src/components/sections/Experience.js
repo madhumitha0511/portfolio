@@ -1,10 +1,14 @@
 // client/src/components/sections/Experience.js
 import React, { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { experienceAPI } from "../../services/api";
 
-const Experience = () => {
-  const [experiences, setExperiences] = useState([]);
+const Experience = ({ data }) => {
+  // No API call! Data comes from App.js
+  const experiences = useMemo(() => {
+    if (!data || !Array.isArray(data)) return [];
+    return [...data].sort((a, b) => b.year - a.year);
+  }, [data]);
+
   const [activeId, setActiveId] = useState(null);
   const [selectedYear, setSelectedYear] = useState("ALL");
   const [isHoveringMac, setIsHoveringMac] = useState(false);
@@ -13,6 +17,13 @@ const Experience = () => {
   
   // ✅ PERFORMANCE: Respect user's motion preferences
   const prefersReducedMotion = useReducedMotion();
+
+  // ✅ Set initial activeId when data loads
+  useEffect(() => {
+    if (experiences.length > 0 && !activeId) {
+      setActiveId(experiences[0].id);
+    }
+  }, [experiences, activeId]);
 
   // ✅ Detect mobile viewport (runs once + on resize)
   useEffect(() => {
@@ -41,23 +52,6 @@ const Experience = () => {
     });
     
     return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const fetchExperiences = async () => {
-      try {
-        const res = await experienceAPI.getAll();
-        const sorted = res.data.sort((a, b) => b.year - a.year);
-        setExperiences(sorted);
-        if (sorted.length > 0) {
-          setActiveId(sorted[0].id);
-          setSelectedYear("ALL");
-        }
-      } catch (err) {
-        console.error("Error fetching experiences:", err);
-      }
-    };
-    fetchExperiences();
   }, []);
 
   const groupedByYear = useMemo(() => {

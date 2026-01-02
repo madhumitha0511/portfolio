@@ -1,11 +1,12 @@
 // client/src/components/sections/Hero.js
 import React, { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { portfolioAPI } from "../../services/api";
 
-const Hero = () => {
-  const [owner, setOwner] = useState(null);
-  const [hero, setHero] = useState(null);
+const Hero = ({ ownerData, heroData }) => {
+  // No API call! Data comes from App.js
+  const owner = ownerData;
+  const hero = heroData;
+  
   const [isDark, setIsDark] = useState(false);
   const prefersReducedMotion = useReducedMotion();
 
@@ -25,22 +26,6 @@ const Hero = () => {
     });
     
     return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [ownerRes, heroRes] = await Promise.all([
-          portfolioAPI.getOwner(),
-          portfolioAPI.getHero(),
-        ]);
-        setOwner(ownerRes.data[0] || ownerRes.data);
-        setHero(heroRes.data[0] || heroRes.data);
-      } catch (err) {
-        console.error("Error fetching hero data:", err);
-      }
-    };
-    fetchData();
   }, []);
 
   if (!owner || !hero) return null;
@@ -396,7 +381,7 @@ const Hero = () => {
             className="relative z-10 w-full max-w-[450px] md:max-w-[550px]"
           >
             <img
-              src="/profile-1.png"
+              src="/profile-4.png"
               alt={`${owner.first_name} ${owner.last_name}`}
               className="w-full h-auto object-contain relative z-20"
               loading="eager"

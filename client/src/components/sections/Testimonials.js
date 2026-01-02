@@ -1,23 +1,11 @@
 // client/src/components/sections/Testimonials.js
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { testimonialsAPI } from "../../services/api";
 
-const Testimonials = () => {
-  const [items, setItems] = useState([]);
+const Testimonials = ({ data }) => {
+  // No API call! Data comes from App.js
+  const items = data || [];
   const prefersReducedMotion = useReducedMotion();
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await testimonialsAPI.getAll();
-        setItems(res.data || []);
-      } catch (e) {
-        console.error("Testimonials load error", e);
-      }
-    };
-    load();
-  }, []);
 
   if (!items.length) return null;
 

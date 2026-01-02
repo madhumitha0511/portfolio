@@ -1,4 +1,7 @@
 // client/src/components/sections/Contact.js
+// ✅ NO CHANGES NEEDED - Contact form doesn't need data from App.js
+// It only SENDS data, doesn't receive it
+
 import React, { useState, useEffect } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { contactAPI } from "../../services/api";
@@ -98,11 +101,12 @@ export const Contact = () => {
                 Get In Touch
               </p>
               <h2 className="text-3xl md:text-4xl font-bold text-[color:var(--color-text)] mb-4">
-                Building intelligent systems that <span className="text-[color:var(--color-primary)]">solve real problems</span>
+                Building AI solutions that <span className="text-[color:var(--color-primary)]">solve real problems</span>
               </h2>
               <p className="text-sm md:text-base text-[color:var(--color-muted)] leading-relaxed">
-                AI-focused developer and full-stack engineer with hands-on experience in production-ready applications, applied ML, and scalable web platforms. I focus on clean implementation, on-time delivery, and turning ideas into usable systems, not just proof-of-concepts.
-                </p>
+                Full-stack AI developer with experience in production ML systems, scalable web apps, 
+                and research-grade algorithms. Let's discuss your next project.
+              </p>
             </motion.div>
 
             {/* ✅ Staggered bullet points with blur reveal */}

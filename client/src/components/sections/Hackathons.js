@@ -1,15 +1,26 @@
 // client/src/components/sections/Hackathons.js
 import React, { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { hackathonsAPI } from "../../services/api";
 
-const Hackathons = () => {
-  const [items, setItems] = useState([]);
+const Hackathons = ({ data }) => {
+  // No API call! Data comes from App.js
+  const items = React.useMemo(() => {
+    if (!data || !Array.isArray(data)) return [];
+    return [...data].sort((a, b) => b.year - a.year);
+  }, [data]);
+
   const [activeId, setActiveId] = useState(null);
   const [isDark, setIsDark] = useState(false);
   
   // ✅ PERFORMANCE: Respect user's motion preferences
   const prefersReducedMotion = useReducedMotion();
+
+  // ✅ Set initial activeId when data loads
+  useEffect(() => {
+    if (items.length > 0 && !activeId) {
+      setActiveId(items[0].id);
+    }
+  }, [items, activeId]);
 
   // Detect theme
   useEffect(() => {
@@ -27,20 +38,6 @@ const Hackathons = () => {
     });
     
     return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await hackathonsAPI.getAll();
-        const sorted = res.data.sort((a, b) => b.year - a.year);
-        setItems(sorted);
-        if (sorted[0]) setActiveId(sorted[0].id);
-      } catch (e) {
-        console.error("Hackathons load error", e);
-      }
-    };
-    load();
   }, []);
 
   const titleColors = [

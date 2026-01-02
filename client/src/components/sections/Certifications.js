@@ -1,18 +1,30 @@
 // client/src/components/sections/Certifications.js
 import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { certificationsAPI } from "../../services/api";
 
 const VISIBLE_ROWS = 5;
 const AUTO_SCROLL_INTERVAL = 4000;
 
-const Certifications = () => {
+const Certifications = ({ data }) => {
+  // No API call! Data comes from App.js
   const [items, setItems] = useState([]);
   const [index, setIndex] = useState(0);
   const [isAutoScrolling, setIsAutoScrolling] = useState(true);
   const [isDark, setIsDark] = useState(false);
   
   const prefersReducedMotion = useReducedMotion();
+
+  // Sort the received data
+  useEffect(() => {
+    if (data && data.length > 0) {
+      const sorted = [...data].sort(
+        (a, b) =>
+          new Date(b.issue_date || "1970-01-01") -
+          new Date(a.issue_date || "1970-01-01")
+      );
+      setItems(sorted);
+    }
+  }, [data]);
 
   useEffect(() => {
     const currentTheme = document.documentElement.getAttribute('data-theme');
@@ -29,23 +41,6 @@ const Certifications = () => {
     });
     
     return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await certificationsAPI.getAll();
-        const sorted = [...res.data].sort(
-          (a, b) =>
-            new Date(b.issue_date || "1970-01-01") -
-            new Date(a.issue_date || "1970-01-01")
-        );
-        setItems(sorted);
-      } catch (e) {
-        console.error("Certifications load error", e);
-      }
-    };
-    load();
   }, []);
 
   useEffect(() => {

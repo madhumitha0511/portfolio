@@ -1,24 +1,10 @@
 // client/src/components/sections/About.js
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
-import { aboutAPI } from "../../services/api";
 
-const About = () => {
-  const [about, setAbout] = useState(null);
-
-  useEffect(() => {
-    const fetchAbout = async () => {
-      try {
-        const res = await aboutAPI.get();
-        setAbout(res.data[0] || res.data);
-      } catch (err) {
-        console.error("Error fetching about:", err);
-      }
-    };
-    fetchAbout();
-  }, []);
-
-  if (!about) return null;
+const About = ({ data }) => {
+  // No API call! Just receive data from App.js
+  if (!data) return null;
 
   return (
     <section
@@ -102,7 +88,7 @@ const About = () => {
               transition={{ delay: 0.4 }}
               className="text-lg md:text-xl leading-relaxed text-[color:var(--color-text)] opacity-90"
             >
-              {about.description}
+              {data.description}
             </motion.p>
 
             {/* ✅ Stats Grid - bidirectional */}

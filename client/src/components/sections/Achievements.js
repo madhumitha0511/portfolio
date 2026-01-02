@@ -1,10 +1,10 @@
 // client/src/components/sections/Achievements.js
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { achievementsAPI } from "../../services/api";
 
-const Achievements = () => {
-  const [items, setItems] = useState([]);
+const Achievements = ({ data }) => {
+  // No API call! Data comes from App.js
+  const items = data || [];
   const [index, setIndex] = useState(0);
   const [isDark, setIsDark] = useState(false);
   
@@ -38,18 +38,6 @@ const Achievements = () => {
 
     return () => clearInterval(interval);
   }, [items.length, prefersReducedMotion]);
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await achievementsAPI.getAll();
-        setItems(res.data || []);
-      } catch (e) {
-        console.error("Achievements load error", e);
-      }
-    };
-    load();
-  }, []);
 
   const hasItems = items.length > 0;
   const centerIdx = index;

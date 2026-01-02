@@ -1,10 +1,11 @@
 // client/src/components/sections/Extracurricular.js
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion } from "framer-motion";
-import { extracurricularAPI } from "../../services/api";
 
-const Extracurricular = () => {
-  const [items, setItems] = useState([]);
+const Extracurricular = ({ data }) => {
+  // No API call! Data comes from App.js
+  const items = data || [];
+  
   const [index, setIndex] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
   const [isDark, setIsDark] = useState(false);
@@ -30,18 +31,6 @@ const Extracurricular = () => {
     });
     
     return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await extracurricularAPI.getAll();
-        setItems(res.data || []);
-      } catch (e) {
-        console.error("Extracurricular load error", e);
-      }
-    };
-    load();
   }, []);
 
   useEffect(() => {

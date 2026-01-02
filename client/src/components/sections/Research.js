@@ -1,23 +1,11 @@
 // client/src/components/sections/Research.js
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { researchAPI } from "../../services/api";
 
-const Research = () => {
-  const [items, setItems] = useState([]);
+const Research = ({ data }) => {
+  // No API call! Data comes from App.js
+  const items = data || [];
   const prefersReducedMotion = useReducedMotion();
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await researchAPI.getAll();
-        setItems(res.data || []);
-      } catch (e) {
-        console.error("Research load error", e);
-      }
-    };
-    load();
-  }, []);
 
   return (
     <section
