@@ -577,7 +577,7 @@ export const Projects = () => {
                                   border border-[color:var(--color-primary)]/40
                                   hover:bg-[color:var(--color-primary)]/20 transition-colors"
                       >
-                        GitHub
+                        More Details
                       </a>
                     )}
                     {project.demo_link && (

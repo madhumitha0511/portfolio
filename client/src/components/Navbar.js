@@ -18,6 +18,7 @@ const Navbar = () => {
   ];
 
   const otherLinks = [
+    { name: "Education", href: "#educations" },
     { name: "Certifications", href: "#certifications" },
     { name: "Achievements", href: "#achievements" },
     { name: "Hackathons", href: "#hackathons" },
