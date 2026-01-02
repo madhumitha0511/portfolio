@@ -1,8 +1,9 @@
-// src/App.js - FIXED VERSION
+// src/App.js - COMPLETE WORKING VERSION
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
 
-// Import API services
+// ✅ Import API services
 import {
   portfolioAPI,
   experienceAPI,
@@ -17,7 +18,6 @@ import {
   testimonialsAPI,
 } from "./services/api";
 
-import GlobalLoader from "./components/GlobalLoader";
 import Navbar from "./components/Navbar";
 import Hero from "./components/sections/Hero";
 import About from "./components/sections/About";
@@ -54,158 +54,10 @@ const NavbarWrapper = ({ children }) => {
   );
 };
 
-// ✅ NEW: Main Portfolio Component (extracted to fix routing issues)
-const PortfolioHome = ({ 
-  ownerData, 
-  heroData, 
-  aboutData, 
-  experienceData, 
-  projectsData, 
-  skillsData, 
-  educationData, 
-  certificationsData, 
-  achievementsData, 
-  hackathonsData, 
-  researchData, 
-  extracurricularData, 
-  testimonialsData 
-}) => {
-  // ✅ Safety check - render error if critical data missing
-  if (!ownerData || !heroData) {
-    return (
-      <div style={{ 
-        minHeight: '100vh',
-        background: '#050006',
-        color: 'white',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: '20px',
-        fontFamily: 'Inter, sans-serif'
-      }}>
-        <div style={{ 
-          maxWidth: '600px',
-          background: 'rgba(255,255,255,0.05)',
-          borderRadius: '20px',
-          padding: '40px',
-          border: '1px solid rgba(239, 68, 68, 0.3)',
-          textAlign: 'center'
-        }}>
-          <h1 style={{ 
-            fontSize: '24px',
-            marginBottom: '20px',
-            color: '#EF4444'
-          }}>
-            ⚠️ Unable to Load Portfolio
-          </h1>
-          
-          <p style={{ 
-            fontSize: '16px',
-            marginBottom: '30px',
-            lineHeight: '1.6',
-            color: 'rgba(255,255,255,0.8)'
-          }}>
-            Critical portfolio data failed to load from the backend server.
-          </p>
-
-          <div style={{
-            background: 'rgba(0,0,0,0.3)',
-            padding: '20px',
-            borderRadius: '10px',
-            marginBottom: '30px',
-            textAlign: 'left'
-          }}>
-            <h3 style={{ fontSize: '14px', marginBottom: '15px', color: '#EF4444' }}>
-              Please check:
-            </h3>
-            <ul style={{ 
-              listStyle: 'none',
-              padding: 0,
-              margin: 0,
-              fontSize: '14px',
-              lineHeight: '2'
-            }}>
-              <li>✓ Backend server is running</li>
-              <li>✓ Database is connected and populated</li>
-              <li>✓ Environment variable REACT_APP_API_URL is correct</li>
-              <li>✓ CORS allows your frontend domain</li>
-            </ul>
-          </div>
-
-          <div style={{
-            background: 'rgba(0,0,0,0.3)',
-            padding: '15px',
-            borderRadius: '10px',
-            marginBottom: '20px',
-            fontSize: '12px',
-            color: 'rgba(255,255,255,0.6)',
-            textAlign: 'left'
-          }}>
-            <strong>Debug Info:</strong><br/>
-            Owner Data: {ownerData ? '✅ Loaded' : '❌ Missing'}<br/>
-            Hero Data: {heroData ? '✅ Loaded' : '❌ Missing'}<br/>
-            API URL: {process.env.REACT_APP_API_URL || '❌ NOT SET'}<br/>
-            Environment: {process.env.NODE_ENV || 'development'}
-          </div>
-
-          <button 
-            onClick={() => window.location.reload()}
-            style={{
-              width: '100%',
-              padding: '15px',
-              background: '#EF4444',
-              color: 'white',
-              border: 'none',
-              borderRadius: '10px',
-              fontSize: '16px',
-              fontWeight: '600',
-              cursor: 'pointer',
-              transition: 'all 0.3s'
-            }}
-          >
-            🔄 Retry Loading
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // ✅ Render portfolio if data exists
-  return (
-    <>
-      <Hero ownerData={ownerData} heroData={heroData} />
-      <div 
-        className="relative z-0"
-        style={{
-          background: "var(--hero-bg)",
-          backgroundAttachment: 'fixed',
-          backgroundSize: 'cover'
-        }}
-      >
-        <About data={aboutData} />
-        <Experience data={experienceData} />
-        <Projects data={projectsData} />
-        <Skills data={skillsData} />
-        <Education data={educationData} />
-        <Certifications data={certificationsData} />
-        <Achievements data={achievementsData} />
-        <Hackathons data={hackathonsData} />
-        <Research data={researchData} />
-        <Extracurricular data={extracurricularData} />
-        <Testimonials data={testimonialsData} />
-        <Contact />
-        <Footer />
-      </div>
-    </>
-  );
-};
-
 function App() {
-  // Loading states
   const [isLoading, setIsLoading] = useState(true);
-  const [loadingProgress, setLoadingProgress] = useState(0);
-
-  // Data states
+  
+  // ✅ Add all data states
   const [ownerData, setOwnerData] = useState(null);
   const [heroData, setHeroData] = useState(null);
   const [aboutData, setAboutData] = useState(null);
@@ -226,85 +78,95 @@ function App() {
 
   const loadPortfolioData = async () => {
     try {
-      console.log('🚀 Starting portfolio data load...');
-      console.log('📡 API URL:', process.env.REACT_APP_API_URL || 'http://localhost:5000/api');
-      
-      setLoadingProgress(10);
+      console.log('🚀 Loading portfolio data...');
 
-      const apiCalls = [
-        { name: 'Owner', call: portfolioAPI.getOwner, setter: setOwnerData },
-        { name: 'Hero', call: portfolioAPI.getHero, setter: setHeroData },
-        { name: 'About', call: portfolioAPI.getAbout, setter: setAboutData },
-        { name: 'Experience', call: experienceAPI.getAll, setter: setExperienceData },
-        { name: 'Projects', call: projectsAPI.getAll, setter: setProjectsData },
-        { name: 'Skills', call: skillsAPI.getAll, setter: setSkillsData },
-        { name: 'Education', call: educationAPI.getAll, setter: setEducationData },
-        { name: 'Certifications', call: certificationsAPI.getAll, setter: setCertificationsData },
-        { name: 'Achievements', call: achievementsAPI.getAll, setter: setAchievementsData },
-        { name: 'Hackathons', call: hackathonsAPI.getAll, setter: setHackathonsData },
-        { name: 'Research', call: researchAPI.getAll, setter: setResearchData },
-        { name: 'Extracurricular', call: extracurricularAPI.getAll, setter: setExtracurricularData },
-        { name: 'Testimonials', call: testimonialsAPI.getAll, setter: setTestimonialsData },
-      ];
+      // ✅ Actually fetch data from API
+      const [
+        ownerRes,
+        heroRes,
+        aboutRes,
+        experienceRes,
+        projectsRes,
+        skillsRes,
+        educationRes,
+        certificationsRes,
+        achievementsRes,
+        hackathonsRes,
+        researchRes,
+        extracurricularRes,
+        testimonialsRes
+      ] = await Promise.all([
+        portfolioAPI.getOwner(),
+        portfolioAPI.getHero(),
+        portfolioAPI.getAbout(),
+        experienceAPI.getAll(),
+        projectsAPI.getAll(),
+        skillsAPI.getAll(),
+        educationAPI.getAll(),
+        certificationsAPI.getAll(),
+        achievementsAPI.getAll(),
+        hackathonsAPI.getAll(),
+        researchAPI.getAll(),
+        extracurricularAPI.getAll(),
+        testimonialsAPI.getAll()
+      ]);
 
-      const totalCalls = apiCalls.length;
-      const progressPerCall = 80 / totalCalls;
+      // ✅ Set all data
+      setOwnerData(Array.isArray(ownerRes.data) ? ownerRes.data[0] : ownerRes.data);
+      setHeroData(Array.isArray(heroRes.data) ? heroRes.data[0] : heroRes.data);
+      setAboutData(Array.isArray(aboutRes.data) ? aboutRes.data[0] : aboutRes.data);
+      setExperienceData(experienceRes.data || []);
+      setProjectsData(projectsRes.data || []);
+      setSkillsData(skillsRes.data || []);
+      setEducationData(educationRes.data || []);
+      setCertificationsData(certificationsRes.data || []);
+      setAchievementsData(achievementsRes.data || []);
+      setHackathonsData(hackathonsRes.data || []);
+      setResearchData(researchRes.data || []);
+      setExtracurricularData(extracurricularRes.data || []);
+      setTestimonialsData(testimonialsRes.data || []);
 
-      const timeoutId = setTimeout(() => {
-        console.log("⏰ 10-second timeout reached - showing website");
-        setLoadingProgress(100);
-        setTimeout(() => setIsLoading(false), 300);
-      }, 10000);
-
-      let completedCalls = 0;
-
-      const loadPromises = apiCalls.map(async ({ name, call, setter }) => {
-        try {
-          const response = await call();
-          
-          const data = Array.isArray(response.data) && response.data.length === 1
-            ? response.data[0]
-            : response.data;
-          
-          setter(data);
-          completedCalls++;
-          const newProgress = 10 + (completedCalls * progressPerCall);
-          setLoadingProgress(Math.min(Math.round(newProgress), 90));
-          console.log(`✅ Loaded: ${name} (${completedCalls}/${totalCalls})`);
-        } catch (error) {
-          completedCalls++;
-          const newProgress = 10 + (completedCalls * progressPerCall);
-          setLoadingProgress(Math.min(Math.round(newProgress), 90));
-          console.error(`❌ Failed to load ${name}:`, error);
-          
-          const isSingleObject = ['Hero', 'About', 'Owner'].includes(name);
-          setter(isSingleObject ? null : []);
-        }
-      });
-
-      await Promise.all(loadPromises);
-      clearTimeout(timeoutId);
-
-      setLoadingProgress(100);
-      console.log("🎉 All portfolio data loaded!");
-
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 500);
-
+      console.log('✅ All data loaded successfully!');
+      setIsLoading(false);
     } catch (error) {
-      console.error("❌ Critical error loading portfolio:", error);
-      setLoadingProgress(100);
-      setTimeout(() => setIsLoading(false), 300);
+      console.error("❌ Error loading portfolio:", error);
+      setIsLoading(false); // Still show page even if data fails
     }
   };
 
-  // ✅ Show loader
   if (isLoading) {
-    return <GlobalLoader progress={loadingProgress} />;
+    return (
+      <div className="flex items-center justify-center h-screen bg-[#050006]">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+          className="w-16 h-16 border-4 border-[color:var(--color-primary)] border-t-transparent rounded-full"
+        />
+      </div>
+    );
   }
 
-  // ✅ After loading, render app
+  // ✅ Add error screen if critical data missing
+  if (!ownerData || !heroData) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-[#050006] text-white p-6">
+        <h1 className="text-2xl font-bold text-red-500 mb-4">⚠️ Failed to Load Portfolio</h1>
+        <p className="text-gray-400 mb-6">Unable to connect to backend server</p>
+        <ul className="text-sm text-gray-500 mb-6 space-y-2">
+          <li>✓ Check if backend is running</li>
+          <li>✓ Verify REACT_APP_API_URL is correct</li>
+          <li>✓ Check database connection</li>
+        </ul>
+        <button 
+          onClick={() => window.location.reload()}
+          className="px-6 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-semibold"
+        >
+          🔄 Retry
+        </button>
+      </div>
+    );
+  }
+
   return (
     <Router>
       <div className="min-h-screen bg-[#050006] text-[color:var(--color-text)] relative overflow-x-hidden">
@@ -313,21 +175,32 @@ function App() {
             <Route 
               path="/" 
               element={
-                <PortfolioHome
-                  ownerData={ownerData}
-                  heroData={heroData}
-                  aboutData={aboutData}
-                  experienceData={experienceData}
-                  projectsData={projectsData}
-                  skillsData={skillsData}
-                  educationData={educationData}
-                  certificationsData={certificationsData}
-                  achievementsData={achievementsData}
-                  hackathonsData={hackathonsData}
-                  researchData={researchData}
-                  extracurricularData={extracurricularData}
-                  testimonialsData={testimonialsData}
-                />
+                <>
+                  {/* ✅ Pass data as props */}
+                  <Hero ownerData={ownerData} heroData={heroData} />
+                  <div 
+                    className="relative z-0"
+                    style={{
+                      background: "var(--hero-bg)",
+                      backgroundAttachment: 'fixed',
+                      backgroundSize: 'cover'
+                    }}
+                  >
+                    <About data={aboutData} />
+                    <Experience data={experienceData} />
+                    <Projects data={projectsData} />
+                    <Skills data={skillsData} />
+                    <Education data={educationData} />
+                    <Certifications data={certificationsData} />
+                    <Achievements data={achievementsData} />
+                    <Hackathons data={hackathonsData} />
+                    <Research data={researchData} />
+                    <Extracurricular data={extracurricularData} />
+                    <Testimonials data={testimonialsData} />
+                    <Contact />
+                    <Footer />
+                  </div>
+                </>
               } 
             />
 
