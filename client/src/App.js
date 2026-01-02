@@ -1,4 +1,4 @@
-// src/App.js - Progress Bar Animates Independently (No API Tracking)
+// src/App.js - Progress Bar Animates Smoothly (Not API-Based)
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 
@@ -74,27 +74,28 @@ function App() {
   const [testimonialsData, setTestimonialsData] = useState([]);
 
   useEffect(() => {
-    // ✅ Fake progress bar animation (independent of API)
-    const progressInterval = setInterval(() => {
-      setLoadingProgress(prev => {
-        if (prev >= 90) {
-          clearInterval(progressInterval);
-          return 90; // Stop at 90%, wait for data
-        }
-        return prev + 10;
-      });
-    }, 200); // Updates every 200ms
-
     loadPortfolioData();
-
-    return () => clearInterval(progressInterval);
   }, []);
+
+  // ✅ NEW: Smooth progress animation (like spinning wheel)
+  useEffect(() => {
+    if (!isLoading) return;
+
+    const interval = setInterval(() => {
+      setLoadingProgress(prev => {
+        if (prev >= 90) return prev; // Stop at 90%, wait for actual loading
+        return prev + 1; // Increment smoothly
+      });
+    }, 30); // Update every 30ms for smooth animation
+
+    return () => clearInterval(interval);
+  }, [isLoading]);
 
   const loadPortfolioData = async () => {
     try {
       console.log('🚀 Loading portfolio data...');
 
-      // ✅ Simple Promise.all - NO progress tracking
+      // ✅ Fetch data from API (NO PROGRESS TRACKING)
       const [
         ownerRes,
         heroRes,
@@ -140,10 +141,11 @@ function App() {
       setExtracurricularData(extracurricularRes.data || []);
       setTestimonialsData(testimonialsRes.data || []);
 
-      // ✅ Jump to 100% when data is ready
+      // ✅ Jump to 100% when done
       setLoadingProgress(100);
       console.log('✅ All data loaded successfully!');
       
+      // ✅ Small delay for smooth transition
       setTimeout(() => {
         setIsLoading(false);
       }, 500);
@@ -157,6 +159,7 @@ function App() {
     }
   };
 
+  // ✅ Show GlobalLoader with smooth animated progress
   if (isLoading) {
     return <GlobalLoader progress={loadingProgress} />;
   }
