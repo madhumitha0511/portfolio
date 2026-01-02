@@ -1,4 +1,4 @@
-// src/App.js - CORRECTED VERSION
+// src/App.js - With Real Backend Data Loading & Props Passing
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 
@@ -59,7 +59,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
 
-  // Data states
+  // Data states - Store all loaded data here
   const [ownerData, setOwnerData] = useState(null);
   const [heroData, setHeroData] = useState(null);
   const [aboutData, setAboutData] = useState(null);
@@ -80,76 +80,82 @@ function App() {
 
   const loadPortfolioData = async () => {
     try {
+      // Initial progress
       setLoadingProgress(10);
 
+      // Define all API calls with their state setters
       const apiCalls = [
-        { name: 'Owner', call: portfolioAPI.getOwner, setter: setOwnerData, isSingle: true },
-        { name: 'Hero', call: portfolioAPI.getHero, setter: setHeroData, isSingle: true },
-        { name: 'About', call: portfolioAPI.getAbout, setter: setAboutData, isSingle: true },
-        { name: 'Experience', call: experienceAPI.getAll, setter: setExperienceData, isSingle: false },
-        { name: 'Projects', call: projectsAPI.getAll, setter: setProjectsData, isSingle: false },
-        { name: 'Skills', call: skillsAPI.getAll, setter: setSkillsData, isSingle: false },
-        { name: 'Education', call: educationAPI.getAll, setter: setEducationData, isSingle: false },
-        { name: 'Certifications', call: certificationsAPI.getAll, setter: setCertificationsData, isSingle: false },
-        { name: 'Achievements', call: achievementsAPI.getAll, setter: setAchievementsData, isSingle: false },
-        { name: 'Hackathons', call: hackathonsAPI.getAll, setter: setHackathonsData, isSingle: false },
-        { name: 'Research', call: researchAPI.getAll, setter: setResearchData, isSingle: false },
-        { name: 'Extracurricular', call: extracurricularAPI.getAll, setter: setExtracurricularData, isSingle: false },
-        { name: 'Testimonials', call: testimonialsAPI.getAll, setter: setTestimonialsData, isSingle: false },
+        { name: 'Owner', call: portfolioAPI.getOwner, setter: setOwnerData },
+        { name: 'Hero', call: portfolioAPI.getHero, setter: setHeroData },
+        { name: 'About', call: portfolioAPI.getAbout, setter: setAboutData },
+        { name: 'Experience', call: experienceAPI.getAll, setter: setExperienceData },
+        { name: 'Projects', call: projectsAPI.getAll, setter: setProjectsData },
+        { name: 'Skills', call: skillsAPI.getAll, setter: setSkillsData },
+        { name: 'Education', call: educationAPI.getAll, setter: setEducationData },
+        { name: 'Certifications', call: certificationsAPI.getAll, setter: setCertificationsData },
+        { name: 'Achievements', call: achievementsAPI.getAll, setter: setAchievementsData },
+        { name: 'Hackathons', call: hackathonsAPI.getAll, setter: setHackathonsData },
+        { name: 'Research', call: researchAPI.getAll, setter: setResearchData },
+        { name: 'Extracurricular', call: extracurricularAPI.getAll, setter: setExtracurricularData },
+        { name: 'Testimonials', call: testimonialsAPI.getAll, setter: setTestimonialsData },
       ];
 
       const totalCalls = apiCalls.length;
-      const progressPerCall = 80 / totalCalls;
+      const progressPerCall = 80 / totalCalls; // 10% start, 10% end buffer
 
-      // ✅ 10-second timeout safety
+      // Set 10-second timeout safety
       const timeoutId = setTimeout(() => {
-        console.log("⏰ 10s timeout - showing site anyway");
+        console.log("⏰ 10-second timeout reached - showing website");
         setLoadingProgress(100);
         setTimeout(() => setIsLoading(false), 300);
       }, 10000);
 
+      // Load all data in parallel (faster!)
       let completedCalls = 0;
 
-      const loadPromises = apiCalls.map(async ({ name, call, setter, isSingle }) => {
+      const loadPromises = apiCalls.map(async ({ name, call, setter }) => {
         try {
           const response = await call();
           
-          // ✅ FIX: Handle single vs array data correctly
-          let data;
-          if (isSingle) {
-            // For Owner/Hero/About - expect single object
-            data = Array.isArray(response.data) ? response.data[0] : response.data;
-          } else {
-            // For collections - always return array
-            data = Array.isArray(response.data) ? response.data : [];
-          }
+          // ✅ Handle both array and object responses
+          const data = Array.isArray(response.data) && response.data.length === 1
+            ? response.data[0]
+            : response.data;
           
-          setter(data);
+          setter(data); // Save data to state!
           completedCalls++;
           const newProgress = 10 + (completedCalls * progressPerCall);
           setLoadingProgress(Math.min(Math.round(newProgress), 90));
-          console.log(`✅ ${name} loaded (${completedCalls}/${totalCalls})`);
+          console.log(`✅ Loaded: ${name} (${completedCalls}/${totalCalls})`);
         } catch (error) {
           completedCalls++;
           const newProgress = 10 + (completedCalls * progressPerCall);
           setLoadingProgress(Math.min(Math.round(newProgress), 90));
-          console.warn(`⚠️ ${name} failed:`, error.message);
+          console.warn(`⚠️ Failed to load ${name}:`, error.message);
           
-          // ✅ Set appropriate default
-          setter(isSingle ? null : []);
+          // ✅ Set empty data based on expected type
+          const isSingleObject = ['Hero', 'About', 'Owner'].includes(name);
+          setter(isSingleObject ? null : []);
         }
       });
 
+      // Wait for all API calls to complete
       await Promise.all(loadPromises);
+
+      // Clear timeout (we finished before 10 seconds)
       clearTimeout(timeoutId);
 
+      // Complete loading
       setLoadingProgress(100);
-      console.log("🎉 Portfolio loaded!");
+      console.log("🎉 All portfolio data loaded!");
 
-      setTimeout(() => setIsLoading(false), 500);
+      // Small delay for smooth transition
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
 
     } catch (error) {
-      console.error("❌ Critical error:", error);
+      console.error("❌ Critical error loading portfolio:", error);
       setLoadingProgress(100);
       setTimeout(() => setIsLoading(false), 300);
     }
@@ -168,8 +174,7 @@ function App() {
               path="/" 
               element={
                 <>
-                  {/* ✅ FIX: Hero doesn't need ownerData/heroData props - it fetches internally */}
-                  <Hero />
+                  <Hero ownerData={ownerData} heroData={heroData} />
                   <div 
                     className="relative z-0"
                     style={{
@@ -178,18 +183,17 @@ function App() {
                       backgroundSize: 'cover'
                     }}
                   >
-                    {/* ✅ FIX: Most components fetch their own data - remove props unless needed */}
-                    <About />
-                    <Experience />
-                    <Projects />
-                    <Skills />
-                    <Education />
-                    <Certifications />
-                    <Achievements />
-                    <Hackathons />
-                    <Research />
-                    <Extracurricular />
-                    <Testimonials />
+                    <About data={aboutData} />
+                    <Experience data={experienceData} />
+                    <Projects data={projectsData} />
+                    <Skills data={skillsData} />
+                    <Education data={educationData} />
+                    <Certifications data={certificationsData} />
+                    <Achievements data={achievementsData} />
+                    <Hackathons data={hackathonsData} />
+                    <Research data={researchData} />
+                    <Extracurricular data={extracurricularData} />
+                    <Testimonials data={testimonialsData} />
                     <Contact />
                     <Footer />
                   </div>
