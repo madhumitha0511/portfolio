@@ -1,4 +1,4 @@
-// src/App.js - Progress Bar Animates Smoothly (Not API-Based)
+// src/App.js - Progress Bar Animates Independently (No API Tracking)
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 
@@ -74,28 +74,27 @@ function App() {
   const [testimonialsData, setTestimonialsData] = useState([]);
 
   useEffect(() => {
-    loadPortfolioData();
-  }, []);
-
-  // ✅ NEW: Smooth progress animation (like spinning wheel)
-  useEffect(() => {
-    if (!isLoading) return;
-
-    const interval = setInterval(() => {
+    // ✅ Fake progress bar animation (independent of API)
+    const progressInterval = setInterval(() => {
       setLoadingProgress(prev => {
-        if (prev >= 90) return prev; // Stop at 90%, wait for actual loading
-        return prev + 1; // Increment smoothly
+        if (prev >= 90) {
+          clearInterval(progressInterval);
+          return 90; // Stop at 90%, wait for data
+        }
+        return prev + 10;
       });
-    }, 30); // Update every 30ms for smooth animation
+    }, 200); // Updates every 200ms
 
-    return () => clearInterval(interval);
-  }, [isLoading]);
+    loadPortfolioData();
+
+    return () => clearInterval(progressInterval);
+  }, []);
 
   const loadPortfolioData = async () => {
     try {
       console.log('🚀 Loading portfolio data...');
 
-      // ✅ Fetch data from API (NO PROGRESS TRACKING)
+      // ✅ Simple Promise.all - NO progress tracking
       const [
         ownerRes,
         heroRes,
@@ -141,11 +140,10 @@ function App() {
       setExtracurricularData(extracurricularRes.data || []);
       setTestimonialsData(testimonialsRes.data || []);
 
-      // ✅ Jump to 100% when done
+      // ✅ Jump to 100% when data is ready
       setLoadingProgress(100);
       console.log('✅ All data loaded successfully!');
       
-      // ✅ Small delay for smooth transition
       setTimeout(() => {
         setIsLoading(false);
       }, 500);
@@ -159,7 +157,6 @@ function App() {
     }
   };
 
-  // ✅ Show GlobalLoader with smooth animated progress
   if (isLoading) {
     return <GlobalLoader progress={loadingProgress} />;
   }
