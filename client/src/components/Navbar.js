@@ -1,13 +1,15 @@
-// client/src/components/Navbar.js - FIXED WITH Link
+// client/src/components/Navbar.js - WITH EDUCATION ADDED
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";  // ✅ ADD THIS
+import { Link } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
+
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [otherOpen, setOtherOpen] = useState(false);
   const [hoverTimeout, setHoverTimeout] = useState(null);
+
 
   const navLinks = [
     { name: "About", href: "#about" },
@@ -17,8 +19,9 @@ const Navbar = () => {
     { name: "Contact", href: "#contact" },
   ];
 
+
   const otherLinks = [
-    { name: "Education", href: "#educations" },
+    { name: "Education", href: "#education" }, // ✅ ADDED
     { name: "Certifications", href: "#certifications" },
     { name: "Achievements", href: "#achievements" },
     { name: "Hackathons", href: "#hackathons" },
@@ -27,10 +30,12 @@ const Navbar = () => {
     { name: "Testimonials", href: "#testimonials" },
   ];
 
+
   const handleMouseEnter = () => {
     if (hoverTimeout) clearTimeout(hoverTimeout);
     setOtherOpen(true);
   };
+
 
   const handleMouseLeave = () => {
     const timeout = setTimeout(() => {
@@ -38,6 +43,7 @@ const Navbar = () => {
     }, 200);
     setHoverTimeout(timeout);
   };
+
 
   return (
     <motion.nav
@@ -56,6 +62,7 @@ const Navbar = () => {
             M
           </motion.a>
 
+
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
@@ -68,7 +75,8 @@ const Navbar = () => {
               </a>
             ))}
 
-            {/* ULTRA TIGHT DROPDOWN */}
+
+            {/* DROPDOWN WITH EDUCATION */}
             <div
               className="relative"
               onMouseEnter={handleMouseEnter}
@@ -100,9 +108,10 @@ const Navbar = () => {
               )}
             </div>
 
+
             <ThemeToggle />
 
-            {/* ✅ FIXED: Link INSTEAD OF <a> */}
+
             <Link
               to="/admin/login"
               className="px-4 py-2 text-xs font-semibold rounded-lg border border-[color:var(--color-border)] text-[color:var(--color-text)] hover:bg-[color:var(--color-bg-elevated)] transition"
@@ -110,6 +119,7 @@ const Navbar = () => {
               Login
             </Link>
           </div>
+
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center gap-3">
@@ -140,6 +150,7 @@ const Navbar = () => {
         </div>
       </div>
 
+
       {/* Mobile Menu */}
       {isOpen && (
         <motion.div
@@ -159,7 +170,8 @@ const Navbar = () => {
               </a>
             ))}
 
-            {/* Other group on mobile */}
+
+            {/* Other group on mobile - WITH EDUCATION */}
             <div className="pt-2 border-t border-[color:var(--color-border)]">
               <p className="text-[11px] uppercase tracking-[0.16em] text-[color:var(--color-muted)] mb-2">
                 Other
@@ -169,14 +181,14 @@ const Navbar = () => {
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className="block text-sm font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)]"
+                  className="block text-sm font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-primary)] mb-2"
                 >
                   {link.name}
                 </a>
               ))}
             </div>
 
-            {/* ✅ FIXED: Link INSTEAD OF <a> */}
+
             <Link
               to="/admin/login"
               onClick={() => setIsOpen(false)}
@@ -190,5 +202,6 @@ const Navbar = () => {
     </motion.nav>
   );
 };
+
 
 export default Navbar;
