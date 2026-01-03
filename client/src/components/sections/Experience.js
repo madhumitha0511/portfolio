@@ -3,7 +3,6 @@ import React, { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 
 const Experience = ({ data }) => {
-  // No API call! Data comes from App.js
   const experiences = useMemo(() => {
     if (!data || !Array.isArray(data)) return [];
     return [...data].sort((a, b) => b.year - a.year);
@@ -13,25 +12,23 @@ const Experience = ({ data }) => {
   const [selectedYear, setSelectedYear] = useState("ALL");
   const [isHoveringMac, setIsHoveringMac] = useState(false);
   const [isDark, setIsDark] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024); // ✅ FIX: Initialize immediately
   
-  // ✅ PERFORMANCE: Respect user's motion preferences
   const prefersReducedMotion = useReducedMotion();
 
-  // ✅ Set initial activeId when data loads
   useEffect(() => {
     if (experiences.length > 0 && !activeId) {
       setActiveId(experiences[0].id);
     }
   }, [experiences, activeId]);
 
-  // ✅ Detect mobile viewport (runs once + on resize)
+  // ✅ FIX: Detect mobile viewport (initialize immediately)
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024); // lg breakpoint
+      setIsMobile(window.innerWidth < 1024);
     };
     
-    checkMobile(); // Initial check
+    checkMobile(); // Redundant now, but safe to keep
     window.addEventListener("resize", checkMobile);
     
     return () => window.removeEventListener("resize", checkMobile);
@@ -116,7 +113,7 @@ const Experience = ({ data }) => {
 
   const getColorClass = (index) => colors[index % colors.length];
 
-  // ✅ PERFORMANCE: Optimized animation variants (GPU-accelerated properties only)
+  // ✅ Animation variants
   const sectionVariants = {
     hidden: { 
       opacity: 0, 
@@ -188,13 +185,13 @@ const Experience = ({ data }) => {
     <section id="experience" className="py-20 px-4 relative overflow-hidden">
       <div className="max-w-full mx-auto relative z-10 px-4 md:px-6">
         
-        {/* ✅ Title: Mobile once=true, Desktop once=false */}
+        {/* ✅ Title */}
         <motion.h2
           variants={sectionVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ 
-            once: isMobile,  // ✅ Mobile: one-time, Desktop: bidirectional
+            once: true,  // ✅ Always one-time for title
             amount: 0.3,
             margin: "-50px"
           }}
@@ -210,7 +207,7 @@ const Experience = ({ data }) => {
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 w-full">
             
-            {/* ✅ Mac Window: Mobile once=true, Desktop once=false */}
+            {/* ✅ Mac Window: Fixed viewport behavior */}
             <div className="lg:col-span-2 w-full relative">
               <motion.div
                 id="mac-experience-window"
@@ -223,11 +220,11 @@ const Experience = ({ data }) => {
                   margin: "-80px"
                 }}
                 whileHover={{ 
-                  y: prefersReducedMotion ? 0 : -8, 
+                  y: prefersReducedMotion || isMobile ? 0 : -8,  // ✅ Disable hover effect on mobile
                   transition: { duration: 0.3 } 
                 }}
-                onMouseEnter={() => setIsHoveringMac(true)}
-                onMouseLeave={() => setIsHoveringMac(false)}
+                onMouseEnter={() => !isMobile && setIsHoveringMac(true)}  // ✅ Only on desktop
+                onMouseLeave={() => !isMobile && setIsHoveringMac(false)}  // ✅ Only on desktop
                 className={`w-full rounded-2xl md:rounded-3xl overflow-hidden relative ${
                   isDark 
                     ? "border border-[color:var(--color-border)]" 
@@ -263,19 +260,19 @@ const Experience = ({ data }) => {
                 }>
                   <div className="flex gap-1.5 md:gap-2">
                     <motion.div
-                      whileHover={{ scale: prefersReducedMotion ? 1 : 1.2 }}
+                      whileHover={{ scale: prefersReducedMotion || isMobile ? 1 : 1.2 }}  // ✅ Disable on mobile
                       className={isDark ? "w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-red-500 cursor-pointer shadow-md" : "w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-[color:var(--color-secondary)] cursor-pointer shadow-soft"}
-                      style={{ cursor: cursorUrl }}
+                      style={{ cursor: isMobile ? 'default' : cursorUrl }}  // ✅ Default cursor on mobile
                     />
                     <motion.div
-                      whileHover={{ scale: prefersReducedMotion ? 1 : 1.2 }}
+                      whileHover={{ scale: prefersReducedMotion || isMobile ? 1 : 1.2 }}
                       className={isDark ? "w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-yellow-400 cursor-pointer shadow-md" : "w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-[color:var(--color-accent)] cursor-pointer shadow-soft"}
-                      style={{ cursor: cursorUrl }}
+                      style={{ cursor: isMobile ? 'default' : cursorUrl }}
                     />
                     <motion.div
-                      whileHover={{ scale: prefersReducedMotion ? 1 : 1.2 }}
+                      whileHover={{ scale: prefersReducedMotion || isMobile ? 1 : 1.2 }}
                       className={isDark ? "w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-green-500 cursor-pointer shadow-md" : "w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-[color:var(--color-primary)] cursor-pointer shadow-soft"}
-                      style={{ cursor: cursorUrl }}
+                      style={{ cursor: isMobile ? 'default' : cursorUrl }}
                     />
                   </div>
                   <h3 className={isDark ? "text-[10px] md:text-xs font-semibold text-white flex-1 text-center" : "text-[10px] md:text-xs font-semibold text-[color:var(--color-text)] flex-1 text-center"}>
@@ -289,8 +286,8 @@ const Experience = ({ data }) => {
                   : "px-4 md:px-6 py-2 md:py-3 bg-[color:var(--color-bg)] border-b border-[color:var(--color-border)]/30 flex gap-2 overflow-x-auto scrollbar-hide relative z-10"
                 }>
                   <motion.button
-                    whileHover={{ scale: prefersReducedMotion ? 1 : 1.05 }}
-                    whileTap={{ scale: prefersReducedMotion ? 1 : 0.95 }}
+                    whileHover={{ scale: prefersReducedMotion || isMobile ? 1 : 1.05 }}
+                    whileTap={{ scale: prefersReducedMotion || isMobile ? 1 : 0.95 }}
                     onClick={() => setSelectedYear("ALL")}
                     className={`px-2.5 md:px-3 py-1 md:py-1.5 rounded-lg font-semibold text-[10px] md:text-xs whitespace-nowrap transition-all ${
                       selectedYear === "ALL"
@@ -299,7 +296,7 @@ const Experience = ({ data }) => {
                         ? "bg-[color:var(--color-primary-soft)]/40 text-white hover:bg-[color:var(--color-primary-soft)]/60"
                         : "bg-[color:var(--color-primary-soft)] text-[color:var(--color-text)] hover:bg-[color:var(--color-primary-soft)]/80"
                     }`}
-                    style={{ cursor: cursorUrl }}
+                    style={{ cursor: isMobile ? 'default' : cursorUrl }}
                   >
                     All
                   </motion.button>
@@ -307,8 +304,8 @@ const Experience = ({ data }) => {
                   {allYears.map((year) => (
                     <motion.button
                       key={year}
-                      whileHover={{ scale: prefersReducedMotion ? 1 : 1.05 }}
-                      whileTap={{ scale: prefersReducedMotion ? 1 : 0.95 }}
+                      whileHover={{ scale: prefersReducedMotion || isMobile ? 1 : 1.05 }}
+                      whileTap={{ scale: prefersReducedMotion || isMobile ? 1 : 0.95 }}
                       onClick={() => setSelectedYear(String(year))}
                       className={`px-2.5 md:px-3 py-1 md:py-1.5 rounded-lg font-semibold text-[10px] md:text-xs whitespace-nowrap transition-all ${
                         selectedYear === String(year)
@@ -317,14 +314,14 @@ const Experience = ({ data }) => {
                           ? "bg-[color:var(--color-primary-soft)]/40 text-white hover:bg-[color:var(--color-primary-soft)]/60"
                           : "bg-[color:var(--color-primary-soft)] text-[color:var(--color-text)] hover:bg-[color:var(--color-primary-soft)]/80"
                       }`}
-                      style={{ cursor: cursorUrl }}
+                      style={{ cursor: isMobile ? 'default' : cursorUrl }}
                     >
                       {year}
                     </motion.button>
                   ))}
                 </div>
 
-                {/* ✅ Experience Cards: Mobile once=true, Desktop once=false */}
+                {/* Experience Cards */}
                 <div
                   className={isDark 
                     ? "p-3 md:p-8 lg:p-9 min-h-[350px] md:min-h-[600px] bg-gradient-to-br from-[#1f2937]/80 via-[#111827]/70 to-[#0f1419]/80 backdrop-blur-md relative z-10"
@@ -362,8 +359,8 @@ const Experience = ({ data }) => {
                             }}
                             exit={{ opacity: 0, y: -20 }}
                             whileHover={{ 
-                              y: prefersReducedMotion ? 0 : -6, 
-                              scale: prefersReducedMotion ? 1 : 1.02,
+                              y: prefersReducedMotion || isMobile ? 0 : -6,  // ✅ Disable on mobile
+                              scale: prefersReducedMotion || isMobile ? 1 : 1.02,
                               transition: { duration: 0.2 }
                             }}
                             onClick={() => setActiveId(exp.id)}
@@ -380,7 +377,7 @@ const Experience = ({ data }) => {
                                 }`
                             }
                             style={{ 
-                              cursor: cursorUrl,
+                              cursor: isMobile ? 'default' : cursorUrl,
                               willChange: "transform"
                             }}
                           >
@@ -442,7 +439,7 @@ const Experience = ({ data }) => {
               </motion.div>
             </div>
 
-            {/* ✅ Details Sidebar: Mobile once=true, Desktop once=false */}
+            {/* Details Sidebar */}
             <div className="lg:col-span-1 w-full mt-4 lg:mt-0 flex items-start lg:items-center relative">
               <AnimatePresence mode="wait">
                 {activeExp && (
@@ -458,7 +455,7 @@ const Experience = ({ data }) => {
                     }}
                     exit={{ opacity: 0, x: 50 }}
                     whileHover={{ 
-                      y: prefersReducedMotion ? 0 : -8, 
+                      y: prefersReducedMotion || isMobile ? 0 : -8,  // ✅ Disable on mobile
                       transition: { duration: 0.3 } 
                     }}
                     className={isDark 
