@@ -44,12 +44,18 @@ const ProtectedRoute = ({ children }) => {
 
 const NavbarWrapper = ({ children }) => {
   const location = useLocation();
-  const hideNavbar = location.pathname.startsWith('/admin');
-  
+  const hideNavbar = location.pathname.startsWith("/admin");
+
   return (
     <>
-      {!hideNavbar && <div className="fixed top-0 left-0 right-0 z-[100]"><Navbar /></div>}
-      <main className={hideNavbar ? "min-h-screen" : "pt-0 relative z-0"}>{children}</main>
+      {!hideNavbar && (
+        <div className="fixed top-0 left-0 right-0 z-[100]">
+          <Navbar />
+        </div>
+      )}
+      <main className={hideNavbar ? "min-h-screen" : "pt-0 relative z-0"}>
+        {children}
+      </main>
     </>
   );
 };
@@ -57,8 +63,8 @@ const NavbarWrapper = ({ children }) => {
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
-  
-  // ✅ Add all data states
+
+  // ✅ All data states
   const [ownerData, setOwnerData] = useState(null);
   const [heroData, setHeroData] = useState(null);
   const [aboutData, setAboutData] = useState(null);
@@ -76,7 +82,7 @@ function App() {
   useEffect(() => {
     // ✅ Fake progress bar animation (independent of API)
     const progressInterval = setInterval(() => {
-      setLoadingProgress(prev => {
+      setLoadingProgress((prev) => {
         if (prev >= 90) {
           clearInterval(progressInterval);
           return 90; // Stop at 90%, wait for data
@@ -92,7 +98,7 @@ function App() {
 
   const loadPortfolioData = async () => {
     try {
-      console.log('🚀 Loading portfolio data...');
+      console.log("🚀 Loading portfolio data...");
 
       // ✅ Simple Promise.all - NO progress tracking
       const [
@@ -108,7 +114,7 @@ function App() {
         hackathonsRes,
         researchRes,
         extracurricularRes,
-        testimonialsRes
+        testimonialsRes,
       ] = await Promise.all([
         portfolioAPI.getOwner(),
         portfolioAPI.getHero(),
@@ -122,7 +128,7 @@ function App() {
         hackathonsAPI.getAll(),
         researchAPI.getAll(),
         extracurricularAPI.getAll(),
-        testimonialsAPI.getAll()
+        testimonialsAPI.getAll(),
       ]);
 
       // ✅ Set all data
@@ -142,12 +148,11 @@ function App() {
 
       // ✅ Jump to 100% when data is ready
       setLoadingProgress(100);
-      console.log('✅ All data loaded successfully!');
-      
+      console.log("✅ All data loaded successfully!");
+
       setTimeout(() => {
         setIsLoading(false);
       }, 500);
-
     } catch (error) {
       console.error("❌ Error loading portfolio:", error);
       setLoadingProgress(100);
@@ -161,18 +166,16 @@ function App() {
     return <GlobalLoader progress={loadingProgress} />;
   }
 
-  // ✅ Add error screen if critical data missing
+  // ✅ Friendly retry screen if critical data missing
   if (!ownerData || !heroData) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-[#050006] text-white p-6">
-        <h1 className="text-2xl font-bold text-red-500 mb-4">⚠️ Failed to Load Portfolio</h1>
-        <p className="text-gray-400 mb-6">Unable to connect to backend server</p>
-        <ul className="text-sm text-gray-500 mb-6 space-y-2">
-          <li>✓ Check if backend is running</li>
-          <li>✓ Verify REACT_APP_API_URL is correct</li>
-          <li>✓ Check database connection</li>
-        </ul>
-        <button 
+        <h1 className="text-2xl font-bold mb-4">Please try again</h1>
+        <p className="text-gray-400 mb-6 text-center max-w-md">
+          Something went wrong while loading the portfolio. Please try again in a
+          moment.
+        </p>
+        <button
           onClick={() => window.location.reload()}
           className="px-6 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-semibold"
         >
@@ -187,18 +190,18 @@ function App() {
       <div className="min-h-screen bg-[#050006] text-[color:var(--color-text)] relative overflow-x-hidden">
         <NavbarWrapper>
           <Routes>
-            <Route 
-              path="/" 
+            <Route
+              path="/"
               element={
                 <>
                   {/* ✅ Pass data as props */}
                   <Hero ownerData={ownerData} heroData={heroData} />
-                  <div 
+                  <div
                     className="relative z-0"
                     style={{
                       background: "var(--hero-bg)",
-                      backgroundAttachment: 'fixed',
-                      backgroundSize: 'cover'
+                      backgroundAttachment: "fixed",
+                      backgroundSize: "cover",
                     }}
                   >
                     <About data={aboutData} />
@@ -216,17 +219,17 @@ function App() {
                     <Footer />
                   </div>
                 </>
-              } 
+              }
             />
 
             <Route path="/admin/login" element={<AdminLogin />} />
-            <Route 
-              path="/admin/*" 
+            <Route
+              path="/admin/*"
               element={
                 <ProtectedRoute>
                   <AdminDashboard />
                 </ProtectedRoute>
-              } 
+              }
             />
           </Routes>
         </NavbarWrapper>
