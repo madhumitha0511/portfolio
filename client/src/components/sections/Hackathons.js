@@ -11,6 +11,7 @@ const Hackathons = ({ data }) => {
 
   const [activeId, setActiveId] = useState(null);
   const [isDark, setIsDark] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   
   // ✅ PERFORMANCE: Respect user's motion preferences
   const prefersReducedMotion = useReducedMotion();
@@ -21,6 +22,16 @@ const Hackathons = ({ data }) => {
       setActiveId(items[0].id);
     }
   }, [items, activeId]);
+
+  // ✅ Mobile detection
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Detect theme
   useEffect(() => {
@@ -184,13 +195,13 @@ const Hackathons = ({ data }) => {
     >
       <div className="max-w-7xl mx-auto relative z-10">
         
-        {/* ✅ SCROLL ANIMATION: Title - Works on both scroll directions */}
+        {/* ✅ Title - Mobile: NO animation, Desktop: bidirectional */}
         <motion.h2
           variants={titleVariants}
-          initial="hidden"
-          whileInView="visible"
+          initial={isMobile ? "visible" : "hidden"}
+          whileInView={isMobile ? false : "visible"}
           viewport={{ 
-            once: false,  // Re-animates on scroll up
+            once: isMobile,  
             amount: 0.3,
             margin: "-50px"
           }}
@@ -199,13 +210,13 @@ const Hackathons = ({ data }) => {
           Hackathons & Events
         </motion.h2>
 
-        {/* ✅ SCROLL ANIMATION: Table Container */}
+        {/* ✅ Table Container - Mobile: NO animation, Desktop: bidirectional */}
         <motion.div 
           variants={tableContainerVariants}
-          initial="hidden"
-          whileInView="visible"
+          initial={isMobile ? "visible" : "hidden"}
+          whileInView={isMobile ? false : "visible"}
           viewport={{ 
-            once: false,  // Re-animates on scroll
+            once: isMobile,  
             amount: 0.15,
             margin: "-80px"
           }}
@@ -223,54 +234,54 @@ const Hackathons = ({ data }) => {
 
           <div className="relative z-10">
             
-            {/* ✅ SCROLL ANIMATION: Table Header with Stagger */}
+            {/* ✅ Table Header - Mobile: NO animation, Desktop: bidirectional */}
             <div className="hidden md:grid grid-cols-[70px,1.8fr,1.3fr,1.3fr,40px] px-8 py-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:var(--color-muted)] bg-[color:var(--color-primary-soft)]/40 backdrop-blur-xl border-b border-[color:var(--color-border)]/30">
               <motion.span
                 custom={0}
                 variants={headerVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: false, amount: 0.5 }}
+                initial={isMobile ? "visible" : "hidden"}
+                whileInView={isMobile ? false : "visible"}
+                viewport={{ once: isMobile, amount: 0.5 }}
               >
                 Year
               </motion.span>
               <motion.span
                 custom={1}
                 variants={headerVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: false, amount: 0.5 }}
+                initial={isMobile ? "visible" : "hidden"}
+                whileInView={isMobile ? false : "visible"}
+                viewport={{ once: isMobile, amount: 0.5 }}
               >
                 Event
               </motion.span>
               <motion.span
                 custom={2}
                 variants={headerVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: false, amount: 0.5 }}
+                initial={isMobile ? "visible" : "hidden"}
+                whileInView={isMobile ? false : "visible"}
+                viewport={{ once: isMobile, amount: 0.5 }}
               >
                 Location
               </motion.span>
               <motion.span
                 custom={3}
                 variants={headerVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: false, amount: 0.5 }}
+                initial={isMobile ? "visible" : "hidden"}
+                whileInView={isMobile ? false : "visible"}
+                viewport={{ once: isMobile, amount: 0.5 }}
               >
                 Category
               </motion.span>
               <motion.span
                 custom={4}
                 variants={headerVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: false, amount: 0.5 }}
+                initial={isMobile ? "visible" : "hidden"}
+                whileInView={isMobile ? false : "visible"}
+                viewport={{ once: isMobile, amount: 0.5 }}
               />
             </div>
 
-            {/* ✅ SCROLL ANIMATION: Table Rows with Stagger */}
+            {/* ✅ Table Rows - Mobile: NO animation, Desktop: bidirectional */}
             {items.map((h, index) => {
               const isActive = h.id === activeId;
               const year = h.year || "";
@@ -281,10 +292,10 @@ const Hackathons = ({ data }) => {
                   key={h.id}
                   custom={index}
                   variants={rowVariants}
-                  initial="hidden"
-                  whileInView="visible"
+                  initial={isMobile ? "visible" : "hidden"}
+                  whileInView={isMobile ? false : "visible"}
                   viewport={{ 
-                    once: false,  // ✅ Re-animates on scroll up
+                    once: isMobile,  
                     amount: 0.3,
                     margin: "-30px"
                   }}
@@ -348,9 +359,9 @@ const Hackathons = ({ data }) => {
                       {/* Event Name & Description */}
                       <div className="flex items-center gap-4">
                         <motion.div 
-                          initial={{ scale: 0, rotate: -180 }}
-                          whileInView={{ scale: 1, rotate: 0 }}
-                          viewport={{ once: false }}
+                          initial={isMobile ? { scale: 1, rotate: 0 } : { scale: 0, rotate: -180 }}
+                          whileInView={isMobile ? false : { scale: 1, rotate: 0 }}
+                          viewport={{ once: isMobile }}
                           transition={{ 
                             delay: prefersReducedMotion ? 0 : index * 0.05,
                             type: "spring",
@@ -385,7 +396,7 @@ const Hackathons = ({ data }) => {
                       {/* Expand Arrow */}
                       <div className="flex justify-end">
                         <motion.span
-                          animate={{ 
+                          animate={isMobile ? { x: 0, rotate: isActive ? 90 : 0 } : {
                             x: isActive ? (prefersReducedMotion ? 0 : 4) : 0,
                             rotate: isActive ? (prefersReducedMotion ? 0 : 90) : 0
                           }}
@@ -401,7 +412,7 @@ const Hackathons = ({ data }) => {
                     </div>
                   </motion.button>
 
-                  {/* ✅ SCROLL ANIMATION: Expandable Details with Stagger */}
+                  {/* ✅ Expandable Details */}
                   {isActive && (
                     <motion.div
                       variants={detailsVariants}
